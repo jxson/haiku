@@ -1,0 +1,75 @@
+---
+title: New Blargh
+description: keep this under about 255 characters
+---
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title }}</title>
+
+    <meta name="description" content="{{ description }}" />
+    <meta name="keywords" content="{{#tags}} {{ name }} {{/tags}}" />
+    <meta name="author" content="{{ author }}" />
+    <meta name="robots" content="all" />
+    <meta name="revisit-after" content="15 days" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <link rel="stylesheet"
+      href="/stylesheets/reset.css"
+      type="text/css"
+      media="screen" />
+
+    <link rel="stylesheet"
+      href="/stylesheets/main.css"
+      type="text/css"
+      media="screen" />
+
+    <script type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js">
+    </script>
+
+    <script type="text/javascript" src="/javascripts/application.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="/" id="logo">{{ title }}</a>
+
+      <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+      </nav>
+
+      <div class="clear"><!-- --></div>
+    </header>
+
+    <div class="content">
+      {{{ yield }}}
+    </div>
+
+    <footer>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+      </nav>
+
+      <div id="nerd-olympics">
+        <a href="http://validator.w3.org/check/referer">
+          <abbr title="Hypertext Markup Language, Version 5">html5</abbr>
+        </a>
+
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+          <abbr title="Cascading Style Sheets">css</abbr>
+        </a>
+
+        <a href="http://blarghing.com">Blargh!</a>
+      </div>
+
+      <div class="clear"><!-- --></div>
+    </footer>
+  </body>
+</html>

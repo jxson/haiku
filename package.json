@@ -1,0 +1,13 @@
+{
+  "name": "blargh",
+  "description": "yet another blogging engine... highly configurable, expandable, and easy to use",
+  "author": "Jason Campbell <jason@greatergood.cc>",
+  "dependencies": {
+    "optimist": "0.2.6"
+  },
+  "devDependencies": {
+    // "express": ">= 1.2.0",
+    // "optimist": ">= 0.1.0"
+  },
+  "engine": "node >= 0.4.10"
+}
