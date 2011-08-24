@@ -1,9 +1,21 @@
 #!/usr/bin/env node
 
+var path = require('path');
+
+require.paths.unshift(path.join(__dirname, '..', 'lib'));
+
 var argv = require('optimist')
-    .default('x', 10)
-    .default('y', 10)
+    .usage('$0 generate --directory [dir]')
+    .demand(['source', 'destination'])
+    .describe('source', 'Your site\'s source directory')
+    .describe('destination', 'the compiled html for your site')
     .argv
+    blargh = require('blargh')
 ;
 
-console.log(argv.x + argv.y);
+// console.log('args', argv);
+
+blargh.generate({
+  source: argv.source,
+  destination: argv.destination
+});
