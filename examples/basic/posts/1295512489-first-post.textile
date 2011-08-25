@@ -5,4 +5,4 @@ title: Just an example
 This an example post, you should probably delete it and generate a new one
 with:
 
-blargh post --title "whatever you want to blog about"
+    haiku post --title "whatever you want to blog about"

@@ -1,0 +1,13 @@
+---
+title: This is the homepage
+---
+
+<div id="home">
+  <h1>Blog Posts</h1>
+
+  <ul class="posts">
+    {{#posts}}
+      <li>{{ date }} - {{ title }}</li>
+    {{/posts}}
+  </ul>
+</div>
