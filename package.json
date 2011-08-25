@@ -1,14 +1,16 @@
 {
-  "name": "blargh",
-  "description": "yet another blogging engine... highly configurable, expandable, and easy to use",
-  "author": "Jason Campbell <jason@greatergood.cc>",
+  "name": "haiku",
+  "description": "Another static sitegenerator... highly configurable, expandable, and easy to use",
+  "author": "Jason Campbell <jason@borderstylo.com>",
   "version": "0.0.1",
-  "bin" : { "blargh": "./bin/blargh" },
-  "main" : "./lib/blargh/index",
+  "bin" : { "haiku": "./bin/haiku" },
+  "main" : "./lib/haiku/index",
   "dependencies": {
     "optimist": "0.2.6",
     "underscore": "1.1.7",
-    "yaml": "0.2.1"
+    "yaml": "0.2.1",
+    "mustache": "0.3.1-dev",
+    "mkdirp": "0.0.6"
   },
   "devDependencies": {
     // "express": ">= 1.2.0",

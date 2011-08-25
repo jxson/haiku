@@ -10,12 +10,12 @@ var argv = require('optimist')
     .describe('source', 'Your site\'s source directory')
     .describe('destination', 'the compiled html for your site')
     .argv
-    blargh = require('blargh')
+    haiku = require('haiku')
 ;
 
 // console.log('args', argv);
 
-blargh.generate({
+haiku.generate({
   source: argv.source,
   destination: argv.destination
 });

@@ -1,7 +1,7 @@
 ---
 title: About us
-foo: foo
-layout: page
+foo: bar
+layout: default
 ---
 
-Blah blah
+Blah blah {{ title }}
