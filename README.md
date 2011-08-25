@@ -19,7 +19,7 @@ More is coming this is just a proof of concept at this stage
 
 # Inspiration
 
-* [jekyll]:https://github.com/mojombo/jekyll
-* [toto]:https://github.com/cloudhead/toto
-* [nanoc]:http://nanoc.stoneship.org/
-* [Marco's Second Crack]:http://www.marco.org/secondcrack
+* [jekyll](https://github.com/mojombo/jekyll)
+* [toto](https://github.com/cloudhead/toto)
+* [nanoc](http://nanoc.stoneship.org/)
+* [Marco's Second Crack](http://www.marco.org/secondcrack)
