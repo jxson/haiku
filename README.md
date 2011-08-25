@@ -1,3 +1,11 @@
+# Haiku
+
+Haiku is a work in progress and aims to be another static site generator which is highly configurable, expandable, and easy to use.
+
+All content is written in simple text files using either markdown or textile combined with Mustache.
+
+Get started by [reviewing the wiki](https://github.com/wycats/thor/wiki)
+
 # Dependencies
 
 You need node >= 0.4.10 and npm
