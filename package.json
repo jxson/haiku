@@ -12,9 +12,5 @@
     "mustache": "0.3.1-dev",
     "mkdirp": "0.0.6"
   },
-  "devDependencies": {
-    // "express": ">= 1.2.0",
-    // "optimist": ">= 0.1.0"
-  },
   "engine": "node >= 0.4.10"
 }
