@@ -9,7 +9,7 @@ require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
 var haiku = require('haiku')
   , argv = require('optimist').argv
-  , commands = ['new', 'build'];
+  , commands = ['new', 'build', 'server'];
 ;
 
 
@@ -21,7 +21,8 @@ var generalHelp = [
   '',
   'actions: ',
   '   new [PATH]        Create a new haiku site at the path you specify',
-  '   build [options]   Build the haiku site in --source to --destination'
+  '   build [options]   Build the haiku site in --source to --destination',
+  '   server [options]  Start up a haiku server'
 ].join('\n');
 
 // if it doesn't show a basic help message
@@ -58,6 +59,30 @@ if (action === 'build'){
   haiku.generate({
     source: argv.source,
     destination: argv.destination
+  });
+}
+
+if (action === 'server'){
+  var serverHelp = [
+    'Usage:',
+    '   haiku server [options]',
+    '',
+    'Options: ',
+    '   --port PORT     # The port to fire up the haiku server defaults to 8080',
+    '   --source PATH   # The PATH to the haiku content to serve defaults to the current DIR'
+  ].join('\n');
+
+  if (argv.h || argv.help){
+    return console.log(serverHelp);
+  }
+
+  var port = argv.port || 8080
+    , source = argv.source || process.cwd()
+  ;
+
+  haiku.server({
+    source: source,
+    port: port
   });
 }
 
