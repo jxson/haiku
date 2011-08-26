@@ -27,9 +27,17 @@ app.get('/', function(req, res){
   var source = path.resolve(path.join('examples', 'basic'));
   var site = haiku.read(source);
 
-  console.log('source', source);
+  // console.log('source', source);
 
   console.log('site\n', site);
+
+  var index = site.find(function(content){
+    // console.log('content \n'.yellow, content);
+    return content.url() === 'index.html';
+  });
+
+  console.log('index \n'.magenta, index.first());
+
   //
   // var page = _.first(_.select(site.pages, function(page){
   //   return page.basename() === 'index';
