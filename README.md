@@ -29,8 +29,14 @@ More is coming this is just a proof of concept at this stage
 
 * [jekyll](https://github.com/mojombo/jekyll)
 * [toto](https://github.com/cloudhead/toto)
-* [nanoc](http://nanoc.stoneship.org/)
 * [Marco's Second Crack](http://www.marco.org/secondcrack)
+
+# Other Static Site Generators
+
+* [nanoc](http://nanoc.stoneship.org/)
+* [ace](https://github.com/botanicus/ace)
+* [tinysite](https://github.com/niko/TinySite)
+
 
 # License
 
