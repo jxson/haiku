@@ -34,17 +34,11 @@ app.get('/', function(req, res){
   var index = site.find(function(content){
     // console.log('content \n'.yellow, content);
     return content.url() === 'index.html';
-  });
+  }).first();
 
-  console.log('index \n'.magenta, index.first());
+  console.log('index \n'.magenta, index);
 
-  //
-  // var page = _.first(_.select(site.pages, function(page){
-  //   return page.basename() === 'index';
-  // }));
-  //
-  // res.send(page.render())
-    res.send('HI')
+  res.send(index.render())
 });
 
 app.listen(8080)

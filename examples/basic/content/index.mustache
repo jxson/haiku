@@ -3,11 +3,11 @@ title: This is the homepage
 ---
 
 <div id="home">
-  <h1>Blog Posts</h1>
+  <h1>{{ title }} Blog Posts</h1>
 
   <ul class="posts">
     {{#posts}}
-      <li>{{ date }} - {{ title }}</li>
+      <li>{{ date }} - {{ title }} - {{ url }}</li>
     {{/posts}}
   </ul>
 </div>
