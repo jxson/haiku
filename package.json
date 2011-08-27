@@ -16,7 +16,8 @@
   },
   "devDependencies": {
     "colors": "0.5.0",
-    "jasmine-node": "1.0.6"
+    "jasmine-node": "1.0.6",
+    "docco": "0.3.0"
   },
   "engine": "node >= 0.4.10"
 }
