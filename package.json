@@ -4,7 +4,7 @@
   "author": "Jason Campbell <jason@borderstylo.com>",
   "version": "0.0.1",
   "bin" : { "haiku": "./bin/haiku" },
-  "main" : "./lib/haiku/index",
+  "main" : "./lib/haiku.js",
   "dependencies": {
     "optimist": "0.2.6",
     "underscore": "1.1.7",
