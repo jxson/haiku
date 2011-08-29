@@ -101,4 +101,87 @@ describe('Origami', function(){
       expect(snake.get('name')).toBe('Diamond Back');
     });
   });
+
+  describe('validations', function(){
+    var Animal, tiger, houseCat;
+
+    describe('#addError(hash)', function(){
+      beforeEach(function() {
+        Animal = Origami.extend({
+          validate: function(attrs){
+            if (attrs.stripes === false && attrs.name === 'tiger'){
+              this.addError({ stripes: "A tiger needs it's stripes!" });
+            }
+
+            if (attrs.sound === 'bark'){
+              this.addError({ sound: "Cats don't make dog sounds" });
+            }
+          }
+        });
+
+        houseCat = new Animal();
+      });
+
+      it('should be defined', function(){
+        expect(houseCat.addError).toBeDefined();
+      });
+
+      it('should populate the instances error object', function(){
+        houseCat.addError({ purr: 'This cat needs to purr!' });
+
+        expect(houseCat.errors).toBeDefined();
+        expect(_.keys(houseCat.errors)).toContain('purr');
+        expect(houseCat.errors.purr).toBe('This cat needs to purr!');
+      });
+    });
+
+    describe('#validate(attrs)', function(){
+      beforeEach(function() {
+        tiger = new Animal();
+      });
+
+      it('should exist', function(){
+        expect(tiger.validate).toBeDefined();
+      });
+
+      it('should be triggered on #set()', function(){
+        spyOn(tiger, 'validate').andCallThrough();
+
+        tiger.set({ stripes: false });
+
+        expect(tiger.validate).toHaveBeenCalledWith({ stripes: false });
+      });
+
+      it('should check combined attrs and the attributes', function(){
+        tiger.set({ name: 'tiger' });
+
+        spyOn(tiger, 'addError').andCallThrough();
+
+        tiger.set({ stripes: false });
+
+        expect(tiger.addError)
+          .toHaveBeenCalledWith({ stripes: "A tiger needs it's stripes!" });
+      });
+    });
+
+    describe('#isValid(attrs)', function(){
+      beforeEach(function() {
+        lion = new Animal();
+      });
+
+      it('should be defined', function(){
+        expect(lion.isValid).toBeDefined();
+      });
+
+      it('should be true if valid', function(){
+         expect(lion.isValid()).toBeTruthy();
+       });
+
+      it('should be false if invalid', function(){
+        lion.set({ sound: 'bark' });
+
+        expect(lion.isValid()).toBeFalsy();
+      });
+    });
+  });
 });
