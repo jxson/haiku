@@ -18,7 +18,7 @@ describe('Haiku', function(){
     });
 
     describe('when `source` is NOT defined', function(){
-      // it should throw and err if no source is defined
+      // it should throw an err if no source is defined
     });
 
 
