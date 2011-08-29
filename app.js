@@ -5,10 +5,14 @@ require.paths.unshift(path.join(__dirname, 'lib'));
 
 var express = require('express')
   , _ = require('underscore')
-  , haiku = require('haiku')
+  , Haiku = require('haiku')
 ;
 
-var app = express.createServer();
+var app = express.createServer()
+  , haiku = new Haiku({
+              source: path.resolve(path.join('examples', 'basic'))
+            })
+;
 
 // app.configure(function(){
 //   app.set('views', __dirname + '/views');
@@ -24,21 +28,32 @@ var app = express.createServer();
 // });
 
 app.get('/', function(req, res){
-  var source = path.resolve(path.join('examples', 'basic'));
-  var site = haiku.read(source);
+  // var source = path.resolve(path.join('examples', 'basic'));
+  // var site = haiku.read(source);
+  //
+  // // console.log('source', source);
+  //
+  // console.log('site\n', site);
+  //
+  // var index = site.find(function(content){
+  //   // console.log('content \n'.yellow, content);
+  //   return content.url() === 'index.html';
+  // }).first();
+  //
+  // console.log('index \n'.magenta, index);
+  //
+  // res.send(index.render())
 
-  // console.log('source', source);
+  var index = haiku.content.find(function(content){
+        return content.url() === 'index.html';
+      }).first().value();
 
-  console.log('site\n', site);
-
-  var index = site.find(function(content){
-    // console.log('content \n'.yellow, content);
-    return content.url() === 'index.html';
-  }).first();
-
-  console.log('index \n'.magenta, index);
-
-  res.send(index.render())
+  res.send('HI')
 });
 
-app.listen(8080)
+haiku.on('ready', function(){
+  app.listen(8080);
+});
+
+haiku.read();
+
