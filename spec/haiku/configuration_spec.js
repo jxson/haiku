@@ -62,44 +62,83 @@ describe('Configuration', function(){
   });
 
   describe('#contentdir()', function(){
-    beforeEach(function() {
-      config.set({ source: 'monkey-blog' })
-    });
-
     it('should exist', function(){
       expect(config.contentdir).toBeDefined()
     });
 
-    it('should be the full path the the `contentdir`', function(){
-      expect(config.contentdir()).toBe('monkey-blog/content')
+    describe('when the `source` is set', function(){
+      beforeEach(function() {
+        config.set({ source: 'monkey-blog' })
+      });
+
+      it('should be the full path the the `contentdir`', function(){
+        expect(config.contentdir()).toBe('monkey-blog/content')
+      });
+    });
+
+    describe('when the `source` is NOT set', function(){
+      it('should be null', function(){
+        expect(config.contentdir()).not.toBeDefined();
+      });
+
+      it('should invalidate config', function(){
+        expect(config.isValid()).toBeFalsy();
+        expect(config.errors.source).toBe('needs to be set');
+      });
     });
   });
 
   describe('#templatesdir()', function(){
-    beforeEach(function() {
-      config.set({ source: 'monkey-blog' })
-    });
-
     it('should exist', function(){
       expect(config.templatesdir).toBeDefined()
     });
 
-    it('should be the full path the the `templatesdir`', function(){
-      expect(config.templatesdir()).toBe('monkey-blog/templates')
+    describe('when the `source` is set', function(){
+      beforeEach(function() {
+        config.set({ source: 'monkey-blog' })
+      });
+
+      it('should be the full path the the `templatesdir`', function(){
+        expect(config.templatesdir()).toBe('monkey-blog/templates')
+      });
+    });
+
+    describe('when the `source` is NOT set', function(){
+      it('should be null', function(){
+        expect(config.templatesdir()).not.toBeDefined();
+      });
+
+      it('should invalidate config', function(){
+        expect(config.isValid()).toBeFalsy();
+        expect(config.errors.source).toBe('needs to be set');
+      });
     });
   });
 
   describe('#publicdir()', function(){
-    beforeEach(function() {
-      config.set({ source: 'monkey-blog' })
-    });
-
     it('should exist', function(){
       expect(config.publicdir).toBeDefined()
     });
 
-    it('should be the full path the the `templatesdir`', function(){
-      expect(config.publicdir()).toBe('monkey-blog/public')
+    describe('when the `source` is set', function(){
+      beforeEach(function() {
+        config.set({ source: 'monkey-blog' })
+      });
+
+      it('should be the full path the the `publicdir`', function(){
+        expect(config.publicdir()).toBe('monkey-blog/public')
+      });
+    });
+
+    describe('when the `source` is NOT set', function(){
+      it('should be null', function(){
+        expect(config.publicdir()).not.toBeDefined();
+      });
+
+      it('should invalidate config', function(){
+        expect(config.isValid()).toBeFalsy();
+        expect(config.errors.source).toBe('needs to be set');
+      });
     });
   });
 });
