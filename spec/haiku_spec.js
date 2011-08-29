@@ -8,25 +8,6 @@ describe('Haiku', function(){
     , haiku
   ;
 
-  // read the haiku source content and return a new haiku instance
-  describe('.read(source)', function(){
-    // NOTE: This would be a nicer syntax:
-    //
-    //    its('read').shouldBeDefined();
-    it("should have the class property `read`", function(){
-      expect(Haiku.read).toBeDefined();
-    });
-
-    describe('when `source` is NOT defined', function(){
-      // it should throw an err if no source is defined
-    });
-
-
-    describe('when `source` is defined', function(){
-      // it should return an instance of a haiku
-    });
-  });
-
   describe('.configure(configObject)', function(){
     it("should have .configure", function(){
       expect(Haiku.configure).toBeDefined();
@@ -37,6 +18,28 @@ describe('Haiku', function(){
 
       expect(Haiku.config).toBeDefined();
       expect(Haiku.config.get('source')).toBe('foo')
+    });
+  });
+
+  describe('new Haiku(config);', function(){
+    describe('without configuration object', function(){
+
+    });
+
+    describe('with configuration object', function(){
+      beforeEach(function() {
+        haiku = new Haiku({
+          source: 'thetempleofdoom'
+        });
+      });
+
+      it('should set the Haiku.config object', function(){
+        expect(Haiku.config.get('source')).toBe('thetempleofdoom');
+      });
+
+      it('should set the instances config object', function(){
+        expect(haiku.config).toBe(Haiku.config);
+      });
     });
   });
 });
