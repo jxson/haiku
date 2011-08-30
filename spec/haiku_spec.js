@@ -9,9 +9,9 @@ describe('Haiku', function(){
     , haiku
     , mi6 = {
           spy: function(){}
-        , asyncSpy: function(){ eventTriggered = true; }
+        , asyncSpy: function(){ oscarMike = true; }
       }
-    , eventTriggered
+    , oscarMike
   ;
 
   beforeEach(function() {
@@ -19,59 +19,63 @@ describe('Haiku', function(){
     spyOn(mi6, 'asyncSpy').andCallThrough();
   });
 
-  describe('.configure(configObject)', function(){
-    it("should have .configure", function(){
-      expect(Haiku.configure).toBeDefined();
-    });
-
-    it('should have .config after calling .configure()', function(){
-      var config = Haiku.configure({source: 'foo'});
-
-      expect(Haiku.config).toBeDefined();
-      expect(Haiku.config.get('source')).toBe('foo')
-    });
-  });
-
-  describe('new Haiku(config);', function(){
-    describe('without configuration object', function(){
-
-    });
-
-    describe('with configuration object', function(){
-      beforeEach(function() {
-        haiku = new Haiku({
-          source: 'thetempleofdoom'
-        });
-      });
-
-      it('should set the Haiku.config object', function(){
-        expect(Haiku.config.get('source')).toBe('thetempleofdoom');
-      });
-
-      it('should set the instances config object', function(){
-        expect(haiku.config).toBe(Haiku.config);
-      });
-    });
-  });
+  // describe('.configure(configObject)', function(){
+  //   it("should have .configure", function(){
+  //     expect(Haiku.configure).toBeDefined();
+  //   });
+  //
+  //   it('should have .config after calling .configure()', function(){
+  //     var config = Haiku.configure({source: 'foo'});
+  //
+  //     expect(Haiku.config).toBeDefined();
+  //     expect(Haiku.config.get('source')).toBe('foo')
+  //   });
+  // });
+  //
+  // describe('new Haiku(config);', function(){
+  //   describe('without configuration object', function(){
+  //
+  //   });
+  //
+  //   describe('with configuration object', function(){
+  //     beforeEach(function() {
+  //       haiku = new Haiku({
+  //         source: 'thetempleofdoom'
+  //       });
+  //     });
+  //
+  //     it('should set the Haiku.config object', function(){
+  //       expect(Haiku.config.get('source')).toBe('thetempleofdoom');
+  //     });
+  //
+  //     it('should set the instances config object', function(){
+  //       expect(haiku.config).toBe(Haiku.config);
+  //     });
+  //   });
+  // });
 
   describe('#read()', function(){
     beforeEach(function() {
+      // haiku = new Haiku({
+      //   source: path.resolve(path.join('examples', 'basic'))
+      // });
+    });
+
+    // it('should be defined', function(){
+    //   expect(haiku.read).toBeDefined();
+    // });
+
+    it('should emit a "ready" function', function(){
       haiku = new Haiku({
         source: path.resolve(path.join('examples', 'basic'))
       });
-    });
 
-    it('should be defined', function(){
-      expect(haiku.read).toBeDefined();
-    });
-
-    it('should emit a "ready" function', function(){
       haiku.on('ready', mi6.asyncSpy);
 
       haiku.read();
 
       waitsFor(function(){
-        return eventTriggered;
+        return oscarMike;
       }, 'haiku ready event', 10000);
 
       runs(function(){
