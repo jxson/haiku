@@ -92,4 +92,33 @@ describe('Content', function(){
       });
     });
   });
+
+  describe('#parser()', function(){
+    it('should be defined', function(){
+      expect(index.parser).toBeDefined();
+    });
+
+    describe('when the `file` attribute is set', function(){
+      beforeEach(function(){
+        index = new Content({ file: indexpath });
+      });
+
+      describe('with markdown extensions', function(){
+
+      });
+
+      describe('with textile extensions', function(){
+
+      });
+    });
+
+    describe('when the `file` attribute is not set', function(){
+      beforeEach(function(){ index = new Content(); });
+
+      it('should return undefined', function(){
+        expect(index.parser()).not.toBeDefined();
+      });
+    });
+
+  });
 });
