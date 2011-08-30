@@ -7,11 +7,16 @@ var Haiku = require('haiku')
 describe('Haiku', function(){
   var source
     , haiku
-    , mi6 = { spy: function(){} }
+    , mi6 = {
+          spy: function(){}
+        , asyncSpy: function(){ eventTriggered = true; }
+      }
+    , eventTriggered
   ;
 
   beforeEach(function() {
     spyOn(mi6, 'spy');
+    spyOn(mi6, 'asyncSpy').andCallThrough();
   });
 
   describe('.configure(configObject)', function(){
@@ -52,7 +57,7 @@ describe('Haiku', function(){
   describe('#read()', function(){
     beforeEach(function() {
       haiku = new Haiku({
-        source: path.resolve(path.join('..', 'examples', 'basic'))
+        source: path.resolve(path.join('examples', 'basic'))
       });
     });
 
@@ -61,35 +66,17 @@ describe('Haiku', function(){
     });
 
     it('should emit a "ready" function', function(){
-      haiku.on('ready', mi6.spy);
+      haiku.on('ready', mi6.asyncSpy);
 
       haiku.read();
 
-      expect(mi6.spy).toHaveBeenCalled();
+      waitsFor(function(){
+        return eventTriggered;
+      }, 'haiku ready event', 10000);
+
+      runs(function(){
+        expect(mi6.asyncSpy).toHaveBeenCalled();
+      });
     });
   });
-
-  // describe('#find(iterator)', function(){
-  //   // beforeEach(function() {
-  //   //   haiku = new Haiku({
-  //   //     source: path.resolve(path.join('examples', 'basic'))
-  //   //   });
-  //   // });
-  //   //
-  //   // it('should be defined', function(){
-  //   //
-  //   // });
-  //   //
-  //   // it('should return an array of content', function(){
-  //   //
-  //   // });
-  //   //
-  //   // it('should have a #first() method', function(){
-  //   //
-  //   // });
-  //
-  //   // it('description', function(){
-  //   //   console.log('config', Haiku.config);
-  //   // });
-  // });
 });

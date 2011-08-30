@@ -52,8 +52,9 @@ app.get('/', function(req, res){
 });
 
 haiku.on('ready', function(){
+  console.log('haiku: \n'.magenta, haiku);
+
   app.listen(8080);
 });
 
 haiku.read();
-
