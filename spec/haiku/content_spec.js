@@ -94,27 +94,45 @@ describe('Content', function(){
   });
 
   describe('#parser()', function(){
+    beforeEach(function(){ index = new Content(); });
+
     it('should be defined', function(){
       expect(index.parser).toBeDefined();
     });
 
     describe('when the `file` attribute is set', function(){
-      beforeEach(function(){
-        index = new Content({ file: indexpath });
-      });
-
       describe('with markdown extensions', function(){
+        _.each(['.md', '.markdown', '.mdown', '.mkdn', '.mkd'], function(ext){
+          it('should return "markdown"', function(){
+            index.set({ file: 'markdown-file' + ext });
 
+            expect(index.parser()).toBe('markdown');
+          });
+        });
       });
 
       describe('with textile extensions', function(){
+        beforeEach(function(){
+          index.set({ file: 'textile-file.textile' });
+        });
 
+        it('should return "textile"', function(){
+          expect(index.parser()).toBe('textile');
+        });
+      });
+
+      describe('with html extensions', function(){
+        _.each(['.mustache', '.html'], function(ext){
+          it('should return "none"', function(){
+            index.set({ file: 'markdown-file' + ext });
+
+            expect(index.parser()).not.toBeDefined();
+          });
+        });
       });
     });
 
     describe('when the `file` attribute is not set', function(){
-      beforeEach(function(){ index = new Content(); });
-
       it('should return undefined', function(){
         expect(index.parser()).not.toBeDefined();
       });
