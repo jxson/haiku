@@ -50,7 +50,10 @@ app.get('/', function(req, res){
 
   console.log('index: \n', index);
 
-  res.send(index.render())
+  index.render(function(content){
+    console.log('index.render() callback triggered'.yellow);
+    res.send(content);
+  });
 });
 
 haiku.on('ready', function(){

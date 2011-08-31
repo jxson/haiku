@@ -2,6 +2,7 @@ var Content = require('haiku/content')
   , colors = require('colors')
   , _ = require('underscore')
   , path = require('path')
+  , Haiku = require('haiku')
 ;
 
 describe('Content', function(){
@@ -218,6 +219,24 @@ describe('Content', function(){
 
     it('should be defined', function(){
       expect(index.render).toBeDefined();
+    });
+
+    it('should trigger a callback', function(){
+      // index.render(mi6.asyncSpy);
+      //
+      // waitsFor(function(){
+      //   return oscarMike;
+      // }, '#render(callback) to trigger callback', 10000);
+      //
+      // runs(function(){
+      //   expect(mi6.asyncSpy).toHaveBeenCalled();
+      //
+      //   // expect(index.get('title')).toBe('This is the homepage');
+      // });
+    });
+
+    it('should render the content wrapped in a layout', function(){
+
     });
   });
 });
