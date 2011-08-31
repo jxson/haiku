@@ -56,20 +56,16 @@ describe('Haiku', function(){
 
   describe('#read()', function(){
     beforeEach(function() {
-      // haiku = new Haiku({
-      //   source: path.resolve(path.join('examples', 'basic'))
-      // });
-    });
-
-    // it('should be defined', function(){
-    //   expect(haiku.read).toBeDefined();
-    // });
-
-    it('should emit a "ready" function', function(){
       haiku = new Haiku({
         source: path.resolve(path.join('examples', 'basic'))
       });
+    });
 
+    it('should be defined', function(){
+      expect(haiku.read).toBeDefined();
+    });
+
+    it('should emit a "ready" function', function(){
       haiku.on('ready', mi6.asyncSpy);
 
       haiku.read();
@@ -80,6 +76,36 @@ describe('Haiku', function(){
 
       runs(function(){
         expect(mi6.asyncSpy).toHaveBeenCalled();
+      });
+    });
+
+    it('should populate the partials', function(){
+      haiku.on('ready', mi6.asyncSpy);
+
+      haiku.read();
+
+      waitsFor(function(){
+        return oscarMike;
+      }, 'haiku ready event', 10000);
+
+      runs(function(){
+        expect(_.size(haiku.partials)).toBe(1);
+        expect(haiku.partials.post).toBeDefined();
+      });
+    });
+
+    it('should populate the layouts', function(){
+      haiku.on('ready', mi6.asyncSpy);
+
+      haiku.read();
+
+      waitsFor(function(){
+        return oscarMike;
+      }, 'haiku ready event', 10000);
+
+      runs(function(){
+        expect(_.size(haiku.layouts)).toBe(1);
+        expect(haiku.layouts.default).toBeDefined();
       });
     });
   });
