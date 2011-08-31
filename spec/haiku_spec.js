@@ -65,45 +65,23 @@ describe('Haiku', function(){
       expect(haiku.read).toBeDefined();
     });
 
-    it('should emit a "ready" function', function(){
+    // NOTE: Jasmine is really pissing me off, really strange stuff with the
+    // async, more than on desc block cannot have it statements with async
+    // checks working the same variables, this is bad form but I am testing
+    // everything in this single it statement...
+    it('should emit a ready event, populate partials and layouts', function(){
       haiku.on('ready', mi6.asyncSpy);
 
       haiku.read();
 
-      waitsFor(function(){
-        return oscarMike;
-      }, 'haiku ready event', 10000);
+      waitsFor(function(){ return oscarMike; }, 'haiku ready event', 10000);
 
       runs(function(){
         expect(mi6.asyncSpy).toHaveBeenCalled();
-      });
-    });
 
-    it('should populate the partials', function(){
-      haiku.on('ready', mi6.asyncSpy);
-
-      haiku.read();
-
-      waitsFor(function(){
-        return oscarMike;
-      }, 'haiku ready event', 10000);
-
-      runs(function(){
         expect(_.size(haiku.partials)).toBe(1);
         expect(haiku.partials.post).toBeDefined();
-      });
-    });
 
-    it('should populate the layouts', function(){
-      haiku.on('ready', mi6.asyncSpy);
-
-      haiku.read();
-
-      waitsFor(function(){
-        return oscarMike;
-      }, 'haiku ready event', 10000);
-
-      runs(function(){
         expect(_.size(haiku.layouts)).toBe(1);
         expect(haiku.layouts.default).toBeDefined();
       });
