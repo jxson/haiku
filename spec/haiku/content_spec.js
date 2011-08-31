@@ -137,6 +137,75 @@ describe('Content', function(){
         expect(index.parser()).not.toBeDefined();
       });
     });
+  });
 
+  describe('#url()', function(){
+    beforeEach(function(){
+      index = new Content({ file: indexpath });
+    });
+
+    it('should be defined', function(){
+      expect(index.url).toBeDefined();
+    });
+
+    describe('when the file attribute is set', function(){
+      it('should return the path from the haiku public dir', function(){
+        expect(index.url()).toBe('index.html');
+      });
+    });
+
+    describe('when the file attribute is NOT set', function(){
+      beforeEach(function(){
+        index.set({ file: null });
+      });
+
+      it('should return undefined', function(){
+        expect(index.url()).not.toBeDefined();
+      });
+    });
+  });
+
+  describe('#_extension()', function(){
+    beforeEach(function(){ index = new Content(); });
+
+    xit('should be defined', function(){
+      expect(index._extension).toBeDefined();
+    });
+
+    describe('when the file attribute is set', function(){
+      describe('when it does not have a secondary extension', function(){
+        beforeEach(function(){ index.set({ file: 'handlebar.mustache' }); });
+
+        it('should return "html"', function(){
+          expect(index._extension()).toBe('.html');
+        });
+      });
+
+      describe('when it does have a pre extension', function(){
+        _.each(['.xml', '.css', '.js', '.html'], function(prext){
+          it('should return "' + prext + '"', function(){
+            index = new Content();
+            index.set({ file: 'a' + prext + '.mustache' });
+
+            expect(index._extension()).toBe(prext);
+          });
+        })
+
+        it('should return the second to last pre extension', function(){
+          index = new Content();
+          index.set({ file: 'a.b.c.xml.mustache' });
+
+          expect(index._extension()).toBe('.xml');
+        });
+      });
+    });
+
+    describe('when the file attribute is NOT set', function(){
+      beforeEach(function(){ index.set({ file: null }); });
+
+      it('should return undefined', function(){
+        expect(index.url()).not.toBeDefined();
+      });
+    });
   });
 });
