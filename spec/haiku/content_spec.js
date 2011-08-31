@@ -9,6 +9,7 @@ describe('Content', function(){
   var mi6
     , oscarMike
     , indexpath
+    , postpath
   ;
 
   beforeEach(function() {
@@ -16,6 +17,13 @@ describe('Content', function(){
                   , 'basic'
                   , 'content'
                   , 'index.mustache'));
+
+    postpath = path.resolve(path.join('examples'
+                  , 'basic'
+                  , 'content'
+                  , 'posts'
+                  , '01-first-post.markdown'));
+
 
     oscarMike = false;
 
@@ -210,6 +218,8 @@ describe('Content', function(){
     });
   });
 
+  // TODO: comeback to this, I think it can only be tested thoroughly thru the
+  // haiku_spec.js
   describe('#render(callback)', function(){
     beforeEach(function() {
       index = new Content({
@@ -237,6 +247,48 @@ describe('Content', function(){
 
     it('should render the content wrapped in a layout', function(){
 
+    });
+  });
+
+  describe('#isInCollection()', function(){
+    beforeEach(function(){
+      haiku = new Haiku({
+        source: path.resolve(path.join('examples', 'basic'))
+      });
+
+      content = new Content({}, haiku);
+    });
+
+    it('should be defined', function(){
+      expect(content.isInCollection).toBeDefined();
+    });
+
+    describe('when in a collection', function(){
+      beforeEach(function(){
+        content.set({ file: postpath });
+      });
+
+      it('should return `true`', function(){
+        expect(content.isInCollection()).toBe(true);
+      });
+
+      it('should set it\'s collection', function(){
+        expect(content.collection()).toBe('posts');
+      });
+    });
+
+    describe('when not in a collection', function(){
+      beforeEach(function(){
+        content.set({ file: indexpath});
+      });
+
+      it('should return `false`', function(){
+        expect(content.isInCollection()).toBe(false);
+      });
+
+      it('should not set it\'s collection', function(){
+        expect(content.collection()).not.toBeDefined();
+      });
     });
   });
 });
