@@ -168,7 +168,7 @@ describe('Content', function(){
   describe('#_extension()', function(){
     beforeEach(function(){ index = new Content(); });
 
-    xit('should be defined', function(){
+    it('should be defined', function(){
       expect(index._extension).toBeDefined();
     });
 
@@ -206,6 +206,18 @@ describe('Content', function(){
       it('should return undefined', function(){
         expect(index.url()).not.toBeDefined();
       });
+    });
+  });
+
+  describe('#render(callback)', function(){
+    beforeEach(function() {
+      index = new Content({
+        file: indexpath
+      });
+    });
+
+    it('should be defined', function(){
+      expect(index.render).toBeDefined();
     });
   });
 });

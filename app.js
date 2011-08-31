@@ -48,7 +48,9 @@ app.get('/', function(req, res){
         return content.url() === 'index.html';
       }).first().value();
 
-  res.send('HI')
+  console.log('index: \n', index);
+
+  res.send(index.render())
 });
 
 haiku.on('ready', function(){
