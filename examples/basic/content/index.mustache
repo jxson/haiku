@@ -6,8 +6,10 @@ title: This is the homepage
   <h1>{{ title }} Blog Posts</h1>
 
   <ul class="posts">
-    {{#posts}}
-      <li>{{ date }} - {{ title }} - {{ url }}</li>
-    {{/posts}}
+    {{#site}}
+      {{#posts}}
+        {{>post}}
+      {{/posts}}
+    {{/site}}
   </ul>
 </div>
