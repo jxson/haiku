@@ -36,6 +36,8 @@ More is coming this is just a proof of concept at this stage
 * [nanoc](http://nanoc.stoneship.org/)
 * [ace](https://github.com/botanicus/ace)
 * [tinysite](https://github.com/niko/TinySite)
+* [stasis](http://stasis.me/)
+* [petrify](https://github.com/caolan/petrify)
 
 
 # License
