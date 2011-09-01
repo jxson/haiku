@@ -4,4 +4,6 @@ foo: bar
 layout: default
 ---
 
-Blah blah {{ title }}
+h1. Blah blah {{ title }}
+
+some paragraph

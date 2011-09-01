@@ -6,7 +6,10 @@ var Content = require('haiku/content')
 ;
 
 describe('Content', function(){
-  var mi6
+  var index
+    , content
+    , haiku
+    , mi6
     , oscarMike
     , indexpath
     , postpath
@@ -34,13 +37,15 @@ describe('Content', function(){
 
     spyOn(mi6, 'spy');
     spyOn(mi6, 'asyncSpy').andCallThrough();
+
+    haiku = new Haiku({
+      source: path.resolve(path.join('examples', 'basic'))
+    });
   });
 
   describe('#read()', function(){
     beforeEach(function() {
-      index = new Content({
-        file: indexpath
-      });
+      index = new Content({ file: indexpath }, haiku);
     });
 
     it('should be defined', function(){
@@ -66,7 +71,7 @@ describe('Content', function(){
     beforeEach(function(){
       index = new Content({
         file: indexpath
-      });
+      }, haiku);
     });
 
     it('should exist', function(){
@@ -144,6 +149,62 @@ describe('Content', function(){
     describe('when the `file` attribute is not set', function(){
       it('should return undefined', function(){
         expect(index.parser()).not.toBeDefined();
+      });
+    });
+  });
+
+  describe('#parse()', function(){
+    beforeEach(function(){
+      content = new Content({
+        file: postpath
+      }, haiku);
+    });
+
+    it('should be defined', function(){
+      expect(content.parse).toBeDefined();
+    });
+
+    describe('when the parser is defined', function(){
+      describe('when the parser is markdown', function(){
+        beforeEach(function(){
+          spyOn(content, 'parser').andReturn('markdown');
+        });
+
+        it('should return markdown generated html', function(){
+          var input = 'this is _markdown_ \n\nparagraph\n'
+            , output = '<p>this is <em>markdown</em></p>\n\n<p>paragraph</p>'
+          ;
+
+          expect(content.parse(input)).toBe(output);
+        });
+      });
+
+      describe('when the parser is textile', function(){
+        beforeEach(function(){
+          spyOn(content, 'parser').andReturn('textile');
+        });
+
+        it('should return textile generated html', function(){
+          var input = 'this is *textile* \n\nparagraph\n'
+            , output = '<p>this is <strong>textile</strong> </p>\n<p>paragraph</p>\n'
+          ;
+
+          expect(content.parse(input)).toBe(output);
+        });
+      });
+    });
+
+    describe('when the parser is NOT defined', function(){
+      beforeEach(function(){
+        spyOn(content, 'parser').andReturn(undefined);
+      });
+
+      it('should set the content directly', function(){
+        var input = 'nothing \n\n'
+          , output = 'nothing \n\n'
+        ;
+
+        expect(content.parse(input)).toBe(output);
       });
     });
   });
