@@ -44,9 +44,11 @@ app.get('/', function(req, res){
   //
   // res.send(index.render())
 
-  var index = haiku.content.find(function(content){
-        return content.url() === 'index.html';
-      }).first().value();
+  // var index = haiku.content.find(function(content){
+  //       return content.url() === 'index.html';
+  //     }).first().value();
+
+  index = haiku.content['/index.html'];
 
   console.log('index: \n', index);
 

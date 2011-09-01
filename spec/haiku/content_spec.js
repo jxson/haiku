@@ -220,7 +220,7 @@ describe('Content', function(){
 
     describe('when the file attribute is set', function(){
       it('should return the path from the haiku public dir', function(){
-        expect(index.url()).toBe('index.html');
+        expect(index.url()).toBe('/index.html');
       });
     });
 
