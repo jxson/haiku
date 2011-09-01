@@ -28,34 +28,26 @@ var app = express.createServer()
 // });
 
 app.get('/', function(req, res){
-  // var source = path.resolve(path.join('examples', 'basic'));
-  // var site = haiku.read(source);
-  //
-  // // console.log('source', source);
-  //
-  // console.log('site\n', site);
-  //
-  // var index = site.find(function(content){
-  //   // console.log('content \n'.yellow, content);
-  //   return content.url() === 'index.html';
-  // }).first();
-  //
-  // console.log('index \n'.magenta, index);
-  //
-  // res.send(index.render())
-
-  // var index = haiku.content.find(function(content){
-  //       return content.url() === 'index.html';
-  //     }).first().value();
 
   index = haiku.content['/index.html'];
 
-  console.log('index: \n', index);
-
-  index.render(function(content){
-    console.log('index.render() callback triggered'.yellow);
-    res.send(content);
+  index.render(function(html){
+    res.send(html);
   });
+});
+
+app.get(/^\/(.*)/, function(req, res){
+  var key = '/' + req.params[0]
+      content = haiku.content[key];
+  ;
+
+  if (content){
+    content.render(function(html){
+      res.send(html);
+    });
+  } else {
+    // err
+  }
 });
 
 haiku.on('ready', function(){
