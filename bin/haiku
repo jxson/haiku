@@ -10,8 +10,10 @@ var sys  = require('sys')
   , argv = require('optimist')
       .default('source', process.cwd())
       .default('destination', path.join(process.cwd(), 'build'))
+      .default('port', 8080)
       .alias('s', 'source')
       .alias('d', 'destination')
+      .alias('p', 'port')
       .argv
   , action = argv._[0]
   , commands = ['new', 'build', 'server'];
@@ -23,6 +25,8 @@ if (!action || !_.include(commands, action)) argv.help = true;
 if (argv.h || argv.help) return cli.showHelp(action);
 
 if (action === 'build') return cli.build(argv);
+
+if (action === 'server') return cli.server(argv);
 
 
 // if (action === 'server'){
