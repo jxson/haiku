@@ -53,7 +53,10 @@ app.get(/^\/(.*)/, function(req, res){
 haiku.on('ready', function(){
   console.log('haiku: \n'.magenta, haiku);
 
+  console.log('ready!'.green);
   app.listen(8080);
 });
+
+console.log('reading...'.yellow);
 
 haiku.read();
