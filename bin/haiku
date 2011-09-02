@@ -1,90 +1,53 @@
 #!/usr/bin/env node
 
-var path = require('path')
-  , sys  = require('sys')
-  , _ = require('underscore')
-;
+var path = require('path');
 
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
-var haiku = require('haiku')
-  , argv = require('optimist').argv
+var sys  = require('sys')
+  , cli = require('haiku/cli')
+  , _ = require('underscore')
+  , argv = require('optimist')
+      .default('source', process.cwd())
+      .default('destination', path.join(process.cwd(), 'build'))
+      .alias('s', 'source')
+      .alias('d', 'destination')
+      .argv
+  , action = argv._[0]
   , commands = ['new', 'build', 'server'];
 ;
 
+// Set help to true if there is no action or the action is not a real command
+if (!action || !_.include(commands, action)) argv.help = true;
 
-// check that the action is correct
-var action = argv._[0];
+if (argv.h || argv.help) return cli.showHelp(action);
 
-var generalHelp = [
-  'usage: haiku [action] [options]',
-  '',
-  'actions: ',
-  '   new [PATH]        Create a new haiku site at the path you specify',
-  '   build [options]   Build the haiku site in --source to --destination',
-  '   server [options]  Start up a haiku server'
-].join('\n');
+if (action === 'build') return cli.build(argv);
 
-// if it doesn't show a basic help message
-if (! _.include(commands, action)){
-  return console.error(generalHelp);
-}
 
-if (action === 'new'){
-  console.error('coming soon...');
-}
-
-if (action === 'build'){
-  var buildHelp = [
-    'usage: haiku build [options]',
-    '',
-    'options: ',
-    '   --source=PATH       # Path to the haiku source',
-    '   --destination=PATH  # Path where the compiled source should be put',
-    '',
-    'description:',
-    '   ...',
-    '',
-    'example:',
-    '   ...',
-  ].join('\n');
-
-  // make sure the options are valid
-  // TODO: make source default to the current dir
-  // needs --source and --destination
-  if (!argv.source || !argv.destination){
-    return console.log(buildHelp);
-  }
-
-  haiku.generate({
-    source: argv.source,
-    destination: argv.destination
-  });
-}
-
-if (action === 'server'){
-  var serverHelp = [
-    'Usage:',
-    '   haiku server [options]',
-    '',
-    'Options: ',
-    '   --port PORT     # The port to fire up the haiku server defaults to 8080',
-    '   --source PATH   # The PATH to the haiku content to serve defaults to the current DIR'
-  ].join('\n');
-
-  if (argv.h || argv.help){
-    return console.log(serverHelp);
-  }
-
-  var port = argv.port || 8080
-    , source = argv.source || process.cwd()
-  ;
-
-  haiku.server({
-    source: source,
-    port: port
-  });
-}
-
-// console.log('\n\nInspecting options');
-// console.dir(argv);
+// if (action === 'server'){
+//   var serverHelp = [
+//     'Usage:',
+//     '   haiku server [options]',
+//     '',
+//     'Options: ',
+//     '   --port PORT     # The port to fire up the haiku server defaults to 8080',
+//     '   --source PATH   # The PATH to the haiku content to serve defaults to the current DIR'
+//   ].join('\n');
+//
+//   if (argv.h || argv.help){
+//     return console.log(serverHelp);
+//   }
+//
+//   var port = argv.port || 8080
+//     , source = argv.source || process.cwd()
+//   ;
+//
+//   haiku.server({
+//     source: source,
+//     port: port
+//   });
+// }
+//
+// // console.log('\n\nInspecting options');
+// // console.dir(argv);
