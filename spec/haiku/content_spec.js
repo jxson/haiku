@@ -79,30 +79,37 @@ describe('Content', function(){
     });
 
     describe('on successful file read', function(){
-      it('should trigger a callback', function(){
-        index.extractAttributesFromFile(mi6.asyncSpy);
+      describe('when there is front matter', function(){
+        it('should trigger a callback', function(){
+          index.extractAttributesFromFile(mi6.asyncSpy);
 
-        waitsFor(function(){
-          return oscarMike;
-        }, '#extractAttributesFromFile(callback) to trigger callback', 10000);
+          waitsFor(function(){
+            return oscarMike;
+          }, '#extractAttributesFromFile(callback) to trigger callback', 10000);
 
-        runs(function(){
-          expect(mi6.asyncSpy).toHaveBeenCalled();
+          runs(function(){
+            expect(mi6.asyncSpy).toHaveBeenCalled();
+          });
         });
+
+        it('should set attributes defined in the yaml front matter', function(){
+          index.extractAttributesFromFile(mi6.asyncSpy);
+
+          waitsFor(function(){
+            return oscarMike;
+          }, '#extractAttributesFromFile(callback) to trigger callback', 10000);
+
+          runs(function(){
+            expect(mi6.asyncSpy).toHaveBeenCalled();
+
+            expect(index.get('title')).toBe('This is the homepage');
+          });
+        });
+
       });
 
-      it('should set attributes defined in the yaml front matter', function(){
-        index.extractAttributesFromFile(mi6.asyncSpy);
+      describe('when there is NOT front matter', function(){
 
-        waitsFor(function(){
-          return oscarMike;
-        }, '#extractAttributesFromFile(callback) to trigger callback', 10000);
-
-        runs(function(){
-          expect(mi6.asyncSpy).toHaveBeenCalled();
-
-          expect(index.get('title')).toBe('This is the homepage');
-        });
       });
     });
   });
