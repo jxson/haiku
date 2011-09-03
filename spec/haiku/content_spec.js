@@ -229,6 +229,42 @@ describe('Content', function(){
       it('should return the path from the haiku public dir', function(){
         expect(index.url()).toBe('/index.html');
       });
+
+      describe('when the file is atom.xml.mustache', function(){
+        var atom;
+
+        beforeEach(function(){
+          atom = new Content({ file: 'foo/atom.xml.mustache' });
+        });
+
+        it('should be atom.xml', function(){
+          expect(atom.url()).toBe('/foo/atom.xml');
+        });
+      });
+
+      describe('when the file is foo.html.mustache', function(){
+        var atom;
+
+        beforeEach(function(){
+          atom = new Content({ file: 'foo/bar.html.mustache' });
+        });
+
+        it('should be atom.xml', function(){
+          expect(atom.url()).toBe('/foo/bar.html');
+        });
+      });
+
+      describe('when the file is foo.html', function(){
+        var atom;
+
+        beforeEach(function(){
+          atom = new Content({ file: 'foo/bar.html' });
+        });
+
+        it('should be atom.xml', function(){
+          expect(atom.url()).toBe('/foo/bar.html');
+        });
+      });
     });
 
     describe('when the file attribute is NOT set', function(){
@@ -242,7 +278,9 @@ describe('Content', function(){
     });
   });
 
-  describe('#_extension()', function(){
+
+
+  xdescribe('#_extension()', function(){
     beforeEach(function(){ index = new Content(); });
 
     it('should be defined', function(){

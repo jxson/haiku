@@ -1,7 +1,7 @@
-var Configuration = require('haiku/configuration')
-  , colors = require('colors')
-  , _ = require('underscore')
-;
+// var Configuration = require('haiku/configuration')
+//   , colors = require('colors')
+//   , _ = require('underscore')
+// ;
 
 // TODO: move this into the haiku spec, config now uses the haiku attributes...
 xdescribe('Configuration', function(){
