@@ -27,31 +27,3 @@ if (argv.h || argv.help) return cli.showHelp(action);
 if (action === 'build') return cli.build(argv);
 
 if (action === 'server') return cli.server(argv);
-
-
-// if (action === 'server'){
-//   var serverHelp = [
-//     'Usage:',
-//     '   haiku server [options]',
-//     '',
-//     'Options: ',
-//     '   --port PORT     # The port to fire up the haiku server defaults to 8080',
-//     '   --source PATH   # The PATH to the haiku content to serve defaults to the current DIR'
-//   ].join('\n');
-//
-//   if (argv.h || argv.help){
-//     return console.log(serverHelp);
-//   }
-//
-//   var port = argv.port || 8080
-//     , source = argv.source || process.cwd()
-//   ;
-//
-//   haiku.server({
-//     source: source,
-//     port: port
-//   });
-// }
-//
-// // console.log('\n\nInspecting options');
-// // console.dir(argv);
