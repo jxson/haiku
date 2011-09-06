@@ -71,14 +71,29 @@ exports['Haiku'] = testCase({
   }
 });
 
-// validations: function(test){
-//   var haiku = this.haiku;
-//
-//   test.equal(haiku.isValid(), false);
-//   test.equal(haiku.errors['source'], 'needs to be set');
-//
-//   test.done();
-// },
+exports['Haiku - validations'] = testCase({
+  setUp: function(callback){
+    this.haiku = new Haiku({
+      source: path.resolve(path.join('examples', 'basic'))
+    });
+
+    callback();
+  },
+  tearDown: function(callback){
+    callback();
+  },
+  'when the source is set': function(test){
+    test.ok(this.haiku.isValid());
+    test.done();
+  },
+  'when the source is NOT set': function(test){
+    this.haiku.set({ source: null });
+
+    test.equal(this.haiku.isValid(), false);
+    test.equal(this.haiku.errors['source'], 'needs to be set');
+    test.done();
+  },
+});
 
 exports['Haiku #hasCollection(content)'] = testCase({
   setUp: function(callback){
