@@ -5,6 +5,66 @@ var helper = require('./test_helper')
   , testCase = require('nodeunit').testCase
 ;
 
+exports['new Haiku({ //... })'] = testCase({
+  setUp: function(callback){
+    this.haiku = new Haiku()
+
+    callback();
+  },
+  tearDown: function(callback){
+    callback();
+  },
+  initialization: function(test){
+    var haiku = this.haiku
+      , properties = ['content', 'collections', 'partials', 'layouts']
+    ;
+
+    test.equal(typeof haiku.content, 'object');
+    test.equal(typeof haiku.collections, 'object');
+    test.equal(typeof haiku.partials, 'object');
+    test.equal(typeof haiku.layouts, 'object');
+
+    test.done();
+  },
+
+  defaults: function(test){
+    var haiku = this.haiku;
+
+    test.equal(haiku.get('contentdir'), 'content');
+    test.equal(haiku.get('templatesdir'), 'templates');
+    test.equal(haiku.get('publicdir'), 'public');
+
+    test.done();
+  }
+});
+
+exports['Haiku #hasCollection(content)'] = testCase({
+  setUp: function(callback){
+    this.haiku = new Haiku()
+
+    callback();
+  },
+  tearDown: function(callback){
+    callback();
+  },
+  'when the collection exists': function(test){
+    var haiku = this.haiku;
+
+    haiku.collections = { posts: [] };
+
+    test.ok(haiku.hasCollection('posts'));
+    test.done();
+  },
+  'when the collection does NOT exist': function(test){
+    test.equal(this.haiku.hasCollection('posts'), false);
+    test.done();
+  }
+});
+
+exports['Haiku #addContent(content)'] = function(test){
+  test.done();
+};
+
 exports['Haiku #read()'] = testCase({
     setUp: function(callback){
       this.haiku = new Haiku({
