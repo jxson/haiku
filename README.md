@@ -12,16 +12,24 @@ You need node >= 0.4.10 and npm
 
 # Development
 
-To get started you will need to make sure you have all of the npm packages installed
+For the time being haiku is using the [discount c lib](https://github.com/Orc/discount) to process markdown, we are hoping to change this in the near future, for now you will have to make sure you have the library installed before proceeding.
+
+Once you have discount installed you will need to make sure you have all of the npm packages by running:
 
     npm install
     npm link # wire up the bin
 
-Right now the only command that works is:
+Once you do that the haiku command line will be available, you can check it out by running:
 
-    haiku --source examples/basic --destination build
+    haiku --help
 
-This will build the html for any pages or posts that exist in the examples/basic directory of this project.
+To build a haiku site use:
+
+    haiku build
+
+To run a server that lets you see your work locally:
+
+    haiku server
 
 More is coming this is just a proof of concept at this stage
 
