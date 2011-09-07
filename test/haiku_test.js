@@ -119,9 +119,64 @@ exports['Haiku #hasCollection(content)'] = testCase({
   }
 });
 
-// exports['Haiku #addContent(content)'] = function(test){
-//   test.done();
-// };
+exports['Haiku #addContent(content)'] = testCase({
+  setUp: function(callback){
+    this.haiku = new Haiku({
+      source: path.resolve(path.join('examples', 'basic'))
+    });
+
+    this.fakePost = {
+      url: function(){ return '/posts/01.html'; },
+      get: function(name){ return 'posts'; },
+      isInCollection: function(){ return true; }
+    };
+
+    this.fakePage = {
+      url: function(){ return '/about-us.html'; },
+      isInCollection: function(){ return false; }
+    };
+
+    callback();
+  },
+  'when content is in a new collection': function(test){
+    var haiku = this.haiku
+      , content = this.fakePost
+    ;
+
+    test.equal(haiku.collections.posts, undefined);
+
+    haiku.addContent(content);
+
+    test.ok(haiku.content[content.url()]);
+    test.ok(_.include(haiku.collections.posts, content.url()));
+    test.done();
+  },
+  'when content is in a collection that exists already': function(test){
+    var haiku = this.haiku
+      , content = this.fakePost
+    ;
+
+    haiku.collections = { posts: [] }; // collection stub
+
+    test.ok(haiku.collections.posts);
+
+    haiku.addContent(content);
+
+    test.ok(haiku.content[content.url()]);
+    test.ok(_.include(haiku.collections.posts, content.url()));
+    test.done();
+  },
+  'when content is NOT in a collection': function(test){
+    var haiku = this.haiku
+      , content = this.fakePage
+    ;
+
+    haiku.addContent(content);
+
+    test.ok(haiku.content[content.url()]);
+    test.done();
+  },
+});
 
 exports['Haiku #read()'] = testCase({
   setUp: function(callback){
