@@ -108,7 +108,63 @@ exports['Content'] = testCase({
         test.done();
       }
     }
+  },
+  '#buildpath': {
+    'when the file attribute is set to': {
+      'index.mustache': function(test){
+        test.equal(this.content.buildpath(), 'index.html');
+        test.done();
+      },
+      'atom.xml.mustache': function(test){
+        var feed = this.content;
+
+        feed.set({ file: 'somedir/atom.xml.mustache'});
+
+        test.equal(this.content.buildpath(), 'somedir/atom.xml');
+        test.done();
+      },
+      'foo.html.mustache': function(test){
+        var feed = this.content;
+
+        feed.set({ file: 'foo.html.mustache'});
+
+        test.equal(this.content.buildpath(), 'foo.html');
+        test.done();
+      },
+      'foo.html': function(test){
+        var feed = this.content;
+
+        feed.set({ file: 'foo.html'});
+
+        test.equal(this.content.buildpath(), 'foo.html');
+        test.done();
+      }
+    },
+    'when the file attribute is NOT set': function(test){
+      var index = this.content;
+
+      index.set({ file: null});
+
+      test.equal(index.buildpath(), undefined);
+      test.done();
+    }
+    //
+    //   describe('when the file attribute is NOT set', function(){
+    //     beforeEach(function(){
+    //       index.set({ file: null });
+    //     });
+    //
+    //     it('should return undefined', function(){
+    //       expect(index.url()).not.toBeDefined();
+    //     });
+    //   });
+    // });
+    //
   }
+  // '#url()': function(test){
+  //   // should simply append the hostname or '/' to the buildpath
+  //   test.done();
+  // }
 });
 
 exports['Content #extractAttributesFromFile(callback)'] = testCase({
