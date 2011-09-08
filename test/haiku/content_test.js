@@ -148,26 +148,29 @@ exports['Content'] = testCase({
       test.equal(index.buildpath(), undefined);
       test.done();
     }
-    //
-    //   describe('when the file attribute is NOT set', function(){
-    //     beforeEach(function(){
-    //       index.set({ file: null });
-    //     });
-    //
-    //     it('should return undefined', function(){
-    //       expect(index.url()).not.toBeDefined();
-    //     });
-    //   });
-    // });
-    //
+  },
+  '#url()': function(test){
+    // should simply append the hostname or '/' to the buildpath
+    var content = this.content
+      , files = [
+          'index.mustache',
+          'atom.xml.mustache',
+          'posts/01-awesome.html.mustache',
+          'randomdir/who-knows.html'
+        ]
+    ;
+
+    _.each(files, function(filename){
+      content.set({ file: filename });
+
+      test.equal(content.url(), '/' + content.buildpath());
+    })
+
+    test.done();
   }
-  // '#url()': function(test){
-  //   // should simply append the hostname or '/' to the buildpath
-  //   test.done();
-  // }
 });
 
-exports['Content #extractAttributesFromFile(callback)'] = testCase({
+exports['Content - #extractAttributesFromFile(callback)'] = testCase({
   setUp: function(callback){
     var source = path.resolve(path.join('examples', 'basic'))
       , indexpath = path.join(source, 'content', 'index.mustache')
