@@ -235,9 +235,14 @@ exports['Haiku #read()'] = testCase({
   }
 });
 
-// exports['Haiku #build()'] = testCase({
-//
-// });
+exports['Haiku #build()'] = function(test){
+  var haiku = new Haiku({
+    source: path.resolve(path.join('examples', 'basic'))
+  });
+
+  test.ok(haiku.build)
+  test.done();
+};
 
 if (module == require.main) {
   require('nodeunit').reporters.default.run(['test']);
