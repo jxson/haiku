@@ -245,5 +245,7 @@ exports['Haiku #build()'] = function(test){
 };
 
 if (module == require.main) {
-  require('nodeunit').reporters.default.run(['test']);
+  var filename = __filename.replace(process.cwd(), '');
+
+  require('nodeunit').reporters.default.run([filename]);
 }
