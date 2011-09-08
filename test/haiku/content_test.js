@@ -76,8 +76,22 @@ exports['Content'] = testCase({
     'when the parser is defined': {
       'when the parser is "markdown"': function(test){
         var index = this.content
-          , input = 'this is _markdown_ \n\nparagraph\n'
-          , output = '<p>this is <em>markdown</em></p>\n\n<p>paragraph</p>'
+          , input = [
+              'this is _markdown_',
+              '',
+              '',
+              'paragraph',
+              '',
+              '<p>HTML!</p>'
+            ].join('\n')
+          , output = [
+              '<p>this is <em>markdown</em></p>',
+              '',
+              '<p>paragraph</p>',
+              '',
+              '<p>HTML!</p>',
+              ''
+            ].join('\n')
         ;
 
         index.parser = function(){ return 'markdown'; }
