@@ -244,6 +244,18 @@ exports['Haiku #build()'] = function(test){
   test.done();
 };
 
+exports['Haiku configfile'] = function(test){
+  var configfile = path.resolve(path.join('examples',
+        'configfile',
+        'haiku_config.js'))
+    , haiku = new Haiku({ configfile: configfile })
+    , config = require(configfile)
+  ;
+
+  test.equal(haiku.get('source'), config.source);
+  test.done();
+};
+
 if (module == require.main) {
   var filename = __filename.replace(process.cwd(), '');
 
