@@ -8,7 +8,7 @@ var helper = require('../test_helper')
 
 exports['Content #read()'] = function(test){
   var source = path.resolve(path.join('examples', 'basic'))
-    , indexpath = path.resolve(path.join(source, 'content', 'index.mustache'))
+    , indexpath = path.join(source, 'content', 'index.mustache')
     , haiku = new Haiku({ source: source })
     , content = new Content({ file: indexpath })
   ;
@@ -23,6 +23,37 @@ exports['Content #read()'] = function(test){
 
   content.read();
 };
+
+exports['Content #extractAttributesFromFile(callback)'] = testCase({
+  setUp: function(callback){
+    var source = path.resolve(path.join('examples', 'basic'))
+      , indexpath = path.join(source, 'content', 'index.mustache')
+      , haiku = new Haiku({ source: source })
+    ;
+
+    this.content = new Content({ file: indexpath }, haiku);
+
+    callback();
+  },
+  tearDown: function(callback){
+    callback();
+  },
+  'on successful file read': {
+    'when there is front matter': function(test){
+      var index = this.content;
+
+      test.equal(index.get('title'), undefined);
+
+      test.expect(3);
+
+      index.extractAttributesFromFile(function(){
+        test.ok(true, 'index.extractAttributesFromFile callback triggered');
+        test.equal(index.get('title'), 'This is the homepage');
+        test.done();
+      });
+    }
+  }
+});
 
 if (module == require.main) {
   var filename = __filename.replace(process.cwd(), '');
