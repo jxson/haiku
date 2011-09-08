@@ -89,9 +89,8 @@ exports['Content'] = testCase({
               '',
               '<p>paragraph</p>',
               '',
-              '<p>HTML!</p>',
-              ''
-            ].join('\n')
+              '<p>HTML!</p>'
+            ].join(' ')
         ;
 
         index.parser = function(){ return 'markdown'; }
