@@ -71,6 +71,43 @@ exports['Content'] = testCase({
       test.equal(this.content.parser(), undefined);
       test.done();
     }
+  },
+  '#parse(markdown)': {
+    'when the parser is defined': {
+      'when the parser is "markdown"': function(test){
+        var index = this.content
+          , input = 'this is _markdown_ \n\nparagraph\n'
+          , output = '<p>this is <em>markdown</em></p>\n\n<p>paragraph</p>'
+        ;
+
+        index.parser = function(){ return 'markdown'; }
+
+        test.equal(index.parse(input), output);
+        test.done();
+      },
+      'when the parser is textile': function(test){
+        var index = this.content
+          , input = 'this is *textile* \n\nparagraph\n'
+          , output = '<p>this is <strong>textile</strong> </p>\n<p>paragraph</p>\n'
+        ;
+
+        index.parser = function(){ return 'textile'; }
+
+        test.equal(index.parse(input), output);
+        test.done();
+      },
+      'when the parser is NOT defined': function(test){
+        var index = this.content
+          , input = 'nothing \n\n'
+          , output = 'nothing \n\n'
+        ;
+
+        index.parser = function(){ return; }
+
+        test.equal(index.parse(input), output);
+        test.done();
+      }
+    }
   }
 });
 
