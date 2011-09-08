@@ -167,6 +167,38 @@ exports['Content'] = testCase({
     })
 
     test.done();
+  },
+  '#isInCollection()': {
+    'when in a collection': function(test){
+      var post = this.content;
+
+      post.set({ file: 'posts/01-first.mustache'});
+
+      test.ok(post.isInCollection());
+      test.done();
+    },
+    'when not in a collection': function(test){
+      var index = this.content;
+
+      test.equal(index.isInCollection(), false);
+      test.done();
+    }
+  },
+  '#collection()': {
+    'when in a collection': function(test){
+      var post = this.content;
+
+      post.set({ file: 'posts/01-first.mustache'});
+
+      test.equal(post.collection(), 'posts');
+      test.done();
+    },
+    'when not in a collection': function(test){
+      var index = this.content;
+
+      test.equal(index.collection(), undefined);
+      test.done();
+    }
   }
 });
 
