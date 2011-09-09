@@ -246,6 +246,35 @@ exports['Content - #extractAttributesFromFile(callback)'] = testCase({
   }
 });
 
+exports['Content - #related()'] = function(test){
+  var source = path.resolve(path.join('examples', 'using_tags'))
+    , haiku = new Haiku({ source: source })
+  ;
+
+  // test.expect(1);
+
+  haiku.on('ready', function(){
+    var javascriptPost = this.content['/posts/01-javascript.html']
+    ;
+
+    test.ok(javascriptPost.related);
+
+    relatedUrls = _.map(javascriptPost.related(), function(value, key){
+      return value.url;
+    })
+
+
+    test.ok(_.include(relatedUrls, '/posts/02-node.html'));
+    test.ok(_.include(relatedUrls, '/posts/04-ruby.html'));
+    test.ok(_.include(relatedUrls, '/posts/05-kittens.html'));
+
+    test.equal(_.include(relatedUrls, '/posts/01-javascript.html'), false);
+    test.equal(_.include(relatedUrls, '/posts/03-php.html'), false);
+
+    test.done();
+  }).read();
+};
+
 if (module == require.main) {
   var filename = __filename.replace(process.cwd(), '');
 
