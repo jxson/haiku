@@ -1,9 +1,17 @@
-var H = require("./lib/haiku");
-var h = new H({ logger: { level: "debug" }, directories: { content: "../rocket.ly/content", templates: "../rocket.ly/templates" }});
-h.on("ready",function() { 
-  console.timeEnd("haiku"); 
-  console.log(h.resolve("blog/posts/native-apps-are-dead")); 
+var path = require('path');
+require.paths.unshift(path.join(__dirname, '.'));
+
+require("./lib/haiku/server").run({
+  address: "127.0.0.1", port: 1337,
+  haiku: {
+    logger: { 
+      level: "debug" 
+    }, 
+    directories: { 
+      content: "../rocket.ly/content", 
+      templates: "../rocket.ly/templates",
+      public: "../rocket.ly/public"
+    },
+    index: "index"
+  }
 });
-h.on("error",function(err) { console.log(err.message); console.log(err.stack); })
-console.time("haiku");
-h.read();
