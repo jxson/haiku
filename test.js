@@ -4,7 +4,7 @@ require.paths.unshift(path.join(__dirname, '.'));
 require("./lib/haiku").Server.run({
   address: "127.0.0.1", port: 1337,
   logger: { 
-    level: "debug" 
+    level: "info" 
   }, 
   haiku: {
     directories: { 
