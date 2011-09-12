@@ -1,29 +1,17 @@
 #!/usr/bin/env node
 
 var path = require('path');
-
 require.paths.unshift(path.join(__dirname, '..', 'lib'));
 
 var sys  = require('sys')
   , cli = require('haiku/cli')
   , _ = require('underscore')
   , argv = require('optimist')
-      .default('source', process.cwd())
-      .default('destination', path.join(process.cwd(), 'build'))
-      .default('port', 8080)
-      .alias('s', 'source')
-      .alias('d', 'destination')
-      .alias('p', 'port')
+      .default('config', process.cwd())
       .argv
   , action = argv._[0]
   , commands = ['new', 'build', 'server'];
 ;
 
-// Set help to true if there is no action or the action is not a real command
-if (!action || !_.include(commands, action)) argv.help = true;
-
-if (argv.h || argv.help) return cli.showHelp(action);
-
-if (action === 'build') return cli.build(argv);
-
-if (action === 'server') return cli.server(argv);
+if (cli[action]) return cli[action](argv);
+else return cli.showHelp(action);
