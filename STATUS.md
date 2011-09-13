@@ -55,6 +55,8 @@ I figure you'll hate that, but the alternative is to lose the ability to have su
 
 I stopped short of fixing the problem because I ran out of time and because I figure it's one of those things we probably need to talk about.
 
+*UPDATE:* I have actually added this now, just to see how it feels. It's a bit verbose, but very safe (no chance of accidentally overwriting attributes) and very flexible.
+
 # Going Forward
 
 I didn't merge this branch into master because it seemed premature. The `build` function needs to be added and the tests and documentation updated. In addition, the template interface needs to be finalized, although I think that actually is an issue for both branches.
@@ -62,6 +64,8 @@ I didn't merge this branch into master because it seemed premature. The `build` 
 Furthermore, this ended up being such a radical departure from what you had in some areas that I didn't want to do the merge without giving you the opportunity to study the code a bit and form your own opinion. It might be that the best thing is to use this as a reference implementation for certain things. (That said, I used master as a reference implementation for quite a bit of this code. A lot of the nasty stuff had already been figured out, so I was able to focus on the structural issues. Hopefully, that paid off, and so it will make more sense to use this code going forward.)
 
 One last thing, a sort of minor point. I think the Content class should be renamed to Page. This way there is less overloading of the word "content". So then there would Collections and Pages. It's all content. And the site.content is specifically the Collection corresponding to your content directory (and has nothing to do with the Content class, which would now be Page).
+
+*UPDATE:* I went ahead and made this change. `Page` is now the class corresponding files.
   
 
 
