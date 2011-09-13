@@ -10,8 +10,13 @@ var sys  = require('sys')
       .default('config', process.cwd())
       .argv
   , action = argv._[0]
-  , commands = ['new', 'build', 'server'];
 ;
 
+// if we've specified a valid command, run it,
+// otherwise display the help message
+
+// commands will display their own help if the
+// help flags are passed in as options
+
 if (cli[action]) return cli[action](argv);
-else return cli.showHelp(action);
+else return cli.showHelp();

@@ -25,11 +25,11 @@ Once you do that the haiku command line will be available, you can check it out 
 
 To build a haiku site use:
 
-    haiku build
+    haiku build --config ./examples/basic/site.conf
 
 To run a server that lets you see your work locally:
 
-    haiku server
+    haiku server --config ./examples/basic/site.conf
 
 More is coming this is just a proof of concept at this stage
 
