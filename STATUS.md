@@ -1,6 +1,6 @@
 # Status Of This Branch
 
-I know ... that sounds like a slogan for a small town bank. I did some stuff a bit differently than the current master branch and wanted to explain it.
+I did some stuff a bit differently than the current master branch and wanted to explain it: why I took the approaches that I did, how it worked out, where things stand, and where to go from here, if anywhere.
 
 ## Goals
 
