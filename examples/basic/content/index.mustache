@@ -9,9 +9,13 @@ title: This is the homepage
 
   <ul class="posts">
     {{#site}}
-      {{#posts}}
-        {{>post}}
-      {{/posts}}
+      {{#collections}}
+        {{#posts}}
+          {{#pages}}
+            {{>post}}
+          {{/pages}}
+        {{/posts}}
+      {{/collections}}
     {{/site}}
   </ul>
 </div>
