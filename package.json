@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "docco": "0.3.0",
-    "nodeunit": "0.5.4"
+    "nodeunit": "https://github.com/jxson/nodeunit/tarball/master"
   },
   "engine": "node >= 0.4.10"
 }
