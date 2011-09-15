@@ -17,11 +17,12 @@
     "marked": "0.0.9",
     "stextile": "0.0.8",
     "wrench": "1.1.0",
-    "colors": "0.5.0"
+    "colors": "0.5.0",
+    "mime": "1.2.3"
   },
   "devDependencies": {
     "docco": "0.3.0",
-    "nodeunit": "0.5.4"
+    "vows": "0.5.11"
   },
   "engine": "node >= 0.4.10"
 }
