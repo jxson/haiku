@@ -22,7 +22,8 @@
   },
   "devDependencies": {
     "docco": "0.3.0",
-    "vows": "0.5.11"
+    "vows": "0.5.11",
+    "sinon": "1.1.1"
   },
   "engine": "node >= 0.4.10"
 }
