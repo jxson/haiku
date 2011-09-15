@@ -212,6 +212,22 @@ exports['Content'] = testCase({
       test.equal(index.collection(), undefined);
       test.done();
     }
+  },
+  '#render(callback)': {
+    'when the layout DOES NOT exist': function(test){
+      var index = this.content
+        , regex = new RegExp('Missing layout: "imaginary"');
+      ;
+
+      index.set({ layout: 'imaginary' });
+
+      test.throws(
+        function(){
+          index.render(function(){});
+        }, regex);
+
+      test.done();
+    }
   }
 });
 
