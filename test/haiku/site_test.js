@@ -13,8 +13,8 @@ vows.describe('haiku.Site').addBatch({
     'with the `directories.templates` option': 'pending',
     'with the `directories.public` option': 'pending'
   },
-  '.read()': 'pending',
-  '.find() / .resolve()': 'pending',
-  '.toJSON()': 'pending',
-  '.build()': 'pending'
+  '#read()': 'pending',
+  '#find() / .resolve()': 'pending',
+  '#toJSON()': 'pending',
+  '#build()': 'pending'
 }).export(module);

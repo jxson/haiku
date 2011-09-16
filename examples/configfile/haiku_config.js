@@ -4,6 +4,6 @@ module.exports = {
   port: 1337,
   root: __dirname,
   contentDir: "app/markdown",
-  templatesDir: "app/templates",
+  templatesDir: "assets/templates",
   publicDir: "public"
 };
