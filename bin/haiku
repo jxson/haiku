@@ -8,7 +8,7 @@ var sys  = require('sys')
   , _ = require('underscore')
   , argv = require('optimist')
       .alias('h', 'help')
-      .default('config', process.cwd())
+      .alias('c', 'config')
       .argv
   , action = argv._[0]
 ;

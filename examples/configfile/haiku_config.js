@@ -1,4 +1,10 @@
+var path = require('path');
 
 module.exports = {
-  source: 'hi'
+  host: "127.0.0.1",
+  port: 1337,
+  root: __dirname,
+  contentDir: "app/markdown",
+  templatesDir: "app/templates",
+  publicDir: "public"
 };
