@@ -3,7 +3,7 @@
 task 'docs', 'generate the inline documentation', ->
   command = [
     'rm -r docs'
-    'docco lib/*.js lib/haiku/*.js'
+    'node_modules/docco/bin/docco lib/*.js lib/haiku/*.js'
   ].join(' && ')
 
   exec(command, (err) -> throw err if err)
