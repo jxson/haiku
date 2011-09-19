@@ -33,13 +33,10 @@ vows.describe('haiku.Site').addBatch({
         assert.ok(options.publicDir);
         assert.equal(options.publicDir, 'public');
       },
-      '`loglevel` should be "info"': function(options){
-        assert.ok(options.loglevel);
-        assert.equal(options.loglevel, 'info');
-      },
       '`logger` should be a logger object': function(options){
         assert.isObject(options.logger);
         assert.instanceOf(options.logger, Logger);
+        assert.equal(options.logger.level, 'info');
       },
       '`index` should be "index"': function(options){
         assert.ok(options.index);
