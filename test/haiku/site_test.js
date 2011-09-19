@@ -1,6 +1,7 @@
 var helper = require('../test_helper')
   , vows = require('vows')
   , assert = require('assert')
+  , sinon = require('sinon')
   , Site = require('haiku/site')
   , Logger = require('haiku/logger')
   , path = require('path')
@@ -67,6 +68,31 @@ vows.describe('haiku.Site').addBatch({
         assert.equal(directories.public, _path);
       }
     }
+  },
+  '#find(route)': {
+    topic: function(){
+      var site = new(Site)
+      site.content = { find: function(){} }; // faker for stubbing
+      return site;
+    },
+    'should call the find method on the content': sinon.test(function(site){
+      this.stub(site.content, 'find');
+
+      site.find('/about.html');
+      assert.ok(site.content.find.called);
+      assert.equal(site.content.find.args[0][0], '/about.html');
+    }),
+    'when the `route` is for an index': sinon.test(function(site){
+      this.stub(site.content, 'find');
+
+      site.find('/');
+      assert.ok(site.content.find.called);
+      assert.equal(site.content.find.args[0][0], '/index.html');
+
+      site.find('/posts/');
+      assert.ok(site.content.find.called);
+      assert.equal(site.content.find.args[1][0], '/posts/index.html');
+    })
   },
   '#read()': 'pending',
   '#find() / .resolve()': 'pending',
