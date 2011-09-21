@@ -10,9 +10,29 @@ var helper = require('../test_helper')
 
 vows.describe('Page').addBatch({
   '.processors': {
-    '.textile': 'pending',
-    '.mustache': 'pending',
-    '.markdown': 'pending'
+    '.textile': function(){
+      var input = 'This is *TEXTILE*'
+        , expected = '<p>This is <strong>TEXTILE</strong></p>\n'
+      ;
+
+      assert.equal(Page.processors.textile(input), expected);
+    },
+    '.mustache': function(){
+      var template = '{{ name }} is the pilot of {{>ship}}'
+        , view = { name: 'Han Solo' }
+        , site = { partials: { ship: 'Millennium Falcon' } }
+        , expected = 'Han Solo is the pilot of Millennium Falcon'
+      ;
+
+      assert.equal(Page.processors.mustache(template, view, site), expected);
+    },
+    '.markdown': function(){
+      var input = 'This is **MARKDOWN**'
+        , expected = '<p>This is <strong>MARKDOWN</strong></p>'
+      ;
+
+      assert.equal(Page.processors.markdown(input), expected);
+    }
   },
   '#basename()': {
     topic: function(){
