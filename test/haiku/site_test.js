@@ -5,6 +5,9 @@ var helper = require('../test_helper')
   , Site = require('haiku/site')
   , Logger = require('haiku/logger')
   , path = require('path')
+  , events = require('events')
+  , _ = require('underscore')
+  , Collection = require('haiku/collection')
 ;
 
 vows.describe('haiku.Site').addBatch({
@@ -42,6 +45,10 @@ vows.describe('haiku.Site').addBatch({
       '`index` should be "index"': function(options){
         assert.ok(options.index);
         assert.equal(options.index, 'index.html');
+      },
+      '`baseURL` should be "/"': function(options){
+        assert.ok(options.baseURL);
+        assert.equal(options.baseURL, '/');
       }
     },
     '*default* `directories`': {
@@ -94,8 +101,61 @@ vows.describe('haiku.Site').addBatch({
       assert.equal(site.content.find.args[1][0], '/posts/index.html');
     })
   },
-  '#read()': 'pending',
-  '#find() / .resolve()': 'pending',
+  '#read()': {
+    topic: function(){
+      var _path = path.join('examples',
+            'basic')
+        , site = new Site({ root: _path, loglevel: 'warn' })
+      ;
+
+      return site;
+    },
+    'should be defined': function(site){
+      assert.isFunction(site.read);
+    },
+    'events': {
+      topic: function(site){
+        var promise = new(events.EventEmitter)
+
+        site.on('ready', function(){
+          var site = this;
+
+          promise.emit('success', site);
+        }).read();
+
+        return promise;
+      },
+      'should emit a ready event': function(site){
+        // kinda pointless since there would be a different failure if the
+        // event doesn't fire...
+        assert.ok(true);
+      },
+      'should populate `site.content`': function(site){
+        assert.isObject(site.content);
+        assert.instanceOf(site.content, Collection);
+      },
+      'should populate `site.templates`': function(site){
+        assert.isObject(site.templates);
+        assert.instanceOf(site.templates, Collection);
+      },
+      'should populate `site.layouts`': function(site){
+        assert.isObject(site.layouts);
+        assert.instanceOf(site.layouts, Collection);
+      },
+      'should populate `site.partials`': function(site){
+        assert.isObject(site.partials);
+
+        _.each(site.partials, function(partial){
+          assert.isString(partial);
+        })
+      },
+      'should populate non-default collections': function(site){
+        assert.isObject(site.content.folder.posts);
+        assert.instanceOf(site.content.folder.posts, Collection);
+      }
+    }
+  },
+  '#find()': 'pending',
   '#toJSON()': 'pending',
   '#build()': 'pending'
 }).export(module);

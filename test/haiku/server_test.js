@@ -8,7 +8,7 @@ var helper = require('../test_helper')
 vows.describe('haiku.Server').addBatch({
   'new haiku.Server(options)': {
     'with *default* options': {
-      topic: function(){ return new(haiku.Server); },
+      topic: function(){ return new haiku.Server({ loglevel: 'warn' }); },
       'the `port` option should be `8080`': function(server){
         assert.equal(server.options.port, 8080);
       },
@@ -18,7 +18,13 @@ vows.describe('haiku.Server').addBatch({
     },
     'with options set': {
       topic: function(){
-        return new haiku.Server({ host: '127.0.0.1', port: 1337 });
+        var server = new haiku.Server({
+              host: '127.0.0.1',
+              port: 1337,
+              loglevel: 'warn'
+            });
+
+        return server;
       },
       'should have the correct `port` option': function(server){
         assert.equal(server.options.port, 1337);
@@ -29,7 +35,7 @@ vows.describe('haiku.Server').addBatch({
     }
   },
   '#run()': {
-    topic: function(){ return new(haiku.Server); },
+    topic: function(){ return new haiku.Server({ loglevel: 'warn' }); },
     'should call `server.app.listen`': function(server){
       sinon.stub(server.app, 'listen');
 
