@@ -5,6 +5,7 @@ var helper = require('../test_helper')
   , Site = require('haiku/site')
   , Page = require('haiku/page')
   , _ = require('underscore')
+  , events = require('events')
 ;
 
 vows.describe('Page').addBatch({
@@ -240,22 +241,42 @@ vows.describe('Page').addBatch({
   },
   '#render()': {
     topic: function(){
-      var _path = path.join('examples',
-            'basic')
-        , site = new Site({ root: _path, loglevel: 'warn' })
-      ;
-
-      site.on('ready', this.callback).read();
+      return new(Page);
     },
-    // 'should be defined': function(){
-    //   // assert.isFunction(page.render)
-    // },
-    // 'with a layout': function(page){
-    //   // assert.equal(page.render(), [
-    //   //   '<layout>',
-    //   //   '</layout>'
-    //   // ].join('\n'));
-    // },
-    'without a layout': 'pending'
+    'should be defined': function(page){
+      assert.isFunction(page.render)
+    },
+    'after `site.read()`': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+        ;
+
+        site.on('ready', function(){
+          var page = this.find('/index.html');
+
+          promise.emit('success', page);
+        }).read();
+
+        return promise;
+      },
+      'with a layout': function(page){
+        page.attributes.layout = 'default';
+
+        var content = page.render();
+
+        assert.isString(content);
+        assert.match(content, /<body>/);
+      },
+      'without a layout': function(page){
+        page.attributes.layout = undefined;
+        var content = page.render();
+
+        assert.isString(content);
+        assert.equal(content.split(' ').join(''),
+          page.renderWithoutLayout().split(' ').join(''));
+      }
+    }
   },
 }).export(module);
