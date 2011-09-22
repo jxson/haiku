@@ -37,29 +37,36 @@ vows.describe('Collection').addBatch({
     }
   },
   '#read()': 'pending',
-  // TODO: use a promise based method
-  // '#find()': {
-  //   topic: function(){
-  //     var _path = path.join('examples', 'basic', 'content')
-  //       , site = new Site({ loglevel: 'warn' })
-  //       , collection = new Collection({ 'site': site, path: _path });
-  //     ;
-  //
-  //     collection.on('ready', this.callback).read();
-  //   },
-  //   'should find content': function(){
-  //     var index = this.find('/index.html');
-  //
-  //     assert.isObject(index);
-  //     assert.equal(index.url(), '/index.html');
-  //   },
-  //   'should find nested content': function(){
-  //     var post = this.find('/posts/01-first-post.html');
-  //
-  //     assert.isObject(post);
-  //     assert.equal(post.url(), '/posts/01-first-post.html');
-  //   }
-  // },
+  '#find()': {
+    topic: function(){
+      var promise = new(events.EventEmitter)
+        , _path = path.join('examples', 'basic')
+        , site = new Site({ root: _path, loglevel: 'warn' })
+        , collection = new Collection({
+            site: site,
+            path: path.join(_path, 'content')
+          });
+      ;
+
+      collection.on('ready', function(){
+        promise.emit('success', collection);
+      }).read();
+
+      return promise;
+    },
+    'should find content': function(collection){
+      var index = collection.find('/index.html');
+
+      assert.isObject(index);
+      assert.equal(index.url(), '/index.html');
+    },
+    'should find nested content': function(collection){
+      var post = collection.find('/posts/01-first-post.html');
+
+      assert.isObject(post);
+      assert.equal(post.url(), '/posts/01-first-post.html');
+    }
+  },
   '#collections()': 'pending',
   '#pages()': 'pending',
   '#toJSON()': 'pending'

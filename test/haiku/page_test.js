@@ -34,6 +34,7 @@ vows.describe('Page').addBatch({
       assert.equal(Page.processors.markdown(input), expected);
     }
   },
+  'new Page(options)': 'pending',
   '#name()': {
     topic: function(){
       var site = new Site({ loglevel: 'warn' })
