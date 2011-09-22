@@ -101,16 +101,27 @@ vows.describe('Collection').addBatch({
       return promise;
     },
     'should find content': function(collection){
-      var index = collection.find('/index.html');
+      var home = collection.find('/index.html');
 
-      assert.isObject(index);
-      assert.equal(index.url(), '/index.html');
+      assert.isObject(home);
+      assert.equal(home.url(), '/index.html');
     },
     'should find nested content': function(collection){
       var post = collection.find('/posts/01-first-post.html');
 
       assert.isObject(post);
       assert.equal(post.url(), '/posts/01-first-post.html');
+    },
+    // TODO: Should it?
+    // 'should find collections': function(collection){
+    //   var posts = collection.find('/posts');
+    //
+    //   assert.isObject(posts);
+    // }
+  },
+  '#index()': {
+    topic: function(){
+      // body...
     }
   },
   '#collections()': 'pending',
