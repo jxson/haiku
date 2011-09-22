@@ -90,7 +90,7 @@ vows.describe('Collection').addBatch({
         , site = new Site({ root: _path, loglevel: 'warn' })
         , collection = new Collection({
             site: site,
-            path: path.join(_path, 'content')
+            path: path.join(site.options.root, 'content')
           });
       ;
 
@@ -121,7 +121,50 @@ vows.describe('Collection').addBatch({
   },
   '#index()': {
     topic: function(){
-      // body...
+      return new(Collection);
+    },
+    'should exist': function(collection){
+      assert.isFunction(collection.index);
+    },
+    'after `site.read()`': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+        ;
+
+        site.on('ready', function(){
+          promise.emit('success', site);
+        }).read();
+
+        return promise;
+      },
+      'on content collections': function(site){
+        var home = site.content.index('/index.html')
+          , index = site.content.index();
+        ;
+
+        assert.isObject(home);
+        assert.instanceOf(home, Page);
+
+        assert.isObject(index);
+        assert.include(index, '/index.html');
+        assert.include(index, '/about-this-site.html');
+        assert.include(index, '/posts/02-second-post.html');
+        assert.include(index, '/posts/01-first-post.html');
+      },
+      'on template collections': function(site){
+        var templates = site.folder.templates.index()
+          , partial = site.folder.templates.index('post')
+        ;
+
+        assert.isObject(templates);
+        assert.include(_.keys(templates), 'post');
+        assert.include(_.keys(templates), 'layouts/default');
+
+        assert.isObject(partial);
+        assert.instanceOf(partial, Page);
+      }
     }
   },
   '#collections()': 'pending',
