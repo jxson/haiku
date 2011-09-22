@@ -34,6 +34,31 @@ vows.describe('Page').addBatch({
       assert.equal(Page.processors.markdown(input), expected);
     }
   },
+  '#name()': {
+    topic: function(){
+      var site = new Site({ loglevel: 'warn' })
+        , page = new Page({ site: site })
+      ;
+
+      return page;
+    },
+    'should exist': function(page){
+      assert.isFunction(page.name);
+    },
+    'should be the `.basename()` without the .mustache ext': function(page){
+      page.path = 'whatever.html.mustache';
+
+      assert.equal(page.name(), 'whatever.html');
+
+      page.path = 'whatever.md.mustache';
+
+      assert.equal(page.name(), 'whatever.md');
+
+      page.path = 'whatever.mustache';
+
+      assert.equal(page.name(), 'whatever');
+    }
+  },
   '#basename()': {
     topic: function(){
       var site = new Site({ loglevel: 'warn' })
