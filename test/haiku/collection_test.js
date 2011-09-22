@@ -25,6 +25,17 @@ vows.describe('Collection').addBatch({
       }
     }
   },
+  '#basename()': {
+    topic: function(){
+      return new(Collection);
+    },
+    'should exist': function(collection){
+      assert.isFunction(collection.basename);
+    },
+    'should return `path.basename(collection.path)`': function(collection){
+      assert.equal(collection.basename(), path.basename(collection.path));
+    }
+  },
   '#read()': 'pending',
   // TODO: use a promise based method
   // '#find()': {
