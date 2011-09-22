@@ -5,6 +5,8 @@ var helper = require('../test_helper')
   , Site = require('haiku/site')
   , Collection = require('haiku/collection')
   , events = require('events')
+  , _ = require('underscore')
+  , Page = require('haiku/page')
 ;
 
 vows.describe('Collection').addBatch({
@@ -36,7 +38,51 @@ vows.describe('Collection').addBatch({
       assert.equal(collection.basename(), path.basename(collection.path));
     }
   },
-  '#read()': 'pending',
+  '#read()': {
+    topic: function(){
+      return new(Collection);
+    },
+    'should exist': function(collection){
+      assert.isFunction(collection.read);
+    },
+    'when `fs.readdir` is a success': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+          , collection = new Collection({
+              site: site,
+              path: path.join(_path, 'content')
+            });
+        ;
+
+        collection.on('ready', function(){
+          promise.emit('success', collection);
+        }).read();
+
+        return promise;
+      },
+      'should emit a ready event': function(collection){
+        // This context will fail differently if the event doesn't fire but it
+        // makes me feel better that this is here
+        assert.ok(true);
+      },
+      'should populate the `collection.folder` object': function(collection){
+        assert.equal(_.size(collection.folder), 3);
+
+        assert.isObject(collection.folder['index.mustache']);
+        assert.instanceOf(collection.folder['index.mustache'], Page);
+
+        assert.isObject(collection.folder['about-this-site.textile']);
+        assert.instanceOf(collection.folder['about-this-site.textile'], Page);
+
+        assert.isObject(collection.folder['posts']);
+        assert.instanceOf(collection.folder['posts'], Collection);
+      },
+      'when `fs.stat` errs': 'pending'
+    },
+    'when `fs.readdir` errs': 'pending'
+  },
   '#find()': {
     topic: function(){
       var promise = new(events.EventEmitter)
