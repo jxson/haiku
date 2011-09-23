@@ -34,7 +34,20 @@ vows.describe('Page').addBatch({
       assert.equal(Page.processors.markdown(input), expected);
     }
   },
-  'new Page(options)': 'pending',
+  'new Page(options)': {
+    topic: function(){
+      return new(Page);
+    },
+    'should be inherit from Event emitter': function(page){
+      assert.instanceOf(page, Page);
+      assert.equal(Page.super_, events.EventEmitter);
+    },
+    'default `options`': {
+      '`.loglevel` should === "info"': function(collection){
+        assert.equal(collection.options.loglevel, 'info');
+      }
+    }
+  },
   '#name()': {
     topic: function(){
       var site = new Site({ loglevel: 'warn' })
