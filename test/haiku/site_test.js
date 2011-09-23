@@ -190,6 +190,37 @@ vows.describe('haiku.Site').addBatch({
       }
     }
   },
-  '#toJSON()': 'pending',
+  '#toJSON()': {
+    'should exist': function(){
+      var site = new(Site);
+
+      assert.isFunction(site.toJSON);
+    },
+    'after `site.read()`': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+        ;
+
+        site.on('ready', function(){
+          promise.emit('success', site);
+        }).read();
+
+        return promise;
+      },
+      'should be an object': function(site){
+        assert.isObject(site.toJSON());
+      },
+      'should have pages': function(site){
+        assert.include(site.toJSON(), 'pages');
+        assert.isArray(site.toJSON().pages);
+      },
+      'should have collections': function(site){
+        assert.include(site.toJSON(), 'collections');
+        assert.isObject(site.toJSON().collections);
+      }
+    }
+  },
   '#build()': 'pending'
 }).export(module);

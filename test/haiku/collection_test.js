@@ -111,13 +111,7 @@ vows.describe('Collection').addBatch({
 
       assert.isObject(post);
       assert.equal(post.url(), '/posts/01-first-post.html');
-    },
-    // TODO: Should it?
-    // 'should find collections': function(collection){
-    //   var posts = collection.find('/posts');
-    //
-    //   assert.isObject(posts);
-    // }
+    }
   },
   '#index()': {
     topic: function(){

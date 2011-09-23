@@ -9,11 +9,13 @@ task 'docs', 'generate the inline documentation', ->
 
   exec(command, (err) -> throw err if err)
 
-task 'test', 'run all the tests', ->
+option '-s', '--spec', 'fgnvadtb'
+task 'test', 'run all the tests', (options)->
+  spec = if options.spec then '--spec' else '--dot-matrix'
+
   command = [
     'node_modules/vows/bin/vows'
-    '--dot-matrix'
-    # '--spec'
+    spec
     'test/*.js'
     'test/*/*.js'
   ].join(' ')
