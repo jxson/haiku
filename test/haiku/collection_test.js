@@ -167,7 +167,104 @@ vows.describe('Collection').addBatch({
       }
     }
   },
-  '#collections()': 'pending',
-  '#pages()': 'pending',
-  '#toJSON()': 'pending'
+  '#collections()': {
+    'should exist': function(){
+      var collection = new(Collection);
+
+      assert.isFunction(collection.collections);
+    },
+    'after `site.read()`': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+        ;
+
+        site.on('ready', function(){
+          promise.emit('success', site);
+        }).read();
+
+        return promise;
+      },
+      'should return the child collections': function(site){
+        var content = site.folder.content;
+
+        assert.isArray(content.collections());
+        _.each(content.collections(), function(child){
+          assert.instanceOf(child, Collection);
+        });
+      }
+    }
+  },
+  '#pages()': {
+    'should exist': function(){
+      var collection = new(Collection);
+
+      assert.isFunction(collection.pages);
+    },
+    'after `site.read()`': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+        ;
+
+        site.on('ready', function(){
+          promise.emit('success', site);
+        }).read();
+
+        return promise;
+      },
+      'should return the child collections': function(site){
+        var content = site.folder.content;
+
+        assert.isArray(content.pages());
+        _.each(content.pages(), function(child){
+          assert.instanceOf(child, Page);
+        });
+      }
+    }
+  },
+  '#toJSON()': {
+    'should exist': function(){
+      var collection = new(Collection);
+
+      assert.isFunction(collection.toJSON);
+    },
+    'after `site.read()`': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+        ;
+
+        console.log('reading site');
+
+        site.on('ready', function(){
+          console.log('ready');
+
+          promise.emit('success', site);
+        }).read();
+
+        return promise;
+      },
+      'should be an object': function(site){
+        var content = site.folder.content;
+
+        assert.isObject(content.toJSON());
+      },
+      'should have pages': function(site){
+        var content = site.folder.content;
+
+        assert.include(content.toJSON(), 'pages');
+        assert.isArray(content.toJSON().pages);
+      },
+      'should have collections': function(site){
+        var content = site.folder.content;
+
+        assert.include(content.toJSON(), 'collections');
+        assert.isObject(content.toJSON().collections);
+      }
+    }
+  }
 }).export(module);
