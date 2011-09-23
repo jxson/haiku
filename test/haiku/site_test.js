@@ -134,10 +134,6 @@ vows.describe('haiku.Site').addBatch({
         assert.isObject(site.content);
         assert.instanceOf(site.content, Collection);
       },
-      'should populate `site.templates`': function(site){
-        assert.isObject(site.templates);
-        assert.instanceOf(site.templates, Collection);
-      },
       'should populate `site.layouts`': function(site){
         assert.isObject(site.layouts);
         assert.instanceOf(site.layouts, Collection);

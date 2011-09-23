@@ -238,11 +238,7 @@ vows.describe('Collection').addBatch({
           , site = new Site({ root: _path, loglevel: 'warn' })
         ;
 
-        console.log('reading site');
-
         site.on('ready', function(){
-          console.log('ready');
-
           promise.emit('success', site);
         }).read();
 

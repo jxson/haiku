@@ -317,11 +317,13 @@ vows.describe('Page').addBatch({
       },
       'without a layout': function(page){
         page.attributes.layout = undefined;
-        var content = page.render();
+        var content = page.render()
+          , attributes = { site: page.site.toJSON() }
+        ;
 
         assert.isString(content);
         assert.equal(content.split(' ').join(''),
-          page.renderWithoutLayout().split(' ').join(''));
+          page.renderWithoutLayout(attributes).split(' ').join(''));
       }
     }
   },
