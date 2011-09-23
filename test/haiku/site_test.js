@@ -8,6 +8,7 @@ var helper = require('../test_helper')
   , events = require('events')
   , _ = require('underscore')
   , Collection = require('haiku/collection')
+  , Page = require('haiku/page')
 ;
 
 vows.describe('haiku.Site').addBatch({
@@ -151,7 +152,44 @@ vows.describe('haiku.Site').addBatch({
       }
     }
   },
-  '#find()': 'pending',
+  '#find(route)': {
+    'after `site.read()`': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'basic')
+          , site = new Site({ root: _path, loglevel: 'warn' })
+        ;
+
+        site.on('ready', function(){
+          promise.emit('success', site);
+        }).read();
+
+        return promise;
+      },
+      'should find the index': function(site){
+        assert.instanceOf(site.find(), Page);
+        assert.instanceOf(site.find(''), Page);
+        assert.instanceOf(site.find('/index.html'), Page);
+
+        assert.equal(site.find().url(), '/index.html');
+        assert.equal(site.find().url(''), '/index.html');
+        assert.equal(site.find().url('/index.html'), '/index.html');
+      },
+      'should find content': function(site){
+        var url = '/posts/01-first-post.html';
+
+        assert.instanceOf(site.find(url), Page);
+        assert.equal(site.find(url).url(), url);
+      },
+      'should find the index for collections': function(site){
+        assert.instanceOf(site.find('/posts/'), Page);
+        assert.equal(site.find('/posts/').url(), '/posts/index.html');
+
+        assert.instanceOf(site.find('/posts'), Page);
+        assert.equal(site.find('/posts').url(), '/posts/index.html');
+      }
+    }
+  },
   '#toJSON()': 'pending',
   '#build()': 'pending'
 }).export(module);
