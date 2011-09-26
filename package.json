@@ -1,8 +1,20 @@
 {
   "name": "haiku",
-  "description": "Another static sitegenerator... highly configurable, expandable, and easy to use",
-  "author": "Jason Campbell <jason@borderstylo.com>",
   "version": "0.0.1",
+  "description": "Another static site generator... highly configurable, expandable, and easy to use",
+  "author": "jxson <jason@borderstylo.com> http://twitter.com/jxson",
+  "maintainers": [
+    "Jason Campbell <jason@borderstylo.com>"
+  ],
+  "contributers": [
+    "Dan Yoder <<dyoder@borderstylo.com>> http://twitter.com/dyoder"
+  ],
+  "licenses": [ {"type": "MIT"} ],
+  "homepage": "https://github.com/borderstylo/haiku",
+  "repositories": [{
+    "type": "git",
+    "url": "git://github.com/borderstylo/haiku.git"
+  }]
   "bin" : { "haiku": "./bin/haiku" },
   "main" : "./lib/haiku.js",
   "dependencies": {
