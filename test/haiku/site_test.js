@@ -9,6 +9,8 @@ var helper = require('../test_helper')
   , _ = require('underscore')
   , Collection = require('haiku/collection')
   , Page = require('haiku/page')
+  , fs = require('fs')
+  , child_process = require('child_process')
 ;
 
 vows.describe('haiku.Site').addBatch({
@@ -222,5 +224,42 @@ vows.describe('haiku.Site').addBatch({
       }
     }
   },
-  '#build()': 'pending'
+  '#build()': {
+    topic: function(){
+      return new(Site);
+    },
+    'should exist': function(site){
+      assert.isFunction(site.build);
+    }
+    // 'after `site.read()`': {
+    //   topic: function(){
+    //     var promise = new(events.EventEmitter)
+    //       , _path = path.join('examples', 'basic')
+    //       , site = new Site({ root: _path, loglevel: 'warn' })
+    //     ;
+    //
+    //     site.on('ready', function(){
+    //       promise.emit('success', site);
+    //     }).read();
+    //
+    //     return promise;
+    //   },
+    //   '`post.build()`': {
+    //     topic: function(site){
+    //       var promise = new(events.EventEmitter);
+    //
+    //       site.on('build', function(){
+    //         promise.emit('success', site);
+    //       }).build();
+    //
+    //       return promise;
+    //     },
+    //     'i dont know how to test this yet': function(site){
+    //
+    //       fs.rmdirSync(site.directories.build);
+    //       child_process.exec("rm -r " + site.directories.build)
+    //     }
+    //   }
+    // }
+  }
 }).export(module);
