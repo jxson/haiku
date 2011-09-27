@@ -153,6 +153,50 @@ vows.describe('haiku.Site').addBatch({
         assert.isObject(site.content.folder.posts);
         assert.instanceOf(site.content.folder.posts, Collection);
       }
+    },
+    'errors': {
+      'when `fs.stat` has an error': {
+        'should call `site.handleError`': sinon.test(function(){
+          var site = new(Site)
+            , err = new Error('Fake fs.stats error')
+            , sinon = this
+          ;
+
+          sinon.stub(fs, 'stat', function(_path, callback){
+            return callback(err, {});
+          });
+
+          sinon.stub(site, 'handleError');
+
+          site.read();
+
+          assert.ok(fs.stat.called);
+          assert.ok(site.handleError.called);
+        })
+      },
+      'when trying to read a non-directory': {
+        'should call `site.handleError`': sinon.test(function(){
+          var site = new(Site)
+            , sinon = this
+            , message
+          ;
+
+          sinon.stub(fs, 'stat', function(_path, callback){
+            return callback(null, { isDirectory: false });
+          });
+
+          sinon.stub(site, 'handleError');
+
+          site.read();
+
+          assert.ok(fs.stat.called);
+          assert.ok(site.handleError.called);
+
+          message = site.handleError.args[0][0].message;
+
+          assert.match(message, /must be a directory/);
+        })
+      }
     }
   },
   '#find(route)': {

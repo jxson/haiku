@@ -6,6 +6,8 @@ var helper = require('../test_helper')
   , Page = require('haiku/page')
   , _ = require('underscore')
   , events = require('events')
+  , sinon = require('sinon')
+  , fs = require('fs')
 ;
 
 vows.describe('Page').addBatch({
@@ -195,7 +197,28 @@ vows.describe('Page').addBatch({
         assert.equal(page.attributes.title, 'This is the homepage');
       }
     },
-    'on `fs.readFile` error': 'pending'
+    'errors': {
+      'when `fs.readFile` has an err': {
+        'should call `site.handleError`': sinon.test(function(){
+          var site = new(Site)
+            , page = new Page({ site: site })
+            , err = new Error('Fake fs.readfile error')
+            , sinon = this
+          ;
+
+          sinon.stub(fs, 'readFile', function(_path, encoding, callback){
+            return callback(err, '');
+          });
+
+          sinon.stub(page.site, 'handleError');
+
+          page.read();
+
+          assert.ok(fs.readFile.called);
+          assert.ok(page.site.handleError.called);
+        })
+      }
+    }
   },
   '#parser()': {
     topic: function(){
