@@ -262,5 +262,38 @@ vows.describe('haiku.Site').addBatch({
     //     }
     //   }
     // }
+  },
+  '#handleError(err)': {
+    topic: function(){
+      return new(Site);
+    },
+    'should exist': function(site){
+      assert.isFunction(site.handleError);
+    },
+    'when `err` is falsely': {
+      'should not raise an error': function(site){
+        assert.doesNotThrow(function(){ site.handleError(); });
+        assert.doesNotThrow(function(){ site.handleError(null); });
+        assert.doesNotThrow(function(){ site.handleError(undefined); });
+        assert.doesNotThrow(function(){ site.handleError(false); });
+      },
+      'should return undefined': function(site){
+        assert.isUndefined(site.handleError());
+        assert.isUndefined(site.handleError(null));
+        assert.isUndefined(site.handleError(undefined));
+        assert.isUndefined(site.handleError(false));
+      }
+    },
+    'when there is an "error" event listener': {
+      'when `err` is an error object': 'pending',
+      'when `err` is a string': 'pending'
+    },
+    'when there is *NOT* an "error" event listener': {
+      'when `err` is an error object': 'pending',
+      'when `err` is a string': 'pending'
+    }
+    // if there are no error events throw
+    // error message
+    // error stack
   }
 }).export(module);
