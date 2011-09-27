@@ -265,13 +265,13 @@ vows.describe('haiku.Site').addBatch({
   },
   '#handleError(err)': {
     topic: function(){
-      return new(Site);
+      return new (Site);
     },
     'should exist': function(site){
       assert.isFunction(site.handleError);
     },
     'when `err` is falsely': {
-      'should not raise an error': function(site){
+      'should not throw an error': function(site){
         assert.doesNotThrow(function(){ site.handleError(); });
         assert.doesNotThrow(function(){ site.handleError(null); });
         assert.doesNotThrow(function(){ site.handleError(undefined); });
@@ -285,15 +285,47 @@ vows.describe('haiku.Site').addBatch({
       }
     },
     'when there is an "error" event listener': {
-      'when `err` is an error object': 'pending',
-      'when `err` is a string': 'pending'
+      topic: function(site){
+        site.on('error', function(e){});
+
+        return site;
+      },
+      'when `err` is an error object': {
+        'should not throw': function(site){
+          assert.doesNotThrow(function(){
+            site.handleError(new Error);
+          });
+        },
+        'event listener should get Error': sinon.test(function(site){
+          var spy = sinon.spy()
+            , err = new Error('Secret plans.')
+          ;
+
+          site.on('error', spy);
+          site.handleError(err);
+
+          assert.ok(spy.called);
+          assert.equal(spy.args[0][0], err);
+        })
+      }
     },
     'when there is *NOT* an "error" event listener': {
-      'when `err` is an error object': 'pending',
-      'when `err` is a string': 'pending'
+      topic: function(){
+        var site = new(Site);
+
+        site.removeAllListeners('error');
+
+        return site;
+      },
+      'when `err` is an error object': {
+        'should throw': function(site){
+          var err = new Error('Gah.');
+
+          assert.throws(function(){
+            site.handleError(err);
+          });
+        }
+      }
     }
-    // if there are no error events throw
-    // error message
-    // error stack
   }
 }).export(module);
