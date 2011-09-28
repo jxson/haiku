@@ -273,7 +273,7 @@ vows.describe('Collection').addBatch({
       topic: function(){
         var promise = new(events.EventEmitter)
           , _path = path.join('examples', 'basic')
-          , site = new Site({ root: _path, loglevel: 'warn' })
+          , site = new Site({ root: _path })
         ;
 
         site.on('ready', function(){
