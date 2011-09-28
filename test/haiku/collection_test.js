@@ -293,6 +293,15 @@ vows.describe('Collection').addBatch({
         assert.include(content.toJSON(), 'pages');
         assert.isArray(content.toJSON().pages);
       },
+      'pages should not include index pages': function(site){
+        var posts = site.folder.content.folder.posts.toJSON().pages
+          , index = _.select(posts, function(post){
+              return post.url() === '/posts/index.html';
+            })
+        ;
+
+        assert.isEmpty(index);
+      },
       'should have collections': function(site){
         var content = site.folder.content;
 
