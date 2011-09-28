@@ -7,14 +7,15 @@
     "Jason Campbell <jason@borderstylo.com>"
   ],
   "contributers": [
-    "Dan Yoder <<dyoder@borderstylo.com>> http://twitter.com/dyoder"
+    "Dan Yoder <dyoder@borderstylo.com> http://twitter.com/dyoder", 
+    "Nikhil Ratan <nratan@bordestylo.com>"
   ],
   "licenses": [ {"type": "MIT"} ],
   "homepage": "https://github.com/borderstylo/haiku",
   "repositories": [{
     "type": "git",
     "url": "git://github.com/borderstylo/haiku.git"
-  }]
+  }],
   "bin" : { "haiku": "./bin/haiku" },
   "main" : "./lib/haiku.js",
   "dependencies": {
