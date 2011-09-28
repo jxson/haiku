@@ -316,7 +316,7 @@ vows.describe('Page').addBatch({
       var json = page.toJSON();
 
       assert.include(json, 'content');
-      assert.equal(json.content, page.template);
+      assert.equal(json.content(), page.template);
     }
   },
   '#render()': {
@@ -370,6 +370,41 @@ vows.describe('Page').addBatch({
         assert.isString(content);
         assert.equal(content.split(' ').join(''),
           page.renderWithoutLayout(attributes).split(' ').join(''));
+      },
+      'when using tags': {
+        topic: function(){
+          var promise = new(events.EventEmitter)
+            , _path = path.join('examples', 'tags')
+            , site = new Site({ root: _path })
+          ;
+
+          site.on('ready', function(){
+            var post = this.find('/posts/02-node.html');
+
+            promise.emit('success', post);
+          }).read();
+
+          return promise;
+        },
+        'should have related pages': function(post){
+          assert.isArray(post.toJSON().related());
+
+          var relatedURLS = _.map(post.toJSON().related(), function(p){
+            return p.url();
+          });
+
+          // shouldn't include itself
+          assert.isFalse(_.include(relatedURLS, post.url()));
+
+          // should stuff with similar tags
+          assert.include(relatedURLS, '/posts/01-javascript.html');
+          assert.include(relatedURLS, '/posts/04-ruby.html');
+          assert.include(relatedURLS, '/posts/05-kittens.html');
+          assert.include(relatedURLS, '/posts/01-javascript.html');
+
+          // shouldn't include stuff without similar tags
+          assert.isFalse(_.include(relatedURLS, '/posts/03-php.html'));
+        }
       }
     }
   },
