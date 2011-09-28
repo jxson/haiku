@@ -153,6 +153,41 @@ vows.describe('haiku.Site').addBatch({
         assert.isObject(site.content.folder.posts);
         assert.instanceOf(site.content.folder.posts, Collection);
       }
+    },
+    'errors': {
+      'on `fs.stat`': {
+        'should throw': sinon.test(function(){
+          var site = new(Site)
+            , err = new Error('Fake fs.stats error')
+            , sinon = this
+          ;
+
+          sinon.stub(fs, 'stat', function(_path, callback){
+            return callback(err, {});
+          });
+
+          assert.throws(function(){
+            site.read();
+          });
+        })
+      },
+      'on `fs.stat` when `! stats.isDirectory`': {
+        'should throw': sinon.test(function(){
+          var site = new(Site)
+            , sinon = this
+            , message
+          ;
+
+          sinon.stub(fs, 'stat', function(_path, callback){
+            return callback(null, { isDirectory: false });
+          });
+
+
+          assert.throws(function(){
+            site.read();
+          });
+        })
+      }
     }
   },
   '#find(route)': {
