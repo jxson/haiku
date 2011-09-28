@@ -198,8 +198,8 @@ vows.describe('Page').addBatch({
       }
     },
     'errors': {
-      'when `fs.readFile` has an err': {
-        'should call `site.handleError`': sinon.test(function(){
+      'on `fs.readFile`': {
+        'should throw': sinon.test(function(){
           var site = new(Site)
             , page = new Page({ site: site })
             , err = new Error('Fake fs.readfile error')
@@ -210,12 +210,10 @@ vows.describe('Page').addBatch({
             return callback(err, '');
           });
 
-          sinon.stub(page.site, 'handleError');
 
-          page.read();
-
-          assert.ok(fs.readFile.called);
-          assert.ok(page.site.handleError.called);
+          assert.throws(function(){
+            page.read();
+          });
         })
       }
     }

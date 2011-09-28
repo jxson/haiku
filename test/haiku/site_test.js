@@ -155,8 +155,8 @@ vows.describe('haiku.Site').addBatch({
       }
     },
     'errors': {
-      'when `fs.stat` has an error': {
-        'should call `site.handleError`': sinon.test(function(){
+      'on `fs.stat`': {
+        'should throw': sinon.test(function(){
           var site = new(Site)
             , err = new Error('Fake fs.stats error')
             , sinon = this
@@ -166,16 +166,13 @@ vows.describe('haiku.Site').addBatch({
             return callback(err, {});
           });
 
-          sinon.stub(site, 'handleError');
-
-          site.read();
-
-          assert.ok(fs.stat.called);
-          assert.ok(site.handleError.called);
+          assert.throws(function(){
+            site.read();
+          });
         })
       },
-      'when trying to read a non-directory': {
-        'should call `site.handleError`': sinon.test(function(){
+      'on `fs.stat` when `! stats.isDirectory`': {
+        'should throw': sinon.test(function(){
           var site = new(Site)
             , sinon = this
             , message
@@ -185,16 +182,10 @@ vows.describe('haiku.Site').addBatch({
             return callback(null, { isDirectory: false });
           });
 
-          sinon.stub(site, 'handleError');
 
-          site.read();
-
-          assert.ok(fs.stat.called);
-          assert.ok(site.handleError.called);
-
-          message = site.handleError.args[0][0].message;
-
-          assert.match(message, /must be a directory/);
+          assert.throws(function(){
+            site.read();
+          });
         })
       }
     }
@@ -306,70 +297,5 @@ vows.describe('haiku.Site').addBatch({
     //     }
     //   }
     // }
-  },
-  '#handleError(err)': {
-    topic: function(){
-      return new (Site);
-    },
-    'should exist': function(site){
-      assert.isFunction(site.handleError);
-    },
-    'when `err` is falsely': {
-      'should not throw an error': function(site){
-        assert.doesNotThrow(function(){ site.handleError(); });
-        assert.doesNotThrow(function(){ site.handleError(null); });
-        assert.doesNotThrow(function(){ site.handleError(undefined); });
-        assert.doesNotThrow(function(){ site.handleError(false); });
-      },
-      'should return undefined': function(site){
-        assert.isUndefined(site.handleError());
-        assert.isUndefined(site.handleError(null));
-        assert.isUndefined(site.handleError(undefined));
-        assert.isUndefined(site.handleError(false));
-      }
-    },
-    'when there is an "error" event listener': {
-      topic: function(site){
-        site.on('error', function(e){});
-
-        return site;
-      },
-      'when `err` is an error object': {
-        'should not throw': function(site){
-          assert.doesNotThrow(function(){
-            site.handleError(new Error);
-          });
-        },
-        'event listener should get Error': sinon.test(function(site){
-          var spy = sinon.spy()
-            , err = new Error('Secret plans.')
-          ;
-
-          site.on('error', spy);
-          site.handleError(err);
-
-          assert.ok(spy.called);
-          assert.equal(spy.args[0][0], err);
-        })
-      }
-    },
-    'when there is *NOT* an "error" event listener': {
-      topic: function(){
-        var site = new(Site);
-
-        site.removeAllListeners('error');
-
-        return site;
-      },
-      'when `err` is an error object': {
-        'should throw': function(site){
-          var err = new Error('Gah.');
-
-          assert.throws(function(){
-            site.handleError(err);
-          });
-        }
-      }
-    }
   }
 }).export(module);

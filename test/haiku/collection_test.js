@@ -7,6 +7,8 @@ var helper = require('../test_helper')
   , events = require('events')
   , _ = require('underscore')
   , Page = require('haiku/page')
+  , sinon = require('sinon')
+  , fs = require('fs')
 ;
 
 vows.describe('Collection').addBatch({
@@ -79,9 +81,52 @@ vows.describe('Collection').addBatch({
         assert.isObject(collection.folder['posts']);
         assert.instanceOf(collection.folder['posts'], Collection);
       },
-      'when `fs.stat` errs': 'pending'
     },
-    'when `fs.readdir` errs': 'pending'
+    'errors': {
+      'on `fs.readdir`': {
+        'with NO error listeners':{
+          'should throw': sinon.test(function(){
+            var site = new(Site)
+              , collection = new Collection({
+                  site: site
+                })
+              , err = new Error('Fake fs.readdir error')
+              , sinon = this
+            ;
+
+            sinon.stub(fs, 'readdir', function(_path, callback){
+              return callback(err, []);
+            });
+
+            assert.throws(function(){
+              collection.read();
+            });
+
+          })
+        }
+      },
+      'on `fs.stat`': {
+        'with NO error listeners':{
+          'should throw': sinon.test(function(){
+            var site = new(Site)
+              , collection = new Collection({
+                  site: site
+                })
+              , err = new Error('Fake fs.stat error')
+              , sinon = this
+            ;
+
+            sinon.stub(fs, 'stat', function(_path, callback){
+              return callback(err, {});
+            });
+
+            assert.throws(function(){
+              collection.read();
+            });
+          })
+        },
+      }
+    }
   },
   '#find()': {
     topic: function(){
