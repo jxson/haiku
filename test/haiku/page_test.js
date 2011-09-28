@@ -194,6 +194,7 @@ vows.describe('Page').addBatch({
 
         assert.isObject(page.attributes);
         assert.equal(page.attributes.title, 'This is the homepage');
+        assert.equal(page.attributes.layout, 'default');
       }
     },
     'errors': {
@@ -350,6 +351,18 @@ vows.describe('Page').addBatch({
       },
       'without a layout': function(page){
         page.attributes.layout = undefined;
+
+        var content = page.render()
+          , attributes = { site: page.site.toJSON() }
+        ;
+
+        assert.isString(content);
+        assert.equal(content.split(' ').join(''),
+          page.renderWithoutLayout(attributes).split(' ').join(''));
+      },
+      'with a layout === false': function(page){
+        page.attributes.layout = false;
+
         var content = page.render()
           , attributes = { site: page.site.toJSON() }
         ;

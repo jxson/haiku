@@ -69,7 +69,7 @@ vows.describe('Collection').addBatch({
         assert.ok(true);
       },
       'should populate the `collection.folder` object': function(collection){
-        assert.equal(_.size(collection.folder), 3);
+        assert.equal(_.size(collection.folder), 4);
 
         assert.isObject(collection.folder['index.mustache']);
         assert.instanceOf(collection.folder['index.mustache'], Page);
