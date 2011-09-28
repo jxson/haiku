@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 
-var path = require('path');
-require.paths.unshift(path.join(__dirname, '..', 'lib'));
-
 var sys  = require('sys')
-  , cli = require('haiku/cli')
+  , cli = require('../lib/haiku/cli')
   , _ = require('underscore')
   , argv = require('optimist')
       .alias('source', 'root')

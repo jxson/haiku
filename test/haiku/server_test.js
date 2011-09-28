@@ -1,8 +1,7 @@
-var helper = require('../test_helper')
-  , vows = require('vows')
+var vows = require('vows')
   , assert = require('assert')
   , sinon = require('sinon')
-  , haiku = require('haiku')
+  , haiku = require('../../lib/haiku')
 ;
 
 vows.describe('haiku.Server').addBatch({
