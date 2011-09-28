@@ -1,9 +1,8 @@
-var helper = require('../test_helper')
-  , vows = require('vows')
+var vows = require('vows')
   , assert = require('assert')
   , path = require('path')
-  , Site = require('haiku/site')
-  , Page = require('haiku/page')
+  , Site = require('../../lib/haiku/site')
+  , Page = require('../../lib/haiku/page')
   , _ = require('underscore')
   , events = require('events')
   , sinon = require('sinon')
@@ -195,6 +194,7 @@ vows.describe('Page').addBatch({
 
         assert.isObject(page.attributes);
         assert.equal(page.attributes.title, 'This is the homepage');
+        assert.equal(page.attributes.layout, 'default');
       }
     },
     'errors': {
@@ -351,6 +351,18 @@ vows.describe('Page').addBatch({
       },
       'without a layout': function(page){
         page.attributes.layout = undefined;
+
+        var content = page.render()
+          , attributes = { site: page.site.toJSON() }
+        ;
+
+        assert.isString(content);
+        assert.equal(content.split(' ').join(''),
+          page.renderWithoutLayout(attributes).split(' ').join(''));
+      },
+      'with a layout === false': function(page){
+        page.attributes.layout = false;
+
         var content = page.render()
           , attributes = { site: page.site.toJSON() }
         ;

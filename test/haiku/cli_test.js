@@ -1,11 +1,10 @@
-var helper = require('../test_helper')
-  , vows = require('vows')
+var vows = require('vows')
   , assert = require('assert')
   , path = require('path')
   , sinon = require('sinon')
   , _ = require('underscore')
-  , haiku = require('haiku')
-  , cli = require('haiku/cli')
+  , haiku = require('../../lib/haiku')
+  , cli = require('../../lib/haiku/cli')
 ;
 
 vows.describe('haiku/cli').addBatch({

@@ -1,7 +1,6 @@
-var helper = require('./test_helper')
-  , vows = require('vows')
+var vows = require('vows')
   , assert = require('assert')
-  , haiku = require('haiku')
+  , haiku = require('../lib/haiku')
 ;
 
 vows.describe('haiku').addBatch({

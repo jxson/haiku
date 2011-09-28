@@ -1,12 +1,11 @@
-var helper = require('../test_helper')
-  , vows = require('vows')
+var vows = require('vows')
   , assert = require('assert')
   , path = require('path')
-  , Site = require('haiku/site')
-  , Collection = require('haiku/collection')
+  , Site = require('../../lib/haiku/site')
+  , Collection = require('../../lib/haiku/collection')
   , events = require('events')
   , _ = require('underscore')
-  , Page = require('haiku/page')
+  , Page = require('../../lib/haiku/page')
   , sinon = require('sinon')
   , fs = require('fs')
 ;
@@ -70,7 +69,7 @@ vows.describe('Collection').addBatch({
         assert.ok(true);
       },
       'should populate the `collection.folder` object': function(collection){
-        assert.equal(_.size(collection.folder), 3);
+        assert.equal(_.size(collection.folder), 4);
 
         assert.isObject(collection.folder['index.mustache']);
         assert.instanceOf(collection.folder['index.mustache'], Page);
