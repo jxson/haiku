@@ -273,7 +273,7 @@ vows.describe('Collection').addBatch({
       topic: function(){
         var promise = new(events.EventEmitter)
           , _path = path.join('examples', 'basic')
-          , site = new Site({ root: _path, loglevel: 'warn' })
+          , site = new Site({ root: _path })
         ;
 
         site.on('ready', function(){
@@ -293,20 +293,40 @@ vows.describe('Collection').addBatch({
         assert.include(content.toJSON(), 'pages');
         assert.isArray(content.toJSON().pages);
       },
-      'pages should not include index pages': function(site){
-        var posts = site.folder.content.folder.posts.toJSON().pages
-          , index = _.select(posts, function(post){
-              return post.url() === '/posts/index.html';
-            })
-        ;
-
-        assert.isEmpty(index);
-      },
       'should have collections': function(site){
         var content = site.folder.content;
 
         assert.include(content.toJSON(), 'collections');
         assert.isObject(content.toJSON().collections);
+      }
+    },
+    'pages': {
+      topic: function(){
+        var promise = new(events.EventEmitter)
+          , _path = path.join('examples', 'dates')
+          , site = new Site({ root: _path })
+        ;
+
+        site.on('ready', function(){
+          promise.emit('success', site.content.toJSON().pages);
+        });
+
+        site.read();
+
+        return promise;
+      },
+      'should not include index files': function(pages){
+        var index = _.select(pages, function(page){
+              return page.url() === '/index.html';
+            });
+
+        assert.isEmpty(index);
+      },
+      'should be ordered by published date': function(pages){
+        assert.equal(pages[0].url(), '/most-recent.html');
+        assert.equal(pages[1].url(), '/two.html');
+        assert.equal(pages[2].url(), '/three.html');
+        assert.equal(pages[3].url(), '/four.html');
       }
     }
   }
