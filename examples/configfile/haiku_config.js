@@ -8,25 +8,11 @@ module.exports = {
   publicDir: "public",
   baseURL: 'http://domain.tld/',
   attributes: {
-    title: 'Awesome Site, Crazy Directory Structure'
+    title: 'Awesome Site, Crazy Directory Structure',
+    recent: function(){
+      var site = this;
+
+      return site.collections.posts.pages.slice(0, 2)
+    }
   }
 };
-
-
-// var Logger = require("haiku/logger")
-//   , root = "./examples/basic/";
-//
-// module.exports = {
-//   server: {
-//     address: "127.0.0.1", port: 1337
-//   },
-//   logger: new Logger({level: "info" }),
-//   site: {
-//     directories: {
-//       content: root + "content",
-//       templates: root + "templates",
-//       public: root + "public"
-//     },
-//     index: "index"
-//   }
-// };
