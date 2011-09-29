@@ -256,6 +256,11 @@ vows.describe('haiku.Site').addBatch({
       'should have collections': function(site){
         assert.include(site.toJSON(), 'collections');
         assert.isObject(site.toJSON().collections);
+      },
+      'should have access to site.attributes': function(site){
+        site.options.attributes['title'] = 'Heyo!';
+
+        assert.equal(site.toJSON().title, 'Heyo!');
       }
     }
   },
