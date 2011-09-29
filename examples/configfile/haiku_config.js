@@ -12,7 +12,7 @@ module.exports = {
     recent: function(){
       var site = this;
 
-      return site.collections.posts.pages.slice(0, 2)
+      return site.collections.posts.pages.slice(0, 2);
     }
   }
 };
