@@ -5,7 +5,11 @@ module.exports = {
   root: __dirname,
   contentDir: "app/markdown",
   templatesDir: "assets/templates",
-  publicDir: "public"
+  publicDir: "public",
+  baseURL: 'http://domain.tld/',
+  attributes: {
+    title: 'Awesome Site, Crazy Directory Structure'
+  }
 };
 
 
