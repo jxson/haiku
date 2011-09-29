@@ -259,8 +259,19 @@ vows.describe('haiku.Site').addBatch({
       },
       'should have access to site.attributes': function(site){
         site.options.attributes['title'] = 'Heyo!';
+        site.options.attributes['magic'] = function(){
+          assert.isObject(this);
+          assert.equal(this.title, 'Heyo!');
+          assert.include(this, 'collections');
+          assert.isObject(this.collections);
+          assert.include(this, 'pages');
+          assert.isArray(this.pages);
+        };
 
         assert.equal(site.toJSON().title, 'Heyo!');
+        assert.isFunction(site.toJSON().magic);
+
+        site.toJSON().magic();
       }
     }
   },
