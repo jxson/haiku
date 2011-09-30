@@ -220,7 +220,7 @@ vows.describe('Page').addBatch({
   },
   '#parser()': {
     topic: function(){
-      var site = new Site({ loglevel: 'warn' })
+      var site = new (Site)
         , page = new Page({ site: site })
       ;
 
@@ -232,10 +232,10 @@ vows.describe('Page').addBatch({
           page.path = 'markdown-file' + extension;
 
           assert.equal(page.parser(), 'markdown');
-        });
 
-        page.path = 'markdown-file.md.mustache';
-        assert.equal(page.parser(), 'markdown');
+          page.path = 'markdown-file' + extension + '.mustache';
+          assert.equal(page.parser(), 'markdown');
+        });
       },
       'should know about textile extensions': function(page){
         page.path = 'textile-document.textile';
@@ -248,7 +248,7 @@ vows.describe('Page').addBatch({
 
           assert.equal(page.parser(), undefined);
         });
-      },
+      }
     },
     'when the `page.path` is NOT defined': function(page){
       assert.isUndefined(page.parser());
