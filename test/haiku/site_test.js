@@ -165,6 +165,8 @@ vows.describe('haiku.Site').addBatch({
             return callback(err, {});
           });
 
+          sinon.stub(site.logger, 'error');
+
           assert.throws(function(){
             site.read();
           });
