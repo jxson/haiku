@@ -7,7 +7,7 @@
     "Jason Campbell <jason@borderstylo.com>"
   ],
   "contributers": [
-    "Dan Yoder <dyoder@borderstylo.com> http://twitter.com/dyoder", 
+    "Dan Yoder <dyoder@borderstylo.com> http://twitter.com/dyoder",
     "Nikhil Ratan <nratan@bordestylo.com>"
   ],
   "licenses": [ {"type": "MIT"} ],
@@ -31,7 +31,8 @@
     "stextile": "0.0.8",
     "wrench": "1.1.0",
     "colors": "0.5.0",
-    "mime": "1.2.3"
+    "mime": "1.2.3",
+    "knox": "0.0.9"
   },
   "devDependencies": {
     "docco": "0.3.0",
