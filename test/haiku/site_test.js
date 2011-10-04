@@ -48,6 +48,10 @@ vows.describe('haiku.Site').addBatch({
       '`baseURL` should be "/"': function(options){
         assert.ok(options.baseURL);
         assert.equal(options.baseURL, '/');
+      },
+      '`defaultTemplateEngine` should be "mustache"': function(options){
+        assert.ok(options.defaultTemplateEngine);
+        assert.equal(options.defaultTemplateEngine, 'mustache');
       }
     },
     '*default* `directories`': {
