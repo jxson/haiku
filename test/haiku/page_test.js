@@ -256,7 +256,7 @@ vows.describe('Page').addBatch({
   },
   '#renderWithoutLayout(attributes)': {
     topic: function(){
-      var site = new Site({ loglevel: 'warn' })
+      var site = new Site
         , page = new Page({ site: site })
       ;
 
