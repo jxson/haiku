@@ -49,6 +49,54 @@ vows.describe('Page').addBatch({
       }
     }
   },
+  '.extract(data)': {
+    'when there is *NOT* an excerpt': {
+      topic: function(){
+        var data = [
+          '---',
+          'title:',
+          '---'
+        ].join('\n');
+
+        return Page.extract(data);
+      },
+      'should have attributes': function(extract){
+        assert.isObject(extract.attributes);
+      },
+      'should have a template': function(extract){
+        assert.isString(extract.template);
+      },
+      'should have an excerpt attribute': function(extract){
+        assert.isString(extract.attributes.excerpt);
+        assert.equal(extract.attributes.excerpt, '');
+      }
+    },
+    'when there is an excerpt': {
+    	topic: function(){
+        var data = [
+          '---',
+          'title: ',
+          '---',
+          'This is the excerpt!',
+          '---',
+          'Content here'
+        ].join('\n');
+
+        return Page.extract(data);
+     },
+     'should have attributes': function(extract){
+        assert.isObject(extract.attributes);
+      },
+      'should have a template': function(extract){
+        assert.isString(extract.template);
+      },
+      'should have an excerpt attribute': function(extract){
+        assert.isString(extract.attributes.excerpt);
+        assert.equal(extract.attributes.excerpt, 'Content here');
+      }
+     
+    },
+  },
   '#name()': {
     topic: function(){
       var site = new Site({ loglevel: 'warn' })

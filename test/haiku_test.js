@@ -13,4 +13,5 @@ vows.describe('haiku').addBatch({
       assert.isFunction(haiku.Server);
     }
   }
+  }
 }).export(module);
