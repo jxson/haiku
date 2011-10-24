@@ -39,6 +39,24 @@ vows.describe('Collection').addBatch({
       assert.equal(collection.basename(), path.basename(collection.path));
     }
   },
+  '#cssID()': {
+    topic: function(){
+      var _path = path.resolve(path.join('examples', 'basic'))
+        , site = new Site({ root: _path });
+      ;
+
+      return new Collection({
+        path: path.join(_path, 'content', 'posts'),
+        site: site
+      });
+    },
+    'should exist': function(collection){
+      assert.isFunction(collection.cssID);
+    },
+    'should return a css safe version of the name': function(collection){
+      assert.equal(collection.cssID(), 'collection-posts');
+    }
+  },
   '#read()': {
     topic: function(){
       return new(Collection);
@@ -298,6 +316,13 @@ vows.describe('Collection').addBatch({
 
         assert.include(content.toJSON(), 'collections');
         assert.isObject(content.toJSON().collections);
+      },
+      'should have a cssID': function(site){
+        var posts = site.folder.content.folder.posts;
+
+        assert.include(posts.toJSON(), 'cssID');
+        assert.isString(posts.toJSON().cssID);
+        assert.equal(posts.toJSON().cssID, 'collection-posts')
       }
     },
     'pages': {
