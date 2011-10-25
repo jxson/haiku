@@ -161,6 +161,8 @@ vows.describe('haiku.Site').addBatch({
             , sinon = this
           ;
 
+          sinon.stub(site.logger, 'error');
+
           sinon.stub(fs, 'stat', function(_path, callback){
             return callback(err, {});
           });
