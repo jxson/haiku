@@ -3,6 +3,7 @@ var vows = require('vows')
   , path = require('path')
   , Site = require('../../lib/haiku/site')
   , Page = require('../../lib/haiku/page')
+  , Collection = require('../../lib/haiku/collection')
   , _ = require('underscore')
   , events = require('events')
   , sinon = require('sinon')
@@ -131,6 +132,53 @@ vows.describe('Page').addBatch({
       page.path = 'foo.textile';
 
       assert.equal(page.buildPath(), 'foo.html');
+    }
+  },
+  '#cssID()': {
+    topic: function(){
+      var _path = path.resolve(path.join('examples', 'basic'))
+        , site = new Site({ root: _path })
+        , page = new Page({ site: site })
+      ;
+
+      return page;
+    },
+    'should exist': function(page){
+      assert.isFunction(page.cssID);
+    },
+    'when the page is part of the content collection': function(page){
+      // page.path = path.join(page.site.root, 'about-this-site.textile');
+      // page.parent = new Collection({ path: page.site.directories.content });
+
+      var _path = path.resolve(path.join('examples', 'basic'))
+        , site = new Site({ root: _path })
+        , collection = new Collection({
+            path: path.join(_path, 'content')
+          })
+        , page = new Page({
+            site: site,
+            parent: collection,
+            path: path.join(_path, 'content', 'about-this-site.textile')
+          })
+      ;
+
+      assert.equal(page.cssID(), 'about-this-site');
+    },
+    'when the page is part of other collections': function(){
+      var _path = path.resolve(path.join('examples', 'basic'))
+        , site = new Site({ root: _path })
+        , collection = new Collection({
+            site: site,
+            path: path.join(_path, 'content', 'posts')
+          })
+        , page = new Page({
+            site: site,
+            parent: collection,
+            path: path.join(_path, 'content', 'posts', 'first.md')
+          })
+      ;
+
+      assert.equal(page.cssID(), 'posts-first');
     }
   },
   '#url()': {
@@ -291,8 +339,25 @@ vows.describe('Page').addBatch({
   },
   '#toJSON()': {
     topic: function(){
-      var site = new Site({ loglevel: 'warn' })
-        , page = new Page({ site: site })
+      // var site = new Site({ loglevel: 'warn' })
+      //   , page = new Page({
+      //       path: path.normalize(path.join())
+      //       site: site
+      //     })
+      // ;
+      //
+
+
+      var _path = path.resolve(path.join('examples', 'basic'))
+        , site = new Site({ root: _path })
+        , collection = new Collection({
+            path: path.join(_path, 'content')
+          })
+        , page = new Page({
+            site: site,
+            parent: collection,
+            path: path.join(_path, 'content', 'about-this-site')
+          })
       ;
 
       page.template = 'blah!';
@@ -317,6 +382,11 @@ vows.describe('Page').addBatch({
 
       assert.include(json, 'content');
       assert.equal(json.content(), page.template);
+    },
+    'should include the cssID property': function(page){
+      var json = page.toJSON();
+
+      assert.include(json, 'cssID');
     }
   },
   '#render()': {
