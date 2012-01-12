@@ -4,17 +4,13 @@ Haiku is a work in progress and aims to be a static site generator which is high
 
 All content is written in simple text files using either markdown or textile combined with Mustache.
 
-Get started by [reviewing the wiki](https://github.com/borderstylo/haiku/wiki)
-
 # Dependencies
 
 You need node >= 0.4.10 and npm
 
 # Development
 
-For the time being haiku is using the [discount c lib](https://github.com/Orc/discount) to process markdown, we are hoping to change this in the near future, for now you will have to make sure you have the library installed before proceeding.
-
-Once you have discount installed you will need to make sure you have all of the npm packages by running:
+get set up:
 
     npm install
     npm link # wire up the bin
@@ -25,11 +21,11 @@ Once you do that the haiku command line will be available, you can check it out 
 
 To build a haiku site use:
 
-    haiku build --config ./examples/basic/site.conf
+    haiku build
 
 To run a server that lets you see your work locally:
 
-    haiku server --config ./examples/basic/site.conf
+    haiku server
 
 More is coming this is just a proof of concept at this stage
 
