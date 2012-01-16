@@ -18,7 +18,6 @@ plugin.attach = function(){
     if (app.commander.args.length === 0) {
       process.stdout.write(app.commander.helpInformation());
       app.commander.emit('--help');
-      process.exit(0);
     }
   });
 };
