@@ -1,21 +1,13 @@
 #!/usr/bin/env node
 
-var sys  = require('sys')
-  , cli = require('../lib/haiku/cli')
-  , _ = require('underscore')
-  , argv = require('optimist')
-      .alias('source', 'root')
-      .alias('h', 'help')
-      .alias('c', 'config')
-      .argv
-  , action = argv._[0]
+var haiku = require('../lib/haiku/')
+  , app = haiku.app
 ;
 
-// if we've specified a valid command, run it,
-// otherwise display the help message
+app.use(haiku.plugins.cli);
 
-// commands will display their own help if the
-// help flags are passed in as options
-
-if (cli[action]) return cli[action](argv);
-else return cli.showHelp();
+if (require.main === module) {
+  app.init(function(err){
+    if (err) throw err;
+  });
+}
