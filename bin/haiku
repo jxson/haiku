@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var haiku = require('../lib/haiku/')
-  , app = haiku.app
+  , app = new haiku.App()
 ;
 
 app.use(haiku.plugins.cli);
