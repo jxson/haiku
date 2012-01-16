@@ -37,10 +37,9 @@ describe('haiku', function(){
 
       command.stdout.should.not.be.empty;
       command.stdout.should.include('Usage: haiku [options] [command]')
-
-      _(commands).each(function(plugin, name){
-        command.stdout.should.include(name)
-      });
+      command.stdout.should.include('build');
+      command.stdout.should.include('deploy');
+      command.stdout.should.include('server');
     });
   }); // describe('# with no command or options', ...
 
@@ -68,15 +67,11 @@ describe('haiku', function(){
     });
 
     it('should show the default help', function(){
-      var commands = utile.requireDirLazy(haiku.directories.commands)
-      ;
-
       command.stdout.should.not.be.empty;
       command.stdout.should.include('Usage: haiku [options] [command]')
-
-      _(commands).each(function(plugin, name){
-        command.stdout.should.include(name)
-      });
+      command.stdout.should.include('build');
+      command.stdout.should.include('deploy');
+      command.stdout.should.include('server');
     });
   }); // describe('--help', ...
 }); // describe('→ haiku', ...
