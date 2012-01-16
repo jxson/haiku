@@ -7,7 +7,7 @@ var should = require('should')
   , _ = require('underscore');
 ;
 
-describe('haiku', function(){
+describe('haiku # command', function(){
   var command
   ;
 
