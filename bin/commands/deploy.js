@@ -21,6 +21,9 @@
 // };
 
 var plugin = module.exports
+  , haiku = require('../../lib/haiku/index.js')
+  , utile = require('utile')
+  , _ = require('underscore')
 ;
 
 plugin.name = 'deploy command';
@@ -31,16 +34,35 @@ plugin.attach = function(){
   ;
 
   commander
-    .command('deploy [target]')
-    .description('deploy the site to the desired [target]')
-    .action(function(){
-      console.log('deploy action');
-    });
+    .description('deploy the site to [target] if defined')
+    .option('-c, --config [file]', 'Your haiku configuration file, defaults to .haiku (relative to the source dir)', String)
+    .option('-s, --source [dir]', 'Path to your haiku\'s root, defaults to the cwd', String)
+    .option('--stratagy <ftp|s3>', 'The deployment strategy to use (s3|ftp)', String)
+    .option('--s3-bucket <bucket name>', 'S3 bucket', String)
+    .option('--aws-key <key>', 'AWS key', String)
+    .option('--aws-secret <sectret>', 'AWS secret', String)
+    .action(function(cmd){
+      // console.log('action with options', cmd);
 
-    // '   --source,--root PATH  # Path to your haiku\'s root, defaults to the cwd',
-    // '   --config,-c PATH      # Path to your haiku config file, defaults to the cwd/config/haiku.js',
-    // '   --key KEY             # Your s3 api key',
-    // '   --secret SECRET       # Your s3 secret',
-    // '   --bucket BUCKET       # The bucket to beam your site to',
-    //
+      // TODO: rename `root` to `source`
+      var options = { config: cmd.config
+          , root: cmd.source
+          , stratagy: cmd.stratagy
+          , s3Bucket: cmd.s3Bucket
+          , awsKey: cmd.awsKey
+          , awsSecret: cmd.awsSecret
+          }
+      ;
+
+      console.log('deploy options', options);
+      
+      app.site.
+      
+      // var site = new haiku.Site(options);
+      //
+      // site.on('ready', function(){
+      //   console.log('site is ready');
+      //   site.deploy();
+      // }).read();
+    });
 };

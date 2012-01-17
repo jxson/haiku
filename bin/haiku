@@ -5,6 +5,7 @@ var haiku = require('../lib/haiku/')
 ;
 
 app.use(haiku.plugins.cli);
+app.use(haiku.plugins.site);
 
 if (require.main === module) {
   app.init(function(err){
