@@ -22,7 +22,6 @@
 
 var plugin = module.exports
   , haiku = require('../../lib/haiku/index.js')
-  , utile = require('utile')
   , _ = require('underscore')
 ;
 
@@ -34,10 +33,11 @@ plugin.attach = function(){
   ;
 
   commander
+    .command('deploy')
     .description('deploy the site to [target] if defined')
     .option('-c, --config [file]', 'Your haiku configuration file, defaults to .haiku (relative to the source dir)', String)
     .option('-s, --source [dir]', 'Path to your haiku\'s root, defaults to the cwd', String)
-    .option('--stratagy <ftp|s3>', 'The deployment strategy to use (s3|ftp)', String)
+    .option('--strategy <ftp|s3>', 'The deployment strategy to use (s3|ftp)', String)
     .option('--s3-bucket <bucket name>', 'S3 bucket', String)
     .option('--aws-key <key>', 'AWS key', String)
     .option('--aws-secret <sectret>', 'AWS secret', String)
@@ -47,7 +47,7 @@ plugin.attach = function(){
       // TODO: rename `root` to `source`
       var options = { config: cmd.config
           , root: cmd.source
-          , stratagy: cmd.stratagy
+          , strategy: cmd.strategy
           , s3Bucket: cmd.s3Bucket
           , awsKey: cmd.awsKey
           , awsSecret: cmd.awsSecret
@@ -55,14 +55,7 @@ plugin.attach = function(){
       ;
 
       console.log('deploy options', options);
-      
-      app.site.
-      
-      // var site = new haiku.Site(options);
-      //
-      // site.on('ready', function(){
-      //   console.log('site is ready');
-      //   site.deploy();
-      // }).read();
+
+      haiku.site(options).deploy();
     });
 };
