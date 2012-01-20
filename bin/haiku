@@ -1,14 +1,45 @@
 #!/usr/bin/env node
 
 var haiku = require('../lib/haiku/')
-  , app = new haiku.App()
+  , argv = require('optimist').argv
+  , EE = require('events').EventEmitter
 ;
 
-app.use(haiku.plugins.cli);
-app.use(haiku.plugins.site);
+process.title = 'haiku'
 
-if (require.main === module) {
-  app.init(function(err){
-    if (err) throw err;
-  });
+console.log('argv', argv);
+
+// get the current command
+// if it's not in the command list show the help
+
+haiku.cli = new EE();
+haiku.cli.cmd = function(){
+  return argv._.shift() || 'default'
 }
+haiku.cli.start = function(){
+  console.log('this.cmd()', this.cmd());
+  this.emit(this.cmd())
+}
+// = {
+//   command: function(name, callback){
+//     haiku.cli.cmd = argv._.shift() || 'default'
+//     console.log('haiku.cli.cmd', haiku.cli.cmd);
+//     haiku
+//   }
+// }
+
+haiku.cli.on('default', function(){
+  console.log('default')
+});
+
+haiku.cli.start();
+
+
+// app.use(haiku.plugins.cli);
+// app.use(haiku.plugins.site);
+//
+// if (require.main === module) {
+//   app.init(function(err){
+//     if (err) throw err;
+//   });
+// }
