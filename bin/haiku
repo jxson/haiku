@@ -1,45 +1,21 @@
 #!/usr/bin/env node
 
-var haiku = require('../lib/haiku/')
-  , argv = require('optimist').argv
-  , EE = require('events').EventEmitter
+var haiku = require('../lib/haiku')
 ;
 
 process.title = 'haiku'
 
-console.log('argv', argv);
+haiku.cli.on('--help', function(){
+  console.log('here is some help');
+});
 
-// get the current command
-// if it's not in the command list show the help
+haiku.cli.on('--version', function(){
+  console.log('version');
+});
 
-haiku.cli = new EE();
-haiku.cli.cmd = function(){
-  return argv._.shift() || 'default'
-}
-haiku.cli.start = function(){
-  console.log('this.cmd()', this.cmd());
-  this.emit(this.cmd())
-}
-// = {
-//   command: function(name, callback){
-//     haiku.cli.cmd = argv._.shift() || 'default'
-//     console.log('haiku.cli.cmd', haiku.cli.cmd);
-//     haiku
-//   }
-// }
-
-haiku.cli.on('default', function(){
-  console.log('default')
+process.on("uncaughtException", function(err){
+  console.error("Uncaught exception: " + err.stack);
+  process.exit(1);
 });
 
 haiku.cli.start();
-
-
-// app.use(haiku.plugins.cli);
-// app.use(haiku.plugins.site);
-//
-// if (require.main === module) {
-//   app.init(function(err){
-//     if (err) throw err;
-//   });
-// }
