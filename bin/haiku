@@ -1,16 +1,34 @@
 #!/usr/bin/env node
 
 var haiku = require('../lib/haiku')
+  , package = require('../package.json')
 ;
 
 process.title = 'haiku'
 
 haiku.cli.on('--help', function(){
-  console.log('here is some help');
+  console.log('');
+  console.log('usage: haiku [options] <command>');
+  console.log();
+  console.log('options:');
+  console.log('');
+  console.log('   -h, --help      output usage information');
+  console.log('   -v, --version   output the version number');
+  console.log('');
+  console.log('examples:');
+  console.log('');
+  console.log('   ⚡ haiku --help');
+  console.log('   ⚡ haiku --version');
+  console.log('');
+  console.log('commands:');
+  console.log('');
+  console.log('   deploy  beam your site to the internet');
+  console.log('');
+  console.log('see "haiku <command> --help" for information on a specific command');
 });
 
 haiku.cli.on('--version', function(){
-  console.log('version');
+  console.log(package.version);
 });
 
 process.on("uncaughtException", function(err){
