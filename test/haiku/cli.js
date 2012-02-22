@@ -1,14 +1,37 @@
 var assert = require('assert')
-  , haiku = require('../../lib/haiku')
+  , cli = require('../../lib/haiku/cli')
 ;
 
-describe('haiku.cli', function(){
-  it('should be a function', function(){
-    assert.equal(typeof haiku.cli, 'function');
+assert.isFunction = function(fn, message){
+  if (typeof(fn) !== 'function') {
+    assert.fail(typeof(fn), 'function', message, 'typeof', assert.isFunction);
+  }
+}
+
+assert.isObject = function(obj, message){
+  if (typeof(obj) !== 'object') {
+    assert.fail(obj, 'object', message, '=== typeof', assert.isObject);
+  }
+}
+
+describe('cli', function(){
+  it('should be a CLI instance', function(){
+    assert.isObject(cli, 'cli is NOT an object');
+    assert.isFunction(cli.command, 'cli.command() is NOT a method');
+    assert.isFunction(cli.option, 'cli.option() is NOT a method');
+    assert.isFunction(cli.parse, 'cli.parse() is NOT a method');
   });
 
   it('should have a CLI class constructor', function(){
-    assert.equal(typeof haiku.cli.CLI, 'function');
-    assert.ok(new(haiku.cli.CLI) instanceof CLI);
+    var instance
+    ;
+
+    assert.equal(typeof cli.CLI, 'function');
+
+    instance = new cli.CLI();
+
+    assert.isFunction(instance.command, 'instance.command() is NOT a method');
+    assert.isFunction(instance.option, 'instance.option() is NOT a method');
+    assert.isFunction(instance.parse, 'instance.parse() is NOT a method');
   });
-}); // describe('haiku.cli', ...
+}); // describe('cli', ...
