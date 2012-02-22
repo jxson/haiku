@@ -1,5 +1,6 @@
 var assert = require('assert')
   , cli = require('../../lib/haiku/cli')
+  , path = require('path')
 ;
 
 assert.isFunction = function(fn, message){
@@ -34,4 +35,35 @@ describe('cli', function(){
     assert.isFunction(instance.option, 'instance.option() is NOT a method');
     assert.isFunction(instance.parse, 'instance.parse() is NOT a method');
   });
+
+  describe('.option(params)', function(){
+    var instance
+    ;
+
+    beforeEach(function(){
+      instance = new cli.CLI();
+    });
+
+    describe('with valid params', function(){
+      it('should add the option to the internal options object', function(){
+        var params = { flag: 'config'
+          , alias: 'c'
+          , default: '.haiku/config.js'
+          , type: path
+        };
+
+        instance.option(params);
+
+        assert.equal(instance.options_.length, 1, 'bad length!');
+      });
+    }); // describe('with valid <params>', ...
+
+    describe('without params', function(){
+      it('should throw an invalid arguments error', function(){
+        assert.throws(function(){
+          instance.option();
+        }, /invalid arguments for cli.option()/);
+      });
+    }); // describe('without <options>', ...
+  }); // describe('options', ...
 }); // describe('cli', ...
