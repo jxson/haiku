@@ -58,7 +58,7 @@ describe('cli', function(){
 
         assert.equal(instance.options_.length, 1, 'bad length!');
       });
-    }); // describe('with valid <params>', ...
+    }); // describe('with valid params', ...
 
     describe('without params', function(){
       it('should throw an invalid arguments error', function(){
@@ -66,6 +66,62 @@ describe('cli', function(){
           instance.option();
         }, /invalid arguments for cli.option()/);
       });
-    }); // describe('without <options>', ...
-  }); // describe('options', ...
+    }); // describe('without params', ...
+  }); // describe('.option(params)', ...
+
+  describe('.command(route)', function(){
+    it('should return the cli instance ', function(){
+
+    });
+
+    it('should turn a string path into a regular expression', function(){
+
+    });
+
+    it('should match dots in paths ', function(){
+
+    });
+
+    it('should throw if the route isn\'t a string or regex', function(){
+
+    });
+
+    describe('regex routes', function(){
+      it('should allow regex route', function(){
+
+      });
+
+      it('should make regex captures available', function(){
+
+      });
+    }); // describe('regex routes', ...
+
+    describe('named params', function(){
+      it('should expose named params', function(){
+
+      });
+
+      it('should match dots (.) as part of a named param', function(){
+
+      });
+
+      it('should match a dot (.) outside of a named param', function(){
+
+      });
+    }); // describe('named params', ...
+
+    describe('splats', function(){
+      it('should support single splats', function(){
+
+      });
+
+      it('should support multiple splats', function(){
+
+      });
+
+      it('should support mixing named params and splats', function(){
+
+      });
+    }); // describe('splats', ...
+  }); // describe('.command(route)', ...
 }); // describe('cli', ...
