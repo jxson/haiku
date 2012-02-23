@@ -21,6 +21,7 @@ describe('cli', function(){
     assert.isFunction(cli.command, 'cli.command() is NOT a method');
     assert.isFunction(cli.option, 'cli.option() is NOT a method');
     assert.isFunction(cli.parse, 'cli.parse() is NOT a method');
+    assert.isFunction(cli.dispatch, 'cli.dispatch() is NOT a method');
   });
 
   it('should have a CLI class constructor', function(){
@@ -34,6 +35,7 @@ describe('cli', function(){
     assert.isFunction(instance.command, 'instance.command() is NOT a method');
     assert.isFunction(instance.option, 'instance.option() is NOT a method');
     assert.isFunction(instance.parse, 'instance.parse() is NOT a method');
+    assert.isFunction(instance.dispatch, 'instance.dispatch() is NOT a method');
   });
 
   describe('.option(params)', function(){
