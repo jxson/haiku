@@ -1,6 +1,7 @@
 var assert = require('assert')
   , cli = require('../../lib/haiku/cli')
   , path = require('path')
+  , instance
 ;
 
 assert.isFunction = function(fn, message){
@@ -39,11 +40,14 @@ describe('cli', function(){
   });
 
   describe('.option(params)', function(){
-    var instance
-    ;
-
     beforeEach(function(){
       instance = new cli.CLI();
+    });
+
+    it('should return the cli instance ', function(){
+      assert.equal(instance.option({ flag: 'foo' })
+      , instance
+      , 'does NOT return the CLI instance');
     });
 
     describe('with valid params', function(){
@@ -71,57 +75,68 @@ describe('cli', function(){
 
   describe('.command(route)', function(){
     it('should return the cli instance ', function(){
+      assert.equal(cli.command('foo')
+      , cli
+      , 'does NOT return the CLI instance');
+    });
 
+    it('adds to .routes_ object', function(){
+      cli.command('foo');
+
+      assert.ok(cli.routes_.foo, 'route wasn\'t added');
     });
 
     it('should turn a string path into a regular expression', function(){
+      cli.command('bar');
 
+      assert.equal(/bar/.constructor, RegExp);
+      assert.ok(false)
     });
 
-    it('should match dots in paths ', function(){
-
-    });
-
-    it('should throw if the route isn\'t a string or regex', function(){
-
-    });
-
-    describe('regex routes', function(){
-      it('should allow regex route', function(){
-
-      });
-
-      it('should make regex captures available', function(){
-
-      });
-    }); // describe('regex routes', ...
-
-    describe('named params', function(){
-      it('should expose named params', function(){
-
-      });
-
-      it('should match dots (.) as part of a named param', function(){
-
-      });
-
-      it('should match a dot (.) outside of a named param', function(){
-
-      });
-    }); // describe('named params', ...
-
-    describe('splats', function(){
-      it('should support single splats', function(){
-
-      });
-
-      it('should support multiple splats', function(){
-
-      });
-
-      it('should support mixing named params and splats', function(){
-
-      });
-    }); // describe('splats', ...
+    // it('should match dots in paths ', function(){
+    //
+    // });
+    //
+    // it('should throw if the route isn\'t a string or regex', function(){
+    //
+    // });
+    //
+    // describe('regex routes', function(){
+    //   it('should allow regex route', function(){
+    //
+    //   });
+    //
+    //   it('should make regex captures available', function(){
+    //
+    //   });
+    // }); // describe('regex routes', ...
+    //
+    // describe('named params', function(){
+    //   it('should expose named params', function(){
+    //
+    //   });
+    //
+    //   it('should match dots (.) as part of a named param', function(){
+    //
+    //   });
+    //
+    //   it('should match a dot (.) outside of a named param', function(){
+    //
+    //   });
+    // }); // describe('named params', ...
+    //
+    // describe('splats', function(){
+    //   it('should support single splats', function(){
+    //
+    //   });
+    //
+    //   it('should support multiple splats', function(){
+    //
+    //   });
+    //
+    //   it('should support mixing named params and splats', function(){
+    //
+    //   });
+    // }); // describe('splats', ...
   }); // describe('.command(route)', ...
 }); // describe('cli', ...

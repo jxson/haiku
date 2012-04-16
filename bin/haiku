@@ -1,52 +1,55 @@
 #!/usr/bin/env node
 
 var haiku = require('../lib/haiku')
+  , cli = require('../lib/haiku/cli')
   , package = require('../package.json')
   , path = require('path')
-  , utile = require('utile')
-  , options = { version: package.version }
-  , commands = utile.requireDir(path.join(__dirname, 'commands'))
 ;
 
 process.title = 'haiku'
 
 process.on("uncaughtException", function(err){
   console.error("Uncaught exception: " + err.stack);
+
   process.exit(1);
 });
 
-haiku.cli(options, function(cli){
-  cli.alias('c', 'config');
+// Needs a way to display a version
 
-  cli.on('--help', function(){
-    console.log('');
-    console.log('usage: haiku [options] <command>');
-    console.log();
-    console.log('options:');
-    console.log('');
-    console.log('   -h, --help      output usage information');
-    console.log('   -v, --version   output the version number');
-    console.log('');
-    console.log('examples:');
-    console.log('');
-    console.log('   $ haiku --help');
-    console.log('   $ haiku --version');
-    console.log('');
-    console.log('commands:');
-    console.log('');
-    console.log('   deploy  beam your site to the internet');
-    console.log('');
-    console.log('see "haiku <command> --help" for information on a command');
-    console.log('');
-  });
-
-  // default command shows the help
-  cli.on('', function(){
-    cli.emit('--help');
-  });
-
-  // Loop through the commands and attach them to the cli
-  Object.keys(commands).forEach(function(key){ commands[key](cli); });
-
-  // TODO: need a way register default for non-existent commands
+cli.option('config', { alias: 'c'
+  , default: '.haiku/config.js'
+  , type: path
 });
+
+cli.command('help', function(){
+  console.log('');
+  console.log('usage: haiku [options] <command>');
+  console.log();
+  console.log('options:');
+  console.log('');
+  console.log('   -h, --help      output usage information');
+  console.log('   -v, --version   output the version number');
+  console.log('');
+  console.log('examples:');
+  console.log('');
+  console.log('   $ haiku --help');
+  console.log('   $ haiku --version');
+  console.log('');
+  console.log('commands:');
+  console.log('');
+  console.log('   deploy  beam your site to the internet');
+  console.log('');
+  console.log('see "haiku <command> --help" for information on a command');
+  console.log('');
+});
+
+cli.command('', function(){
+  this.dispatch('help');
+})
+
+cli.parse(process.argv);
+
+//   // Loop through the commands and attach them to the cli
+//   Object.keys(commands).forEach(function(key){ commands[key](cli); });
+//
+//   // TODO: need a way register default for non-existent commands
