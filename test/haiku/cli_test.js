@@ -20,14 +20,14 @@ vows.describe('haiku/cli').addBatch({
         assert.isObject(haiku.Server.run.args[0][0]);
       }),
       'with the `help` option': sinon.test(function(cli){
-        var sys = require('sys');
+        var util = require('util');
 
         this.stub(sys, 'puts');
 
         cli.server({ help: true });
 
-        assert.ok(sys.puts.called);
-        assert.equal(sys.puts.args[0], cli.help.server);
+        assert.ok(util.puts.called);
+        assert.equal(util.puts.args[0], cli.help.server);
       }),
       'with the `config` option': sinon.test(function(cli){
         this.stub(haiku.Server, 'run');
