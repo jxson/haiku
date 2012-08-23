@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/spire-io/haiku.png)](http://travis-ci.org/spire-io/haiku)
 # Haiku
 
 Haiku is a work in progress and aims to be a static site generator which is highly configurable, expandable, and easy to use.
