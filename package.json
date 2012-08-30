@@ -1,0 +1,35 @@
+{
+  "name": "haiku",
+  "version": "0.1.0",
+  "description": "haiku is a static site generator and way to render markdown files into fully formed webpages.",
+  "keywords": [
+    "static site generator",
+    "cms",
+    "blog"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jxson/haiku",
+  "bugs": { "url" : "https://github.com/jxson/haiku/issues" },
+  "author": "Jason Campbell <jason@js.la> (http://twitter.com/jxson)",
+  "contributors": [
+    "Dan Yoder <dyoder@spire.io> (http://twitter.com/dyoder)",
+    "Nikhil Ratan <nratan@spire.io>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jxson/haiku.git"
+  },
+  "files": [ "bin/haiku",
+    "index.js"
+  ],
+  "bin": { "haiku": "./bin/haiku" },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/**/*.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "1.4"
+  }
+}
