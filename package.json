@@ -1,5 +1,5 @@
 { "name": "haiku"
-, "version": "0.0.0"
+, "version": "0.0.1"
 , "description": "A work in progress, rough around the edges, static site generator."
 , "bugs": { "url" : "https://github.com/spire-io/haiku/issues" }
 , "homepage": "https://github.com/spire-io/haiku"
