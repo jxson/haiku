@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var sys  = require('sys')
+var util = require('util')
   , cli = require('../lib/haiku/cli')
   , _ = require('underscore')
   , argv = require('optimist')
