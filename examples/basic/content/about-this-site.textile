@@ -1,9 +1,0 @@
----
-title: About us
-foo: bar
-layout: default
----
-
-h1. Blah blah {{ title }}
-
-some paragraph
