@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+var cli = require('command-router')
+  , haiku = require('../')
+
+// CLI options and defaults
+cli.option({ name: 'port'
+, alias: 'p'
+, default: process.env.PORT || 8080
+, type: Number
+})
+
+cli.option({ name: 'host'
+, alias: 'h'
+, default: process.env.HOST || '0.0.0.0'
+, type: String
+})
+
+cli.option({ name: 'log-level'
+, alias: 'l'
+, default: 'trace'
+, type: String
+})
+
+// CLI commands
+cli.command('server', function(){
+  haiku
+  .server(cli.options)
+  .listen(cli.options.port, cli.options.host)
+})
+
+
+// Kick the whole thing off...
+cli.parse(process.argv)

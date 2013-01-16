@@ -1,0 +1,42 @@
+{
+  "name": "haiku",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "A work in progress, rough around the edges, static site generator",
+  "keywords": [
+    "markdown",
+    "static",
+    "blog",
+    "jekyll"
+  ],
+  "homepage": "http://haiku.io",
+  "bugs": "http://github.com/jxson/haiku/issues",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jxson/haiku.git"
+  },
+  "author": "Jason Campbell <jason@js.la> (http://artifact.sh)",
+  "contributors": [
+    "Dan Yoder <danielyoder@gmail.com> (http://rocket.ly)",
+    "Nikhil Ratan <nratan@spire.io>"
+  ],
+  "preferGlobal": true,
+  "bin": "./bin/haiku",
+  "main": "index.js",
+  "directories": {
+    "doc": "./doc",
+    "man": "./man",
+    "lib": "./lib",
+    "bin": "./bin"
+  },
+  "scripts": {
+    "test": "mocha test/test-*.js --reporter tap"
+  },
+  "engines": {
+    "node": ">=0.6.10"
+  },
+  "dependencies": {
+    "command-router": "0.0.3"
+  },
+  "devDependencies": {}
+}
