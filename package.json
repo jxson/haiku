@@ -37,7 +37,9 @@
   },
   "dependencies": {
     "command-router": "0.0.3",
-    "glob": "3.1.14"
+    "glob": "3.1.14",
+    "graceful-fs": "~1.1.14",
+    "front-matter": "~0.1.1"
   },
   "devDependencies": {}
 }

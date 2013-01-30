@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var cli = require('command-router')
-  , haiku = require('../')
+  , server = require('../lib/server')
 
 // CLI options and defaults
 cli.option({ name: 'port'
@@ -24,9 +24,8 @@ cli.option({ name: 'log-level'
 
 // CLI commands
 cli.command('server', function(){
-  haiku
-  .server(cli.options)
-  .listen(cli.options.port, cli.options.host)
+  server(cli.options)
+  // .listen(cli.options.port, cli.options.host)
 })
 
 
