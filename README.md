@@ -1,6 +1,5 @@
-[![build status](https://secure.travis-ci.org/jxson/haiku.png)](http://travis-ci.org/jxson/haiku)
 
-# haiku
+# haiku [![Build Status](https://travis-ci.org/jxson/haiku.png?branch=master)](https://travis-ci.org/jxson/haiku)
 
 # Example
 
