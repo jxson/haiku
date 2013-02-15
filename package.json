@@ -18,7 +18,7 @@
   "author": "Jason Campbell <jason@js.la> (http://artifact.sh)",
   "contributors": [
     "Dan Yoder <danielyoder@gmail.com> (http://rocket.ly)",
-    "Nikhil Ratan <nratan@spire.io>"
+    "Nikhil Ratan"
   ],
   "preferGlobal": true,
   "bin": "./bin/haiku",
@@ -30,7 +30,7 @@
     "bin": "./bin"
   },
   "scripts": {
-    "test": "mocha test/test-*.js --reporter tap"
+    "test": "mocha test/**/test-*.js --reporter tap"
   },
   "engines": {
     "node": ">=0.6.10"
@@ -38,9 +38,11 @@
   "dependencies": {
     "command-router": "0.0.3",
     "glob": "3.1.14",
-    "graceful-fs": "~1.1.14",
-    "front-matter": "~0.1.1",
+    "graceful-fs": "1.1.14",
+    "front-matter": "0.1.1",
     "beardo": "0.0.10"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "~1.8.1"
+  }
 }
