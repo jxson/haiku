@@ -1,8 +1,6 @@
 
 var haiku = require('../../lib')
-  , http = require('http')
   , assert = require('assert')
-  , path = require('path')
   , server = require('../support/server')
   , request = require('supertest')
 
@@ -29,6 +27,6 @@ describe('GET 404 not found', function(){
 })
 
 describe('GET 406 not acceptable', function(){
-  it('returns 406 not found')
-  it('has content-length')
+  it('returns 406 not not acceptable')
+  it('returns a meaningful body')
 })
