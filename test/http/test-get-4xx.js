@@ -32,5 +32,3 @@ describe('GET 406 not acceptable', function(){
   it('returns 406 not found')
   it('has content-length')
 })
-
-// responds 404 for non-existing content
