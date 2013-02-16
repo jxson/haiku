@@ -16,6 +16,10 @@ describe('haiku', function(){
     assert.equal(typeof haiku.configure, 'function')
   })
 
+  it('exports haiku.has()', function(){
+    assert.equal(typeof haiku.has, 'function')
+  })
+
   describe('.defaults property', function(){
     it('exists', function(){
       assert.ok(haiku.defaults)
