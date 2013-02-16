@@ -43,6 +43,7 @@
     "beardo": "0.0.10"
   },
   "devDependencies": {
-    "mocha": "~1.8.1"
+    "mocha": "~1.8.1",
+    "supertest": "~0.5.1"
   }
 }
