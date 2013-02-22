@@ -10,7 +10,7 @@ describe('haiku.read(name, callback)', function(){
     haiku.configure({ root: root })
   })
 
-  it('reads all content', function(done){
+  xit('reads all content', function(done){
     haiku.read(function(err, page){
       if (err) return done(err)
 
@@ -24,6 +24,12 @@ describe('haiku.read(name, callback)', function(){
       assert.ok(haiku.has('/nested/baz.html'))
       assert.ok(haiku.has('/nested/quz.html'))
     })
+  })
+
+  xit('emits content when callback is missing', function(done){
+    haiku
+    .on('content', done)
+    .read()
   })
 })
 
