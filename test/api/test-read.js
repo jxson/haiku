@@ -10,6 +10,18 @@ describe('haiku.read(name, callback)', function(){
     haiku.configure({ root: root })
   })
 
+  it('reads individual pages', function(done){
+    haiku.read('foo.md', function(err, page){
+      if (err) return done(err)
+
+      assert.ok(page)
+      assert.ok(haiku.has('/foo.html'))
+      assert.equal(page.name, 'foo.md')
+
+      done()
+    })
+  })
+
   xit('reads all content', function(done){
     haiku.read(function(err, page){
       if (err) return done(err)
