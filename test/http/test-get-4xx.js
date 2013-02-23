@@ -18,7 +18,7 @@ describe('GET 404 not found', function(){
     .end(done)
   })
 
-  xit('returns a meaningful body', function(done){
+  it('returns a meaningful body', function(done){
     request(server)
     .get('/should-404')
     .expect('content-type', 'text/plain')
