@@ -22,7 +22,7 @@ describe('haiku.read(name, callback)', function(){
     })
   })
 
-  xit('reads all content', function(done){
+  it('reads all content', function(done){
     haiku.read(function(err, page){
       if (err) return done(err)
 
@@ -35,6 +35,8 @@ describe('haiku.read(name, callback)', function(){
       assert.ok(haiku.has('/bar.html'))
       assert.ok(haiku.has('/nested/baz.html'))
       assert.ok(haiku.has('/nested/quz.html'))
+
+      done()
     })
   })
 
@@ -44,14 +46,3 @@ describe('haiku.read(name, callback)', function(){
     .read()
   })
 })
-
-
-// haiku
-// .on('content', function(){
-//   _listen.apply(module.exports, args)
-// })
-// .read('content')
-//
-// haiku.read('content', function(err, content){
-//
-// })

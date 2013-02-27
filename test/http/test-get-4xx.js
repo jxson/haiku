@@ -1,16 +1,10 @@
 
 var haiku = require('../../lib')
   , assert = require('assert')
-  , app = require('../support/server')
+  , server = require('../support/server')
   , request = require('supertest')
 
 describe('GET 404 not found', function(){
-  var server
-
-  before(function(done){
-    server = app.listen(1337, done)
-  })
-
   it('returns 404 not found', function(done){
     request(server)
     .get('/should-404')
