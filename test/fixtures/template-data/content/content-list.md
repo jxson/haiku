@@ -1,5 +1,5 @@
 = yaml =
-title: An example index
+title: iterates content
 = yaml =
 
 {{#content}}

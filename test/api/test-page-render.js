@@ -21,8 +21,6 @@ describe('page.render(context, callback)', function(){
 
         var $ = html.load(content)
 
-        // console.log('content', content)
-
         assert.ok(content)
         // check for layout
         assert.equal($('title').text(), 'Foo | just testing')
