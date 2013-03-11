@@ -1,5 +1,5 @@
 = yaml =
-title: To access a page
+title: Access a page directly
 = yaml =
 
 {{#content/people/jxson.md}}

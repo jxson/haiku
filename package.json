@@ -40,7 +40,9 @@
     "glob": "3.1.14",
     "graceful-fs": "1.1.14",
     "front-matter": "0.1.1",
-    "beardo": "0.0.10"
+    "beardo": "0.0.10",
+    "marked": "~0.2.8",
+    "hogan.js": "~2.0.0"
   },
   "devDependencies": {
     "mocha": "~1.8.1",

@@ -1,5 +1,5 @@
 = yaml =
-title: the whole enchilada
+title: All pages listed
 = yaml =
 
 {{#pages}}

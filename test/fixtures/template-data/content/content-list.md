@@ -1,5 +1,5 @@
 = yaml =
-title: iterates content
+title: Content page list only
 = yaml =
 
 {{#content}}

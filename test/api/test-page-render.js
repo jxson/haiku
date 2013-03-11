@@ -20,12 +20,12 @@ describe('page.render(context, callback)', function(){
         if (err) return done(err)
 
         var $ = html.load(content)
+          , title = $('title').text()
+          , body = $('body').text().trim()
 
         assert.ok(content)
-        // check for layout
-        assert.equal($('title').text(), 'Foo | just testing')
-        // check for content
-        assert.equal($('body').text().trim(), 'Nothing here but Foo')
+        assert.equal(title, 'Foo | just testing')
+        assert.equal(body, 'Nothing here but Foo')
 
         done()
       })

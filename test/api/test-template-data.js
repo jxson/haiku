@@ -5,49 +5,30 @@ var haiku = require('../../lib')
   , html = require('cheerio')
 
 describe('template/mustache data', function(){
-  before(function(done){
+  before(function(){
     haiku
     .configure({ root: 'test/fixtures/template-data' })
-    .read(done)
   })
 
-  // it('compiles content', function(done){
-  //   haiku.read('foo.md', function(err, page){
-  //     if (err) return done(err)
-  //
-  //     // console.log('this.haiku.root', haiku.root)
-  //     // console.log('this.haiku["content-dir"]', haiku["content-dir"])
-  //
-  //     page.render(function(err, content){
-  //       if (err) return done(err)
-  //
-  //       var $ = html.load(content)
-  //
-  //       assert.ok(content)
-  //       // check for layout
-  //       assert.equal($('title').text(), 'Foo | just testing')
-  //       // check for content
-  //       assert.equal($('body').text().trim(), 'Nothing here but Foo')
-  //
-  //       done()
-  //     })
-  //   })
-
-
   describe('content', function(){
-    var $
-
-    before(function(done){
-      haiku
-      .get('content-list.md')
-      .render(function(err, out){
+    it('lists pages', function(done){
+      // This nesting is ridicuous
+      haiku.read('content-list.md', function(err, page){
         if (err) return done(err)
-        $ = html.load(out)
-        done()
-      })
-    })
 
-    it('lists pages', function(){
+        page.render(function(err, out){
+          if (err) return done(err)
+          var $ = html.load(out)
+
+          assert.equal($('li').length, 5)
+
+          done()
+        })
+
+        // console.log('page.render()', page.render())
+      })
+      // console.log('$("body")', $("body"))
+
       // page.render(function(err, out){
       //   if (err) return done(err)
       //

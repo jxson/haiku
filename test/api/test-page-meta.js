@@ -24,7 +24,7 @@ describe('page.meta', function(){
     haiku.read('yaml.md', function(err, page){
       if (err) return done(err)
 
-      assert.equal(page.meta.title, 'Yo, this is some YAML')
+      assert.equal(page.title, 'Yo, this is some YAML')
 
       done()
     })
