@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 
 var cli = require('command-router')
-  , server = require('../lib/server')
+  , path = require('path')
+  , fs = require('fs')
+
+cli.on('notfound', help)
 
 // CLI options and defaults
 cli.option({ name: 'port'
@@ -18,7 +21,7 @@ cli.option({ name: 'host'
 
 cli.option({ name: 'log-level'
 , alias: 'l'
-, default: 'trace'
+, default: 'warn'
 , type: String
 })
 
@@ -28,6 +31,28 @@ cli.command('server', function(){
   // .listen(cli.options.port, cli.options.host)
 })
 
-
 // Kick the whole thing off...
 cli.parse(process.argv)
+
+// # help(action)
+//
+// Display help for `action` defined in doc/cli/<action>.md then exit 1
+//
+//    help('build')
+//
+function help(action){
+  var action = action || 'index'
+    , file = path.join(__dirname, '..', 'doc', 'cli', action + '.md')
+
+  // `cli.on('notfound', help)` makes its possible to try and look up
+  // help for non-existent commands. If that is the case just show the
+  // default.
+  fs.exists(file, function(exists){
+    if (!exists) return help()
+
+    fs.createReadStream(file, { encoding: 'utf8' })
+    .on('data', console.log)
+    .on('error', function(err){ throw err })
+    .on('end', function(){ process.exit(1) })
+  })
+}
