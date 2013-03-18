@@ -1,0 +1,22 @@
+
+var path = require('path')
+  , fs = require('graceful-fs')
+
+module.exports = reader
+
+function reader(opts){
+  var cwd = path.normalize(opts.cwd)
+    , build = opts.build || 'build'
+
+  return function(url, cb){
+    var file =path.join(cwd, build, url)
+      , data
+
+    fs.readFile(file, function(err, data){
+      if (err) return cb(err)
+      else return data = data
+    })
+
+    return data
+  }
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var cli = require('command-router')
+  , haiku = require('../')
   , path = require('path')
   , fs = require('fs')
 
@@ -25,10 +26,35 @@ cli.option({ name: 'log-level'
 , type: String
 })
 
+cli.option({ name: 'root'
+, default: process.cwd()
+, type: path
+})
+
 // CLI commands
 cli.command('server', function(){
-  server(cli.options)
+  // server(cli.options)
   // .listen(cli.options.port, cli.options.host)
+})
+
+cli.command('build', function(){
+  haiku
+  .configure(cli.options)
+  .on('error', function(err){
+    // TODO: just console.error the err.message
+    throw err
+  })
+  .on('end', function(){
+    console.log('ended reading'.green)
+
+    haiku.pages.forEach(function(page){
+      page.write(function(err){
+        if (err) throw err
+        // console.log('wrote:'.green, page.url)
+      })
+    })
+  })
+  .read()
 })
 
 // Kick the whole thing off...

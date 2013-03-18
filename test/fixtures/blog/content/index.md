@@ -1,7 +1,0 @@
-= yaml =
-title: An example index
-= yaml =
-
-{{#content}}
-* {{ title }}
-{{/content}}

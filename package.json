@@ -22,7 +22,7 @@
   ],
   "preferGlobal": true,
   "bin": "./bin/haiku",
-  "main": "./lib/index.js",
+  "main": "./index.js",
   "directories": {
     "doc": "./doc",
     "man": "./man",
@@ -42,7 +42,8 @@
     "front-matter": "0.1.1",
     "beardo": "0.0.10",
     "marked": "~0.2.8",
-    "hogan.js": "~2.0.0"
+    "hogan.js": "~2.0.0",
+    "async-cache": "~0.1.1"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
