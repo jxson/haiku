@@ -43,7 +43,8 @@
     "beardo": "0.0.10",
     "marked": "~0.2.8",
     "hogan.js": "~2.0.0",
-    "async-cache": "~0.1.1"
+    "async-cache": "~0.1.1",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
