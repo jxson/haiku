@@ -2,20 +2,20 @@
 var assert = require('assert')
   , run = require('comandante')
   , path = require('path')
-  , root = path.join(__dirname, 'template-data')
+  , root = path.join(__dirname, '..', 'fixtures', 'template-data')
   , haiku = path.join(__dirname, '..', '..', 'bin', 'haiku')
   , cheerio = require('cheerio')
-  , reader = require('../helpers/reader')
+  , reader = require('../support/reader')
   , read = reader({ cwd: root })
 
-describe('template/mustache data', function(){
+describe('template (mustache) data', function(){
   before(function(done){
     run(haiku, [ 'build' ], { cwd: root })
     .on('error', done)
     .on('end', done)
   })
 
-  describe('{{#content}}', function(){
+  describe('content', function(){
     var $
 
     before(function(done){
@@ -26,22 +26,35 @@ describe('template/mustache data', function(){
       })
     })
 
-    it('lists pages inside the --content-dir')
+    it('lists pages inside the --content-dir', function(){
+      var titles = [ 'Page 1'
+          , 'Page 2'
+          , 'Page 3'
+          , 'Page 4'
+          ]
+
+      titles.forEach(function(title){
+        var selector = 'li:contains(' + title + ')'
+
+        assert.ok($(selector).length
+        , 'Missing page with title: ' + title)
+      })
+    })
 
     it('does not include the index files')
 
     it('sorts by date')
   })
 
-  describe('{{#content/sub-directories}}', function(){
+  describe('content/sub-directories', function(){
     it('lists pages in the --content-dir sub-directories')
   })
 
-  describe('{{#content/direct-page-access.md}}', function(){
+  describe('content/direct-page-access.md', function(){
     it('renders a block for the keyed page')
   })
 
-  describe('{{#pages}}', function(){
+  describe('pages', function(){
     it('lists all pages recursively')
   })
 })

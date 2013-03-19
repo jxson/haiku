@@ -1,6 +1,6 @@
 = yaml =
-title: Content page list only
-description:
+title: Page 3
+description: Content page list only
 = yaml =
 
 {{#content}}

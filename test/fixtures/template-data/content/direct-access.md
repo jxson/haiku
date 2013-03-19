@@ -1,6 +1,6 @@
 = yaml =
-title: Access a page directly
-description:
+title: Page 1
+description: Access a page directly
 = yaml =
 
 {{#content/people/jxson.md}}
