@@ -1,5 +1,6 @@
 = yaml =
-title: All pages listed
+title: Page 1
+description: All pages listed
 = yaml =
 
 {{#pages}}

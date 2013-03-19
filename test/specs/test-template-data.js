@@ -2,6 +2,7 @@
 var assert = require('assert')
   , run = require('comandante')
   , path = require('path')
+  , cheerio = require('cheerio')
   , root = path.join(__dirname, 'template-data')
   , reader = require('../helpers/reader')
   , read = reader({ cwd: root })
@@ -13,79 +14,33 @@ describe('template/mustache data', function(){
     .on('end', done)
   })
 
-  describe('content', function(){
-    var content
+  describe('{{#content}}', function(){
+    var $
 
     before(function(done){
-      content = read('/content-list.html', done)
+      // Wrap this in a promise?
+      read('/content-list.html', function(err, data){
+        if (err) return done(err)
+        else done(null, $ = cheerio.load(data))
+      })
     })
 
-    it('only lists pages')
+    it('lists pages inside the --content-dir')
 
-    it('sorts')
+    it('does not include the index files')
 
-    // describe('has lists for nested content', function(){
-    //
-    // })
+    it('sorts by date')
   })
 
-  // xdescribe('directories', function(){
-  //   describe('content', function(){
-  //
-  //   })
-  //
-  //   describe('nested content', function(){
-  //
-  //   })
-  //
-  //   it('lists pages', function(done){
-  //     read()
-  //     // // This nesting is ridicuous
-  //     // haiku.read('content-list.md', function(err, page){
-  //     //   if (err) return done(err)
-  //     //
-  //     //   page.render(function(err, out){
-  //     //     if (err) return done(err)
-  //     //
-  //     //     console.log('out', out)
-  //     //
-  //     //     var $ = html.load(out)
-  //     //
-  //     //     assert.equal($('li').length, 5)
-  //     //
-  //     //     done()
-  //     //   })
-  //     //
-  //     //   // console.log('page.render()', page.render())
-  //     // })
-  //     // // console.log('$("body")', $("body"))
-  //     //
-  //     // // page.render(function(err, out){
-  //     // //   if (err) return done(err)
-  //     // //
-  //     // //   done()
-  //     // // })
-  //   })
-  //   // // iterates content
-  //   // {{#content}}
-  //   // * {{ title }}
-  //   // {{/content}}
-  // })
-  //
-  // xdescribe('content shortcuts', function(){
-  //   it('has sections for nested directories')
-  //   // {{#content/people}}
-  //   // * {{ name }}
-  //   // {{/content/people}}
-  //
-  //   it('has sections for pages')
-  //   // To access a page directly you could:
-  //   //
-  //   // {{#content/people/jxson.md}}
-  //   // * {{ name }}
-  //   // {{/content/people/jxson.md}}
-  //
-  // })
-  //
-  // it('lists all pages')
+  describe('{{#content/sub-directories}}', function(){
+    it('lists pages in the --content-dir sub-directories')
+  })
+
+  describe('{{#content/direct-page-access.md}}', function(){
+    it('renders a block for the keyed page')
+  })
+
+  describe('{{#pages}}', function(){
+    it('lists all pages recursively')
+  })
 })
