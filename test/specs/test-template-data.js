@@ -2,14 +2,15 @@
 var assert = require('assert')
   , run = require('comandante')
   , path = require('path')
-  , cheerio = require('cheerio')
   , root = path.join(__dirname, 'template-data')
+  , haiku = path.join(__dirname, '..', '..', 'bin', 'haiku')
+  , cheerio = require('cheerio')
   , reader = require('../helpers/reader')
   , read = reader({ cwd: root })
 
 describe('template/mustache data', function(){
   before(function(done){
-    run('haiku', [ 'build' ], { cwd: root })
+    run(haiku, [ 'build' ], { cwd: root })
     .on('error', done)
     .on('end', done)
   })
