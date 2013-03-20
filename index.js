@@ -179,10 +179,15 @@ function add(file){
       }, props)
 
   // TODO: gaurd that this doesn't override haiku methods!!!
+  //
+  // Adds keys for the template data
   if (! haiku[page.dirname]) haiku[page.dirname] = []
 
-  haiku[page.dirname].push(page)
-  haiku.pages.push(page)
+  // don't add indexes to the list
+  if (! path.basename(page.url).match(/^index/)) {
+    haiku[page.dirname].push(page)
+    haiku.pages.push(page)
+  }
 
   return page
 

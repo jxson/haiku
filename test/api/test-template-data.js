@@ -41,7 +41,10 @@ describe('template (mustache) data', function(){
       })
     })
 
-    it('does not include the index files')
+    it('does not include the index files', function(){
+      assert.equal($('li').length, 4)
+      assert.equal($('li:contains(Content directory index)').length, 0)
+    })
 
     it('sorts by date')
   })
