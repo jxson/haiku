@@ -26,7 +26,7 @@ describe('template (mustache) data', function(){
       })
     })
 
-    it('lists pages inside the --content-dir', function(){
+    it('only iterates pages', function(){
       var titles = [ 'Page 1'
           , 'Page 2'
           , 'Page 3'
@@ -41,20 +41,24 @@ describe('template (mustache) data', function(){
       })
     })
 
-    it('does not include the index files', function(){
+    it('does not include indexes', function(){
       assert.equal($('li').length, 4)
       assert.equal($('li:contains(Content directory index)').length, 0)
     })
 
-    it('sorts by date')
-  })
+    describe('sub directories', function(){
+      it('provide lists for their pages')
+    })
 
-  describe('content/sub-directories', function(){
-    it('lists pages in the --content-dir sub-directories')
-  })
+    describe('sorting', function(){
+      it('sorts descending by date')
 
-  describe('content/direct-page-access.md', function(){
-    it('renders a block for the keyed page')
+      it('sorts by name')
+    })
+
+    describe('page sections', function(){
+      it('renders a block for the keyed page')
+    })
   })
 
   describe('pages', function(){
