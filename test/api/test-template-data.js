@@ -47,7 +47,23 @@ describe('template (mustache) data', function(){
     })
 
     describe('sub directories', function(){
-      it('provide lists for their pages')
+      it('list contained pages', function(){
+        read('/list-posts.html', function(err, html){
+          var $ = cheerio.load(html)
+            , titles = [ 'Post 001'
+                , 'Post 002'
+                , 'Post 003'
+                ]
+
+          titles.forEach(function(title){
+            var selector = 'li:contains(' + title + ')'
+
+            assert.ok($(selector).length
+            , 'Missing page with title: ' + title)
+          })
+
+        })
+      })
     })
 
     describe('sorting', function(){
