@@ -135,7 +135,20 @@ function read(name, callback){
 
       queue.splice(queue.indexOf(page.file), 1)
 
-      if (queue.length === 0) haiku.emit('end')
+      if (queue.length === 0) {
+
+        // sort content arrays by date descending
+        Object.keys(haiku).forEach(function(key){
+          if (! key.match('content')) return
+
+          haiku[key].sort(function(a, b){
+            if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) return
+            else return a.meta.date.getTime() < b.meta.date.getTime() ? 1 : -1
+          })
+        })
+
+        haiku.emit('end')
+      }
     }
 
     // haiku.pages.forEach(haiku.write)
@@ -186,8 +199,9 @@ function add(file){
   // don't add indexes to the list
   if (! path.basename(page.url).match(/^index/)) {
     haiku[page.dirname].push(page)
-    haiku.pages.push(page)
   }
+
+  haiku.pages.push(page)
 
   return page
 

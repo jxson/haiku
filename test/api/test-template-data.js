@@ -67,7 +67,16 @@ describe('template (mustache) data', function(){
     })
 
     describe('sorting', function(){
-      it('sorts descending by date')
+      it('sorts descending by date', function(done){
+        read('/sort-by-date/index.html', function(err, html){
+          var $ = cheerio.load(html);
+
+          assert.equal($('li').first().text(), 'First')
+          assert.equal($('li').last().text(), 'Third')
+
+          done()
+        })
+      })
 
       it('sorts by name')
     })
