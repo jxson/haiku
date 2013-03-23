@@ -1,4 +1,3 @@
 = yaml =
 title: Third
-date: 2013-01-03
 = yaml =

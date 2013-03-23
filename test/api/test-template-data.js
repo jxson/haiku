@@ -78,7 +78,16 @@ describe('template (mustache) data', function(){
         })
       })
 
-      it('sorts by name')
+      it('sorts by name', function(done){
+        read('/sort-by-name/index.html', function(err, html){
+          var $ = cheerio.load(html);
+
+          assert.equal($('li').first().text(), 'First')
+          assert.equal($('li').last().text(), 'Third')
+
+          done()
+        })
+      })
     })
 
     describe('page sections', function(){

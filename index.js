@@ -142,8 +142,11 @@ function read(name, callback){
           if (! key.match('content')) return
 
           haiku[key].sort(function(a, b){
-            if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) return
-            else return a.meta.date.getTime() < b.meta.date.getTime() ? 1 : -1
+            if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) {
+              return a.name > b.name ? 1 : -1
+            } else {
+              return a.meta.date.getTime() > b.meta.date.getTime() ? 1 : -1
+            }
           })
         })
 
