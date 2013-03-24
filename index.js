@@ -1,5 +1,7 @@
 
-var path = require('path')
+var bunyan = require('bunyan')
+  , log = bunyan.createLogger({ name: 'haiku' })
+  , path = require('path')
   , mkdirp = require('mkdirp')
   , EE = require('events').EventEmitter
   , extend = require('util')._extend
@@ -111,6 +113,10 @@ function read(name, callback){
 
   var colors = require('colors')
 
+  // haiku.on('end', function(){
+  //   console.log('haiku', haiku)
+  // })
+
   walk(haiku['content-dir'])
   .on('error', function(err){
     haiku.emit('error', err)
@@ -139,7 +145,7 @@ function read(name, callback){
 
         // sort content arrays by date descending
         Object.keys(haiku).forEach(function(key){
-          if (! key.match('content')) return
+          if (! key.match('content') || !(haiku[key] instanceof Array)) return
 
           haiku[key].sort(function(a, b){
             if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) {
@@ -188,6 +194,8 @@ function add(file){
       , data: { value: '', writable: true }
       , body: { get: function(){ return fm(this.data).body } }
       , meta: { get: function(){ return fm(this.data).attributes } }
+      , _log: { value: null }
+      , log: { get: function(){ return this._log || (this._log = log.child({ page: page.name })) } }
       }
     , page = Object.create({ read: read
       , write: write
@@ -203,6 +211,13 @@ function add(file){
   if (! path.basename(page.url).match(/^index/)) {
     haiku[page.dirname].push(page)
   }
+
+  // add keys for each page to support page sections
+  // NOTE: has to use a key with the extension removed
+  // TODO: make this a little more robust
+  var key = path.join('content', page.name.replace(path.extname(page.name), ''))
+
+  if (! haiku[key]) haiku[key] = page
 
   haiku.pages.push(page)
 
@@ -243,14 +258,14 @@ function add(file){
 
     // TODO: base cahcing off stat calls
     fs.stat(page.file, function(err, stats){
-      if (err) return cb(err)
+      if (err) return cb.call(page, err)
 
       // console.log('stated', page.name)
 
       page.stats = stats
 
       fs.readFile(page.file, 'utf8', function(err, data){
-        if (err) return cb(err)
+        if (err) return cb.call(page, err)
 
         // console.log('read', page.name)
 
@@ -262,13 +277,16 @@ function add(file){
           page[k] = page.meta[k]
         })
 
-        cb(null)
+        cb.call(page, null)
       })
     })
   }
 
   function write(cb){
     var page = this
+
+    page.log.info('WTF')
+    page.log.info({ wtf: haiku['content/people/jxson.md'] }, '???')
 
     page.render(function(err, out){
       mkdirp(path.dirname(page.destination), function(err, made){
@@ -286,13 +304,21 @@ function add(file){
 
   function render(context, callback){
     var page = this
-      , context = context || {}
+
+    page.log.info('rendering')
+    page.log.info({ haiku: haiku['content/people/jxson.md'] }, '???')
+
+    var context = context || {}
       // This might be pulled into beardo, also an expensive operation
       // think about caching it
       // NOTE: this has to happen after everything has been read
-      , mustached = hogan.compile(page.body).render(haiku)
+    var compiled = hogan.compile(page.body)
+      , mustached = compiled.render(haiku)
       , MD = marked(mustached)
-      , template = beardo.add(page.name, MD)
+      , template = beardo.add(page.file, MD)
+
+    page.log.info(page.body)
+    page.log.info(mustached)
 
     if (typeof context === 'function') {
       callback = context
@@ -305,6 +331,6 @@ function add(file){
     // ???: beardo needs a way to distinguish templates that need reading vs
     // ones that were added manually
 
-    beardo.render(page.name, haiku, callback)
+    beardo.render(page.file, haiku, callback)
   }
 }

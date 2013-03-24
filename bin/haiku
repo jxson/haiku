@@ -4,6 +4,7 @@ var cli = require('command-router')
   , haiku = require('../')
   , path = require('path')
   , fs = require('fs')
+  , rimraf = require('rimraf')
 
 cli.on('notfound', help)
 
@@ -47,10 +48,12 @@ cli.command('build', function(){
   .on('end', function(){
     console.log('ended reading'.green)
 
-    haiku.pages.forEach(function(page){
-      page.write(function(err){
-        if (err) throw err
-        // console.log('wrote:'.green, page.url)
+    rimraf(haiku['build-dir'], function(err){
+      haiku.pages.forEach(function(page){
+        page.write(function(err){
+          if (err) throw err
+          // console.log('wrote:'.green, page.url)
+        })
       })
     })
   })

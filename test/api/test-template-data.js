@@ -49,6 +49,8 @@ describe('template (mustache) data', function(){
     describe('sub directories', function(){
       it('list contained pages', function(){
         read('/list-posts.html', function(err, html){
+          if (err) return done(err)
+
           var $ = cheerio.load(html)
             , titles = [ 'Post 001'
                 , 'Post 002'
@@ -69,6 +71,8 @@ describe('template (mustache) data', function(){
     describe('sorting', function(){
       it('sorts descending by date', function(done){
         read('/sort-by-date/index.html', function(err, html){
+          if (err) return done(err)
+
           var $ = cheerio.load(html);
 
           assert.equal($('li').first().text(), 'First')
@@ -80,6 +84,8 @@ describe('template (mustache) data', function(){
 
       it('sorts by name', function(done){
         read('/sort-by-name/index.html', function(err, html){
+          if (err) return done(err)
+
           var $ = cheerio.load(html);
 
           assert.equal($('li').first().text(), 'First')
@@ -91,7 +97,17 @@ describe('template (mustache) data', function(){
     })
 
     describe('page sections', function(){
-      it('renders a block for the keyed page')
+      it('renders a block for the keyed page', function(done){
+        read('/page-sections.html', function(err, html){
+          if (err) return done(err)
+
+          var $ = cheerio.load(html)
+
+          console.log('html', html)
+
+          done()
+        })
+      })
     })
   })
 
