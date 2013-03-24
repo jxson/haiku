@@ -149,7 +149,7 @@ function read(name, callback){
 
           haiku[key].sort(function(a, b){
             if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) {
-              return a.name > b.name ? 1 : -1
+              return a.file > b.file ? 1 : -1
             } else {
               return a.meta.date.getTime() > b.meta.date.getTime() ? 1 : -1
             }
@@ -184,7 +184,7 @@ function add(file){
   // console.log('adding file:'.yellow, file)
 
   var haiku = this
-    , props = { name: { get: name }
+    , props = { name: { value: name(file), writable: true }
       // make these source && destination
       , file: { value: file }
       , destination: { get: function(){ return path.join(haiku['build-dir'], this.url) } }
@@ -195,7 +195,7 @@ function add(file){
       , body: { get: function(){ return fm(this.data).body } }
       , meta: { get: function(){ return fm(this.data).attributes } }
       , _log: { value: null }
-      , log: { get: function(){ return this._log || (this._log = log.child({ page: page.name })) } }
+      , log: { get: function(){ return this._log || (this._log = log.child({ page: name(file) })) } }
       }
     , page = Object.create({ read: read
       , write: write
@@ -215,7 +215,7 @@ function add(file){
   // add keys for each page to support page sections
   // NOTE: has to use a key with the extension removed
   // TODO: make this a little more robust
-  var key = path.join('content', page.name.replace(path.extname(page.name), ''))
+  var key = path.join('content', name(page.file).replace(path.extname(name(page.file)), ''))
 
   if (! haiku[key]) haiku[key] = page
 
@@ -223,11 +223,10 @@ function add(file){
 
   return page
 
-  function name(){
-    var page = this
+  function name(file){
+    // var page = this
 
-    return page
-    .file
+    return file
     .replace(haiku['content-dir'], '')
     .replace(/^\//, '') // trims leading slash, should use path.sep
   }
@@ -319,6 +318,8 @@ function add(file){
 
     page.log.info(page.body)
     page.log.info(mustached)
+
+    page.log.info(haiku)
 
     if (typeof context === 'function') {
       callback = context

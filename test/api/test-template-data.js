@@ -103,7 +103,8 @@ describe('template (mustache) data', function(){
 
           var $ = cheerio.load(html)
 
-          console.log('html', html)
+          assert.equal($('li').first().text(), 'Jason Campbell')
+          assert.equal($('li').last().text(), 'jxson')
 
           done()
         })
