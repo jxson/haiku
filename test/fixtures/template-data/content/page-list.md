@@ -4,5 +4,5 @@ description: All pages listed
 = yaml =
 
 {{#pages}}
-* {{ title }}
+* {{ name }}
 {{/pages}}

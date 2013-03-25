@@ -113,6 +113,16 @@ describe('template (mustache) data', function(){
   })
 
   describe('pages', function(){
-    it('lists all pages recursively')
+    it('lists all pages recursively', function(done){
+      read('/page-list.html', function(err, html){
+        if (err) return done(err)
+
+        var $ = cheerio.load(html)
+
+        assert.equal($('li').length, 17)
+
+        done()
+      })
+    })
   })
 })
