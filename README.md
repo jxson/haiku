@@ -7,7 +7,7 @@
 
     var haiku = require('haiku')
 
-## haiku.something()
+## haiku(src)
 
 # Install
 

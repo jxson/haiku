@@ -1,63 +1,29 @@
 #!/usr/bin/env node
 
 var cli = require('command-router')
-  , haiku = require('../')
+  , fs = require('graceful-fs')
   , path = require('path')
-  , fs = require('fs')
-  , rimraf = require('rimraf')
+  , haiku = require('../')
 
-cli.on('notfound', help)
-
-// CLI options and defaults
-cli.option({ name: 'port'
-, alias: 'p'
-, default: process.env.PORT || 8080
-, type: Number
-})
-
-cli.option({ name: 'host'
-, alias: 'h'
-, default: process.env.HOST || '0.0.0.0'
-, type: String
-})
-
-cli.option({ name: 'log-level'
-, alias: 'l'
-, default: 'warn'
-, type: String
-})
-
-cli.option({ name: 'root'
+cli.option({ name: 'src'
 , default: process.cwd()
 , type: path
 })
 
-// CLI commands
-cli.command('server', function(){
-  // server(cli.options)
-  // .listen(cli.options.port, cli.options.host)
-})
+// # CLI routes
+cli.on('notfound', help)
 
 cli.command('build', function(){
-  haiku
+  haiku(cli.src)
   .configure(cli.options)
   .on('error', function(err){
-    // TODO: just console.error the err.message
+    // TODO: spill a meaningful error message instead of throwing
     throw err
   })
-  .on('end', function(){
-    console.log('ended reading'.green)
-
-    rimraf(haiku['build-dir'], function(err){
-      haiku.pages.forEach(function(page){
-        page.write(function(err){
-          if (err) throw err
-          // console.log('wrote:'.green, page.url)
-        })
-      })
-    })
-  })
-  .read()
+  // .on('page', function(page){
+  //   page.write()
+  // })
+  .build()
 })
 
 // Kick the whole thing off...

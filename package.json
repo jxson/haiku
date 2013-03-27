@@ -26,26 +26,17 @@
   "directories": {
     "doc": "./doc",
     "man": "./man",
-    "lib": "./lib",
     "bin": "./bin"
   },
   "scripts": {
     "test": "mocha test/**/test-*.js"
   },
   "engines": {
-    "node": ">=0.6.10"
+    "node": ">=0.8.14"
   },
   "dependencies": {
+    "graceful-fs": "~1.2.0",
     "command-router": "0.0.5",
-    "glob": "3.1.14",
-    "graceful-fs": "1.1.14",
-    "front-matter": "0.1.1",
-    "beardo": "0.0.10",
-    "marked": "~0.2.8",
-    "hogan.js": "~2.0.0",
-    "async-cache": "~0.1.1",
-    "mkdirp": "~0.3.5",
-    "bunyan": "~0.20.0",
     "rimraf": "~2.1.4"
   },
   "devDependencies": {
@@ -53,6 +44,6 @@
     "supertest": "~0.5.1",
     "colors": "~0.6.0-1",
     "cheerio": "~0.10.7",
-    "comandante": "0.0.1"
+    "comandante": "~0.0.1"
   }
 }
