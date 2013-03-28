@@ -4,21 +4,27 @@ var extend = require('util')._extend
   , rimraf = require('rimraf')
 
 module.exports = function(src, options){
-  var haiku = Object.create({ configure: configure
+  var options = options || {}
+    , haiku = Object.create({ configure: configure
       , read: read
       , build: build
-      })
+      }, { options: { value: {}, writable: true } })
 
   // https://gist.github.com/davidaurelio/838778
   extend(haiku, EE.prototype)
 
-  if (options) haiku.configure(options)
+  options.src = src
+  haiku.configure(options)
 
   return haiku
 }
 
 function configure(options){
   var haiku = this
+
+  Object.keys(options).forEach(function(key){
+    haiku.options[key] = options[key]
+  })
 
   return haiku
 }
