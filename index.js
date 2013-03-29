@@ -2,18 +2,27 @@
 var extend = require('util')._extend
   , EE = require('events').EventEmitter
   , rimraf = require('rimraf')
+  , assert = require('assert')
+  , path = require('path')
 
 module.exports = function(src, options){
   var options = options || {}
     , haiku = Object.create({ configure: configure
       , read: read
       , build: build
-      }, { options: { value: {}, writable: true } })
+      }, { options: { value: {
+          set src(src) { this._src = path.resolve(src) }
+        , get src() { return this._src || process.cwd() }
+        , 'content-dir': 'content'
+        , 'build-dir': 'build'
+        , 'templates-dir': 'templates'
+        , 'public-dir': 'public'
+        } } })
 
   // https://gist.github.com/davidaurelio/838778
   extend(haiku, EE.prototype)
 
-  options.src = src
+  // options.src = src
   haiku.configure(options)
 
   return haiku
@@ -22,9 +31,9 @@ module.exports = function(src, options){
 function configure(options){
   var haiku = this
 
-  Object.keys(options).forEach(function(key){
-    haiku.options[key] = options[key]
-  })
+  // Object.keys(options).forEach(function(key){
+  //   haiku.options[key] = options[key]
+  // })
 
   return haiku
 }
