@@ -31,9 +31,11 @@ module.exports = function(src, options){
 function configure(options){
   var haiku = this
 
-  // Object.keys(options).forEach(function(key){
-  //   haiku.options[key] = options[key]
-  // })
+  Object.keys(options).forEach(function(key){
+    if (haiku.options.hasOwnProperty(key)) {
+      haiku.options[key] = options[key]
+    }
+  })
 
   return haiku
 }
