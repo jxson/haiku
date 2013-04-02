@@ -10,6 +10,11 @@ cli.option({ name: 'src'
 , type: path
 })
 
+cli.option({ name: 'log-level'
+, default: 'warn'
+, type: String
+})
+
 // # CLI routes
 cli.on('notfound', help)
 
@@ -38,6 +43,9 @@ cli.parse(process.argv)
 function help(action){
   var action = action || 'index'
     , file = path.join(__dirname, '..', 'doc', 'cli', action + '.md')
+
+  // Add a newline
+  console.log()
 
   // `cli.on('notfound', help)` makes its possible to try and look up
   // help for non-existent commands. If that is the case just show the

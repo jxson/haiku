@@ -37,7 +37,9 @@
   "dependencies": {
     "graceful-fs": "~1.2.0",
     "command-router": "0.0.5",
-    "rimraf": "~2.1.4"
+    "rimraf": "~2.1.4",
+    "bunyan": "~0.20.0",
+    "powerwalk": "0.0.1"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
