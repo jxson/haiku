@@ -1,0 +1,142 @@
+
+var path = require('path')
+  , fm = require('front-matter')
+  , marked = require('marked')
+  , hogan = require('hogan.js')
+  , beardo = require('beardo')
+  , mkdirp = require('mkdirp')
+  , fs = require('graceful-fs')
+  , extensions = { '.md': '.html'
+    , '.markdown': '.html'
+    , '.mdown': ".html"
+    , '.mustache': '.html'
+    , '.mkdn': '.html'
+    , '.mkd': '.html'
+    }
+
+module.exports = function(file, haiku){
+  var page = typeof file === 'string' ? { filename: file } : file
+
+  // extends the passed in object and returns it
+  Object.defineProperty(page, 'haiku', { value: haiku })
+  Object.defineProperty(page, 'name', { get: name })
+  Object.defineProperty(page, 'logger', { value: haiku.logger.child({ page: page.name }) })
+  Object.defineProperty(page, 'destination', { get: destination })
+  Object.defineProperty(page, 'dirname', { get: dirname })
+  Object.defineProperty(page, 'url', { get: url })
+
+  Object.defineProperty(page, 'build', { value: build })
+  Object.defineProperty(page, 'render', { value: render })
+
+  Object.defineProperty(page, 'body', { get: body })
+  Object.defineProperty(page, 'meta', { get: meta })
+
+  //   , stats: { value: {}, writable: true }
+  //   , data: { value: '', writable: true }
+  //   }
+  // , page = Object.create({ read: read
+  //   , write: write
+  //   , render: render
+  //   }, props)
+
+  return page
+}
+
+function name(){
+  var page = this
+    , haiku = page.haiku
+
+  return page.filename
+  .replace(haiku.options['content-dir'], '')
+  .replace(/^\//, '') // trims leading slash, should use path.sep
+}
+
+function destination(){
+  var page = this
+    , haiku = page.haiku
+
+  return path.join(haiku.options['build-dir'], page.url)
+}
+
+function dirname(){
+  var page = this
+    , haiku = page.haiku
+
+  return page
+  .filename
+  .replace(haiku['src'], '')
+  .replace(path.basename(page.filename), '')
+  .replace(/^\//, '') // trims leading slash, should use path.sep
+  .replace(/\/$/, '') // trims trailing slash, should use path.sep
+}
+
+function url(){
+  var page = this
+    , haiku = page.haiku
+    , uri = page.filename.replace(haiku.options['content-dir'], '')
+
+  Object.keys(extensions).forEach(function(extension){
+    // TODO: stop looping if an extension matches
+    uri = uri.replace(extension, extensions[extension])
+  })
+
+  return uri
+}
+
+function build(callback){
+  var page = this
+
+  page.logger.info('building page')
+
+  page.render(function(err, out){
+    if (err) throw err
+
+    mkdirp(page.dirname, function(err, made){
+      if (err) return callback(err)
+
+      fs.writeFile(page.destination, out, function(err){
+        if (err) return callback(err)
+        else return callback()
+      })
+    })
+
+  })
+}
+
+function render(context, callback){
+  var page = this
+    , haiku = page.haiku
+
+  page.logger.info('rendering')
+
+  var context = context || {}
+    // This might be pulled into beardo, also an expensive operation
+    // think about caching it
+    // NOTE: this has to happen after everything has been read
+  var compiled = hogan.compile(page.body)
+    , mustached = compiled.render(haiku)
+    , MD = marked(mustached)
+    , template = beardo.add(page.filename, MD)
+
+  if (typeof context === 'function') {
+    callback = context
+    context = {}
+  }
+
+  // tell beardo wheres what
+  beardo.directory = path.join(haiku.options.src, 'templates')
+
+  // ???: beardo needs a way to distinguish templates that need reading vs
+  // ones that were added manually
+  beardo.render(page.filename, haiku, callback)
+}
+
+// TODO: throw a meaningful error when page.data is missing
+function body(){
+  return fm(this.data).body
+}
+
+// TODO: throw a meaningful error when page.data is missing
+function meta(){
+  return fm(this.data).attributes
+}

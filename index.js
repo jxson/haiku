@@ -12,6 +12,7 @@ module.exports = function(src, options){
       , build: build
       , add: add
       }, { logger: { value: false, writable: true }
+      , pages: { value: [], enumerable: true, writable: true }
       , options: { value: {
           set src(src) { this._src = path.resolve(src) }
         , get src() { return this._src || process.cwd() }
@@ -69,7 +70,9 @@ function read(){
   .on('end', finish)
 
   function finish(){
+    haiku.logger.debug('finished walking')
 
+    haiku.emit('end')
   }
 }
 
@@ -84,11 +87,53 @@ function build(){
     if (err) return haiku.emit(err)
 
     haiku
-    .on('page', function(page){ page.write() })
+    .on('end', function(){
+      haiku.pages.forEach(function(page){
+        page.build(function(err, built){
+          if (err) return haiku.emit('error', err)
+          else return finish()
+        })
+      })
+    })
     .read()
   })
+
+  var counter = 0
+
+  function finish(){
+    counter++
+
+    if (counter === haiku.pages.length) {
+      haiku.logger.info('finished building')
+    }
+  }
 }
 
 function add(file){
   var haiku = this
+    , pagify = require('./pagify')
+    , page = pagify(file, haiku)
+
+  // TODO: gaurd that this doesn't override haiku methods!!!
+  //
+  // Adds keys for the template data
+  if (! haiku[page.dirname]) haiku[page.dirname] = []
+
+  // don't add indexes to the list
+  if (! path.basename(page.url).match(/^index/)) {
+    haiku[page.dirname].push(page)
+  }
+
+  // add keys for each page to support page sections
+  // NOTE: has to use a key with the extension removed
+  // TODO: make this a little more robust
+  var key = path.join('content', page.name.replace(path.extname(page.name), ''))
+
+  if (! haiku[key]) haiku[key] = page
+
+  haiku.pages.push(page)
+
+  haiku.logger.debug('Added page')
+
+  return page
 }
