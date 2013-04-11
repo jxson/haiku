@@ -47,7 +47,7 @@ function name(){
     , haiku = page.haiku
 
   return page.filename
-  .replace(haiku.options['content-dir'], '')
+  .replace(haiku.options('content-dir'), '')
   .replace(/^\//, '') // trims leading slash, should use path.sep
 }
 

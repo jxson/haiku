@@ -11,20 +11,17 @@ module.exports = function(src, options){
       , read: read
       , build: build
       , add: add
+      , opt: opt
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
-      , options: { value: {
-          set src(src) { this._src = path.resolve(src) }
-        , get src() { return this._src || process.cwd() }
-        , 'content-dir': 'content'
-        , 'build-dir': 'build'
-        , 'templates-dir': 'templates'
-        , 'public-dir': 'public'
-        , 'log-level': 'warn'
-        }, writable: true } })
+      , options: { value: {}, writable: true }
+      })
 
   // https://gist.github.com/davidaurelio/838778
   extend(haiku, EE.prototype)
+
+  // if (typeof src === 'object') options = src
+  // if (typeof src === 'string') options.src = src || process.cwd()
 
   if (options) haiku.configure(options)
 
@@ -35,25 +32,74 @@ function configure(options){
   var haiku = this
 
   Object.keys(options).forEach(function(key){
-    if (haiku.options.hasOwnProperty(key)) {
-      haiku.options[key] = options[key]
-    }
+    haiku.opt(key, options[key])
   })
 
-  // TODO: move this out to the CLI in case people use the API direclty
-  // and don't want the logs
-  if (! haiku.logger) {
-    haiku.logger = bunyan.createLogger({name: 'haiku'
-    , level: haiku.options['log-level']
-    })
-  }
-
-  if (haiku.logger.level() !== haiku.options['log-level']) {
-    haiku.logger.level(haiku.options['log-level'])
-  }
+  // // TODO: move this out to the CLI in case people use the API direclty
+  // // and don't want the logs
+  // if (! haiku.logger) {
+  //   haiku.logger = bunyan.createLogger({name: 'haiku'
+  //   , level: haiku.options['log-level']
+  //   })
+  // }
+  //
+  // if (haiku.logger.level() !== haiku.options['log-level']) {
+  //   haiku.logger.level(haiku.options['log-level'])
+  // }
 
   return haiku
 }
+
+// A dumb getter/ setter function for haiku.options. Using normal ES5
+// getters and setters seemed weird since directory paths etc were
+// getting normalized/ mutated in unexpected ways
+function opt(option, value){
+  var haiku = this
+
+  // , defaults: {
+  //   , 'content-dir': 'content'
+  //   , 'content-dir': 'content'
+  //   , 'build-dir': 'build'
+  //   , 'templates-dir': 'templates'
+  //   , 'public-dir': 'public'
+  //   , 'log-level': 'warn'
+  //   }}
+
+  switch (option) {
+    case 'src':
+      if (! value) return haiku.options[option] || process.cwd()
+      else return haiku.options.src = path.resolve(value)
+      break
+    case 'content-dir':
+      if (! value) {
+        return haiku.options[option] || path.resolve(haiku.opt('src'), 'content')
+      } else return haiku.options['content-dir'] = path.resolve(haiku.opt('src'), value)
+      break
+    case 'build-dir':
+      if (! value){
+        return haiku.options[option] || path.resolve(haiku.opt('src'), 'build')
+      } else {
+        return haiku.options['build-dir'] = path.resolve(haiku.opt('src'), value)
+      }
+      break;
+    case 'templates-dir':
+      if (! value){
+        return haiku.options[option] || path.resolve(haiku.opt('src'), 'templates')
+      } else {
+        return haiku.options['templates-dir'] = path.resolve(haiku.opt('src'), value)
+      }
+      break;
+    case 'public-dir':
+      if (! value){
+        return haiku.options[option] || path.resolve(haiku.opt('src'), 'public')
+      } else {
+        return haiku.options['public-dir'] = path.resolve(haiku.opt('src'), value)
+      }
+    default:
+      throw new Error(option + ' is not a valid haiku option')
+  }
+}
+
 
 function read(){
   var haiku = this
