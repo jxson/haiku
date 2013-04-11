@@ -14,7 +14,7 @@ module.exports = function(src, options){
       , opt: opt
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
-      , options: { value: {}, writable: true }
+      , opts: { value: {}, writable: true }
       })
 
   // https://gist.github.com/davidaurelio/838778
@@ -52,51 +52,29 @@ function configure(options){
 
 // A dumb getter/ setter function for haiku.options. Using normal ES5
 // getters and setters seemed weird since directory paths etc were
-// getting normalized/ mutated in unexpected ways
+// getting normalized/ mutated
 function opt(option, value){
   var haiku = this
 
-  // , defaults: {
-  //   , 'content-dir': 'content'
-  //   , 'content-dir': 'content'
-  //   , 'build-dir': 'build'
-  //   , 'templates-dir': 'templates'
-  //   , 'public-dir': 'public'
   //   , 'log-level': 'warn'
   //   }}
 
   switch (option) {
-    case 'src':
-      if (! value) return haiku.options[option] || process.cwd()
-      else return haiku.options.src = path.resolve(value)
-      break
-    case 'content-dir':
-      if (! value) {
-        return haiku.options[option] || path.resolve(haiku.opt('src'), 'content')
-      } else return haiku.options['content-dir'] = path.resolve(haiku.opt('src'), value)
-      break
-    case 'build-dir':
-      if (! value){
-        return haiku.options[option] || path.resolve(haiku.opt('src'), 'build')
-      } else {
-        return haiku.options['build-dir'] = path.resolve(haiku.opt('src'), value)
-      }
-      break;
-    case 'templates-dir':
-      if (! value){
-        return haiku.options[option] || path.resolve(haiku.opt('src'), 'templates')
-      } else {
-        return haiku.options['templates-dir'] = path.resolve(haiku.opt('src'), value)
-      }
-      break;
-    case 'public-dir':
-      if (! value){
-        return haiku.options[option] || path.resolve(haiku.opt('src'), 'public')
-      } else {
-        return haiku.options['public-dir'] = path.resolve(haiku.opt('src'), value)
-      }
+    case 'src'          : return dir('src', value)
+    case 'content-dir'  : return dir('content', value)
+    case 'build-dir'    : return dir('build', value)
+    case 'templates-dir': return dir('templates', value)
+    case 'public-dir'   : return dir('public', value)
     default:
       throw new Error(option + ' is not a valid haiku option')
+  }
+
+  function dir(name, v){
+    var o = name === 'src' ? name : name + '-dir'
+    if (o === 'src' && ! value && !haiku.opts[o]) return process.cwd()
+
+    if (v) return haiku.opts[o] = path.resolve(haiku.opt('src'), v)
+    else return haiku.opts[o] || path.resolve(haiku.opt('src'), name)
   }
 }
 
