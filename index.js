@@ -7,7 +7,8 @@ var extend = require('util')._extend
   , bunyan = require('bunyan')
 
 module.exports = function(src, options){
-  var haiku = Object.create({ configure: configure
+  var options = options || {}
+    , haiku = Object.create({ configure: configure
       , read: read
       , build: build
       , add: add
@@ -21,9 +22,9 @@ module.exports = function(src, options){
   extend(haiku, EE.prototype)
 
   // if (typeof src === 'object') options = src
-  // if (typeof src === 'string') options.src = src || process.cwd()
+  if (typeof src === 'string') options.src = src
 
-  if (options) haiku.configure(options)
+  haiku.configure(options)
 
   return haiku
 }
@@ -144,11 +145,11 @@ function add(file){
   // TODO: gaurd that this doesn't override haiku methods!!!
   //
   // Adds keys for the template data
-  if (! haiku[page.dirname]) haiku[page.dirname] = []
+  if (! haiku[page.collection]) haiku[page.collection] = []
 
   // don't add indexes to the list
   if (! path.basename(page.url).match(/^index/)) {
-    haiku[page.dirname].push(page)
+    haiku[page.collection].push(page)
   }
 
   // add keys for each page to support page sections

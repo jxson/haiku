@@ -22,7 +22,7 @@ module.exports = function(file, haiku){
   Object.defineProperty(page, 'name', { get: name })
   Object.defineProperty(page, 'logger', { value: haiku.logger.child({ page: page.name }) })
   Object.defineProperty(page, 'destination', { get: destination })
-  Object.defineProperty(page, 'dirname', { get: dirname })
+  Object.defineProperty(page, 'collection', { get: collection })
   Object.defineProperty(page, 'url', { get: url })
 
   Object.defineProperty(page, 'build', { value: build })
@@ -47,7 +47,7 @@ function name(){
     , haiku = page.haiku
 
   return page.filename
-  .replace(haiku.opt('content-dir'), '')
+  .replace(haiku.opt('src'), '')
   .replace(/^\//, '') // trims leading slash, should use path.sep
 }
 
@@ -58,16 +58,11 @@ function destination(){
   return path.join(haiku.opt('build-dir'), page.url)
 }
 
-function dirname(){
+function collection(){
   var page = this
     , haiku = page.haiku
 
-  return page
-  .filename
-  .replace(haiku.opt('src'), '')
-  .replace(path.basename(page.filename), '')
-  .replace(/^\//, '') // trims leading slash, should use path.sep
-  .replace(/\/$/, '') // trims trailing slash, should use path.sep
+  return path.relative(haiku.opt('src'), page.filename)
 }
 
 function url(){
@@ -89,14 +84,17 @@ function build(callback){
   page.render(function(err, out){
     if (err) return haiku.emit(err)
 
-    mkdirp(page.dirname, function(err, made){
+    mkdirp(path.dirname(page.destination), function(err, made){
       if (err) return callback(err)
 
       if (made) page.logger.info('created dir: %s', page.dirname)
 
       fs.writeFile(page.destination, out, function(err){
         if (err) return callback(err)
-        else return callback()
+
+        page.logger.info('built')
+
+        callback()
       })
     })
 

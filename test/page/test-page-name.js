@@ -1,6 +1,8 @@
+
 var haiku = require('../../')
   , pagify = require('../../pagify')
   , path = require('path')
+  , assert = require('assert')
 
 describe('page.name', function(){
   var page
@@ -12,7 +14,7 @@ describe('page.name', function(){
     page = pagify(filename, haiku(src))
   })
 
-  it('returns the filename relative to the content-dir', function(){
-
+  it('returns the filename relative to the --src', function(){
+    assert.equal(page.name, 'content/posts/001.md')
   })
 })
