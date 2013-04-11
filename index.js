@@ -14,7 +14,7 @@ module.exports = function(src, options){
       , opt: opt
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
-      , opts: { value: {}, writable: true }
+      , opts: { value: {}, writable: true, enumerable: false }
       })
 
   // https://gist.github.com/davidaurelio/838778
@@ -35,17 +35,20 @@ function configure(options){
     haiku.opt(key, options[key])
   })
 
-  // // TODO: move this out to the CLI in case people use the API direclty
-  // // and don't want the logs
-  // if (! haiku.logger) {
-  //   haiku.logger = bunyan.createLogger({name: 'haiku'
-  //   , level: haiku.options['log-level']
-  //   })
-  // }
+  // TODO: move this out to the CLI in case people use the API direclty
+  // and don't want the logs
   //
-  // if (haiku.logger.level() !== haiku.options['log-level']) {
-  //   haiku.logger.level(haiku.options['log-level'])
-  // }
+  // * https://github.com/jxson/haiku/issues/64
+  //
+  if (! haiku.logger) {
+    haiku.logger = bunyan.createLogger({name: 'haiku'
+    , level: haiku.opt('log-level')
+    })
+  }
+
+  if (haiku.logger.level() !== haiku.opt('log-level')) {
+    haiku.logger.level(haiku.opt('log-level'))
+  }
 
   return haiku
 }
@@ -65,8 +68,10 @@ function opt(option, value){
     case 'build-dir'    : return dir('build', value)
     case 'templates-dir': return dir('templates', value)
     case 'public-dir'   : return dir('public', value)
-    default:
-      throw new Error(option + ' is not a valid haiku option')
+    case 'log-level'    :
+      if (value) return haiku.opts[option] = value
+      else return haiku.opts[option] || 'warn'
+      break;
   }
 
   function dir(name, v){
@@ -82,9 +87,8 @@ function opt(option, value){
 function read(){
   var haiku = this
     , powerwalk = require('powerwalk')
-    , content = path.resolve(haiku.options.src, haiku.options['content-dir'])
 
-  powerwalk(content)
+  powerwalk(haiku.opt('content-dir'))
   .on('error', function(err){
     haiku.emit('error', err)
   })
@@ -102,12 +106,11 @@ function read(){
 
 function build(){
   var haiku = this
-    , build = path.resolve(haiku.options.src, haiku.options['build-dir'])
 
   haiku.logger.debug('starting build')
-  haiku.logger.info('removing --build-dir %s', build)
+  haiku.logger.info('removing --build-dir %s', haiku.opt('build-dir'))
 
-  rimraf(build, function(err){
+  rimraf(haiku.opt('build-dir'), function(err){
     if (err) return haiku.emit(err)
 
     haiku

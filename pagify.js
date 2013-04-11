@@ -47,7 +47,7 @@ function name(){
     , haiku = page.haiku
 
   return page.filename
-  .replace(haiku.options('content-dir'), '')
+  .replace(haiku.opt('content-dir'), '')
   .replace(/^\//, '') // trims leading slash, should use path.sep
 }
 
@@ -55,7 +55,7 @@ function destination(){
   var page = this
     , haiku = page.haiku
 
-  return path.join(haiku.options['build-dir'], page.url)
+  return path.join(haiku.opt('build-dir'), page.url)
 }
 
 function dirname(){
@@ -64,7 +64,7 @@ function dirname(){
 
   return page
   .filename
-  .replace(haiku['src'], '')
+  .replace(haiku.opt('src'), '')
   .replace(path.basename(page.filename), '')
   .replace(/^\//, '') // trims leading slash, should use path.sep
   .replace(/\/$/, '') // trims trailing slash, should use path.sep
@@ -73,7 +73,7 @@ function dirname(){
 function url(){
   var page = this
     , haiku = page.haiku
-    , uri = page.filename.replace(haiku.options['content-dir'], '')
+    , uri = page.filename.replace(haiku.opt('content-dir'), '')
 
   Object.keys(extensions).forEach(function(extension){
     // TODO: stop looping if an extension matches
@@ -86,13 +86,13 @@ function url(){
 function build(callback){
   var page = this
 
-  page.logger.info('building page')
-
   page.render(function(err, out){
-    if (err) throw err
+    if (err) return haiku.emit(err)
 
     mkdirp(page.dirname, function(err, made){
       if (err) return callback(err)
+
+      if (made) page.logger.info('created dir: %s', page.dirname)
 
       fs.writeFile(page.destination, out, function(err){
         if (err) return callback(err)
@@ -106,8 +106,6 @@ function build(callback){
 function render(context, callback){
   var page = this
     , haiku = page.haiku
-
-  page.logger.info('rendering')
 
   var context = context || {}
     // This might be pulled into beardo, also an expensive operation
@@ -124,11 +122,16 @@ function render(context, callback){
   }
 
   // tell beardo wheres what
-  beardo.directory = path.join(haiku.options.src, 'templates')
+  beardo.directory = path.join(haiku.opt('src'), 'templates')
 
   // ???: beardo needs a way to distinguish templates that need reading vs
   // ones that were added manually
-  beardo.render(page.filename, haiku, callback)
+  beardo.render(page.filename, haiku, function(err, out){
+    page.logger.info('rendered page')
+
+    if (err) return callback(err)
+    else return callback(null, out)
+  })
 }
 
 // TODO: throw a meaningful error when page.data is missing

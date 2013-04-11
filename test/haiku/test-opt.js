@@ -112,4 +112,16 @@ describe('h.opt(option, [value])', function(){
       assert.equal(h.opt('public-dir'), absolute)
     })
   })
+
+  describe('log-level', function(){
+    it('defaults to warn', function(){
+      assert.equal(h.opt('log-level'), 'warn')
+    })
+
+    it('is settable', function(){
+      h.opt('log-level', 'error')
+
+      assert.equal(h.opt('log-level'), 'error')
+    })
+  })
 })
