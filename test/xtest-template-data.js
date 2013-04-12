@@ -2,10 +2,10 @@
 var assert = require('assert')
   , run = require('comandante')
   , path = require('path')
-  , root = path.join(__dirname, '..', 'fixtures', 'template-data')
-  , haiku = path.join(__dirname, '..', '..', 'bin', 'haiku')
+  , root = path.join(__dirname, 'fixtures', 'template-data')
+  , haiku = path.join(__dirname, '..', 'bin', 'haiku')
   , cheerio = require('cheerio')
-  , reader = require('../support/reader')
+  , reader = require('./support/reader')
   , read = reader({ cwd: root })
 
 describe('template (mustache) data', function(){

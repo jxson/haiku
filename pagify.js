@@ -20,7 +20,6 @@ module.exports = function(file, haiku){
   // extends the passed in object and returns it
   Object.defineProperty(page, 'haiku', { value: haiku })
   Object.defineProperty(page, 'name', { get: name })
-  Object.defineProperty(page, 'logger', { value: haiku.logger.child({ page: page.name }) })
   Object.defineProperty(page, 'destination', { get: destination })
   Object.defineProperty(page, 'collection', { get: collection })
   Object.defineProperty(page, 'url', { get: url })
@@ -30,6 +29,10 @@ module.exports = function(file, haiku){
 
   Object.defineProperty(page, 'body', { get: body })
   Object.defineProperty(page, 'meta', { get: meta })
+
+  Object.defineProperty(page, 'logger', {
+    value: haiku.logger.child({ page: page.name })
+  })
 
   //   , stats: { value: {}, writable: true }
   //   , data: { value: '', writable: true }

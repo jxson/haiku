@@ -14,8 +14,9 @@ module.exports = function(src, options){
       , add: add
       , opt: opt
       }, { logger: { value: false, writable: true }
-      , pages: { value: [], enumerable: true, writable: true }
+      // , pages: { value: [], enumerable: true, writable: true }
       , opts: { value: {}, writable: true, enumerable: false }
+      , context: { value: {}, writable: true, enumerable: true }
       })
 
   // https://gist.github.com/davidaurelio/838778
