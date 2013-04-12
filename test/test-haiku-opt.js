@@ -1,8 +1,7 @@
 
-var haiku = require('../../')
+var haiku = require('../')
   , assert = require('assert')
   , path = require('path')
-  , src = path.resolve(__dirname, '../fixtures/blog')
 
 describe('h.opt(option, [value])', function(){
   var h
