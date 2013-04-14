@@ -189,7 +189,7 @@ function add(file){
         // everytime a page is added
         parent[key].sort(function(a, b){
           if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) {
-            return a.file > b.file ? 1 : -1
+            return a.name > b.name ? 1 : -1
           } else {
             return a.meta.date.getTime() > b.meta.date.getTime() ? 1 : -1
           }
