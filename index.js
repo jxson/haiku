@@ -182,7 +182,19 @@ function add(file){
         })
       }
 
-      if (isLast && isNotAnIndexPage) parent[key].push(page)
+      if (isLast && isNotAnIndexPage) {
+        parent[key].push(page)
+
+        // NOTE: this should probably be done after instead of
+        // everytime a page is added
+        parent[key].sort(function(a, b){
+          if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) {
+            return a.file > b.file ? 1 : -1
+          } else {
+            return a.meta.date.getTime() > b.meta.date.getTime() ? 1 : -1
+          }
+        })
+      }
 
       parent = parent[key]
     })

@@ -45,13 +45,51 @@ describe('h.context', function(){
     })
 
     describe('sub directories', function(){
-      it('contains pages in the sub directory')
-      it('does not include index pages')
+      it('contains pages in the sub directory', function(){
+        assert.equal(h.context.content.posts.length, 3)
+
+        h.context.content.posts.forEach(function(page){
+          assert.equal(typeof page, 'object')
+        })
+      })
+
+      it('does not include index pages', function(){
+        assert.equal(h.context.content.posts.length, 3)
+
+        h.context.content.posts.forEach(function(page){
+          assert.ok(! page.url.match(/^index/))
+        })
+      })
+    })
+  })
+
+  describe('sorting', function(){
+    var byDate
+      , byName
+
+    before(function(done){
+      h = haiku(path.resolve(__dirname, './fixtures/sortable'))
+          .on('end', function(){
+            byDate = this.context.content['sort-by-date']
+            byName = this.context.content['sort-by-name']
+          })
+          .read(done)
     })
 
-    describe('sorting', function(){
-      it('sorts by date')
-      it('sorts by name')
+    it('sorts descending by date', function(){
+      var first = byDate[0]
+        , last = byDate[byDate.length - 1]
+
+      assert.equal(first.meta.title, 'First')
+      assert.equal(last.meta.title, 'Third')
+    })
+
+    it('sorts by name', function(){
+      var first = byName[0]
+        , last = byName[byDate.length - 1]
+
+      assert.equal(first.meta.title, 'First')
+      assert.equal(last.meta.title, 'Third')
     })
   })
 })
