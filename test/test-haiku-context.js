@@ -68,12 +68,12 @@ describe('h.context', function(){
       , byName
 
     before(function(done){
-      h = haiku(path.resolve(__dirname, './fixtures/sortable'))
-          .on('end', function(){
-            byDate = this.context.content['sort-by-date']
-            byName = this.context.content['sort-by-name']
-          })
-          .read(done)
+      haiku(path.resolve(__dirname, './fixtures/sortable'))
+      .on('end', function(){
+        byDate = this.context.content['sort-by-date']
+        byName = this.context.content['sort-by-name']
+      })
+      .read(done)
     })
 
     it('sorts descending by date', function(){
