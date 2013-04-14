@@ -50,7 +50,7 @@ function name(){
     , haiku = page.haiku
 
   return page.filename
-  .replace(haiku.opt('src'), '')
+  .replace(haiku.opt('content-dir'), '')
   .replace(new RegExp('^' + path.sep), '') // trims leading slash
 }
 

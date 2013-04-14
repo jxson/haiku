@@ -14,7 +14,7 @@ describe('page.name', function(){
     page = pagify(filename, haiku(src))
   })
 
-  it('returns the filename relative to the --src', function(){
-    assert.equal(page.name, 'content/posts/001.md')
+  it('returns the filename relative to the --content-dir', function(){
+    assert.equal(page.name, 'posts/001.md')
   })
 })

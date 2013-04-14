@@ -155,7 +155,9 @@ function add(file){
   //
   // if (! haiku.context[key]) haiku.context[key] = page
 
-  haiku.pages.push(page)
+  Object.defineProperty(haiku.context, page.name, { value: page })
+
+  // haiku.pages.push(page)
 
   haiku.logger.debug('Added page')
 

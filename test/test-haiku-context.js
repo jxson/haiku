@@ -17,6 +17,16 @@ describe('h.context', function(){
     assert.ok(Object.keys(h.context).length > 0)
   })
 
+  it('has properties for every page', function(){
+    assert.ok(h.context['about.md'])
+    assert.ok(h.context['contact.md'])
+    assert.ok(h.context['index.md'])
+    assert.ok(h.context['posts/index.md'])
+    assert.ok(h.context['posts/001.md'])
+    assert.ok(h.context['posts/002.md'])
+    assert.ok(h.context['posts/003.md'])
+  })
+
   describe('content collection', function(){
     it('contains pages in the --content-dir', function(){
       assert.ok(h.context.content.length)
@@ -32,12 +42,6 @@ describe('h.context', function(){
       h.context.content.forEach(function(page){
         assert.ok(! page.url.match(/^index/))
       })
-    })
-
-    xit('has properties for each page', function(){
-      assert.ok(h.context['content/about.md'])
-      assert.ok(h.context['content/contact.md'])
-      assert.ok(h.context['content/index.md'])
     })
 
     describe('sub directories', function(){
