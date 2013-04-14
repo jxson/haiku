@@ -14,7 +14,7 @@ module.exports = function(src, options){
       , add: add
       , opt: opt
       }, { logger: { value: false, writable: true }
-      // , pages: { value: [], enumerable: true, writable: true }
+      , pages: { value: [], enumerable: true, writable: true }
       , opts: { value: {}, writable: true, enumerable: false }
       , context: { value: {}, writable: true, enumerable: true }
       })
@@ -86,18 +86,21 @@ function opt(option, value){
 }
 
 
-function read(){
+function read(callback){
   var haiku = this
     , powerwalk = require('powerwalk')
 
+  if (callback) {
+    haiku.on('error', callback)
+    haiku.on('end', function(){ callback(null) })
+  }
+
   powerwalk(haiku.opt('content-dir'))
-  .on('error', function(err){
-    haiku.emit('error', err)
-  })
-  .on('read', function(file){
-    haiku.add(file)
-  })
+  .on('error', function(err){ haiku.emit('error', err) })
+  .on('read', function(file){ haiku.add(file) })
   .on('end', finish)
+
+  return haiku
 
   function finish(){
     haiku.logger.debug('finished walking')
@@ -143,26 +146,45 @@ function add(file){
     , pagify = require('./pagify')
     , page = pagify(file, haiku)
 
-  // TODO: gaurd that this doesn't override haiku methods!!!
-  //
-  // Adds keys for the template data
-  if (! haiku[page.collection]) haiku[page.collection] = []
-
-  // don't add indexes to the list
-  if (! path.basename(page.url).match(/^index/)) {
-    haiku[page.collection].push(page)
-  }
+  contextify(page)
 
   // add keys for each page to support page sections
   // NOTE: has to use a key with the extension removed
   // TODO: make this a little more robust
-  var key = path.join('content', page.name.replace(path.extname(page.name), ''))
-
-  if (! haiku[key]) haiku[key] = page
+  // var key = path.join('content', page.name.replace(path.extname(page.name), ''))
+  //
+  // if (! haiku.context[key]) haiku.context[key] = page
 
   haiku.pages.push(page)
 
   haiku.logger.debug('Added page')
 
   return page
+
+  // Build up the nessecary context by defining a deep selector
+  // http://addyosmani.com/blog/essential-js-namespacing/
+  function contextify(page){
+    var parent = haiku.context
+      , keys = page.collection.split('.')
+
+    // console.log('keys', keys)
+
+    keys.forEach(function(key){
+      var isLast = key === keys[keys.length - 1]
+        , isNotAnIndexPage = ! path.basename(page.url).match(/^index/)
+
+      if (! parent[key]) {
+        Object.defineProperty(parent, key, { value: []
+        , writable: true
+        , enumerable: true
+        })
+      }
+
+      if (isLast && isNotAnIndexPage) parent[key].push(page)
+
+      parent = parent[key]
+    })
+
+    return parent
+  }
 }

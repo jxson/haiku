@@ -14,7 +14,7 @@ describe('page.collection', function(){
     page = pagify(filename, haiku(src))
   })
 
-  it('returns the --src relative dirname', function(){
-    assert.equal(page.collection, 'content/posts/001.md')
+  it('returns the --src relative dirname as a selector', function(){
+    assert.equal(page.collection, 'content.posts')
   })
 })

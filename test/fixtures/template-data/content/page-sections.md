@@ -1,11 +1,21 @@
 = yaml =
 title: Page 1
 description: Access a page directly
+author: haiku:content/people/jxson.md
 = yaml =
 
 WTF
 
-{{#content/people/jxson}}
+{{#author}}
+* name
+* github
+{{/author}}
+
+{{#page}}
+
+{{/page}}
+
+{{#content/people/jxson.md}}
 * {{ name }}
 * {{ github }}
-{{/content/people/jxson}}
+{{/content/people/jxson.md}}

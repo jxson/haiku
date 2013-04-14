@@ -7,6 +7,6 @@ description: Sub content lists
 
 {{ description }}
 
-{{#content/posts}}
+{{#content.posts}}
 * {{ title }}
-{{/content/posts}}
+{{/content.posts}}

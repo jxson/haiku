@@ -51,7 +51,7 @@ function name(){
 
   return page.filename
   .replace(haiku.opt('src'), '')
-  .replace(/^\//, '') // trims leading slash, should use path.sep
+  .replace(new RegExp('^' + path.sep), '') // trims leading slash
 }
 
 function destination(){
@@ -65,7 +65,9 @@ function collection(){
   var page = this
     , haiku = page.haiku
 
-  return path.relative(haiku.opt('src'), page.filename)
+  return path
+  .relative(haiku.opt('src'), path.dirname(page.filename))
+  .replace(path.sep, '.')
 }
 
 function url(){
