@@ -9,7 +9,6 @@ describe('page.collection', function(){
     , src = path.resolve(__dirname, '../fixtures/template-data')
     , filename = path.join(src, 'content/posts/001.md')
 
-
   before(function(){
     page = pagify(filename, haiku(src))
   })

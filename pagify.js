@@ -22,6 +22,7 @@ module.exports = function(file, haiku){
   Object.defineProperty(page, 'name', { get: name })
   Object.defineProperty(page, 'destination', { get: destination })
   Object.defineProperty(page, 'collection', { get: collection })
+  Object.defineProperty(page, 'dirname', { get: dirname })
   Object.defineProperty(page, 'url', { get: url })
 
   Object.defineProperty(page, 'build', { value: build })
@@ -59,6 +60,14 @@ function destination(){
     , haiku = page.haiku
 
   return path.join(haiku.opt('build-dir'), page.url)
+}
+
+function dirname(){
+  var page = this
+    , haiku = page.haiku
+
+  return path
+  .relative(haiku.opt('src'), path.dirname(page.filename))
 }
 
 function collection(){
@@ -110,27 +119,27 @@ function render(context, callback){
   var page = this
     , haiku = page.haiku
 
-  var context = context || {}
-    // This might be pulled into beardo, also an expensive operation
-    // think about caching it
-    // NOTE: this has to happen after everything has been read
-  var compiled = hogan.compile(page.body)
-    , mustached = compiled.render(haiku)
-    , MD = marked(mustached)
-    , template = beardo.add(page.filename, MD)
-
   if (typeof context === 'function') {
     callback = context
     context = {}
   }
+
+  // This might be pulled into beardo, also an expensive operation
+  // think about caching it
+  // NOTE: this has to happen after everything has been read
+  var compiled = hogan.compile(page.body)
+    , mustached = compiled.render(haiku.context)
+    , MD = marked(mustached)
+    , template = beardo.add(page.filename, MD)
 
   // tell beardo wheres what
   beardo.directory = path.join(haiku.opt('src'), 'templates')
 
   // ???: beardo needs a way to distinguish templates that need reading vs
   // ones that were added manually
-  beardo.render(page.filename, haiku, function(err, out){
+  beardo.render(page.filename, haiku.context, function(err, out){
     page.logger.info('rendered page')
+    page.logger.info(out)
 
     if (err) return callback(err)
     else return callback(null, out)

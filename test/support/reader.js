@@ -10,7 +10,6 @@ function reader(opts){
 
   return function(url, cb){
     var file =path.join(cwd, build, url)
-      , data
 
     fs.readFile(file, 'utf8', cb)
   }

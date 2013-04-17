@@ -149,15 +149,10 @@ function add(file){
   contextify(page)
 
   // add keys for each page to support page sections
-  // NOTE: has to use a key with the extension removed
-  // TODO: make this a little more robust
-  // var key = path.join('content', page.name.replace(path.extname(page.name), ''))
-  //
-  // if (! haiku.context[key]) haiku.context[key] = page
-
   Object.defineProperty(haiku.context, page.name, { value: page })
 
-  // haiku.pages.push(page)
+  // stash the page for later
+  haiku.pages.push(page)
 
   haiku.logger.debug('Added page')
 
