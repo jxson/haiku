@@ -165,7 +165,7 @@ function meta(){
 
 function contextify(page){
   var defaults = { title: page.name
-      , date: page.stats.atime
+      , date: page.stats ? page.stats.atime : undefined
       }
 
   // Build the context with the defaults
