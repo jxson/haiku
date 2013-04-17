@@ -174,4 +174,22 @@ function contextify(page){
   for (var key in page.meta) page.context[key] = page.meta[key]
 
   page.context.body = page.body
+  page.context.url = page.url
+
+  page.context.next = function(){
+    // console.log('page.haiku.context', page.haiku.context)
+    var keys = page.collection.split('.')
+      , parent = page.haiku.context
+
+    keys.forEach(function(key){
+      parent = parent[key]
+    })
+
+    return parent[parent.indexOf(page) + 1]
+  }
+
+  page.context.previous = function(){
+
+  }
+
 }

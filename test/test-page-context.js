@@ -58,24 +58,34 @@ describe('page.context', function(){
     })
   })
 
-  describe('.id', function(){
-    it('is a unique identifier based on page.name')
-
-    it('can be overridden by front-matter')
-  })
-
   describe('.url', function(){
-    it('is the url for the built page')
+    it('is the url for the built page', function(){
+      var page = h.find('defaults.md')
 
-    it('can NOT be overridden by front-matter')
+      assert.ok(page.context.url, '/defaults.html')
+    })
+
+    it('can NOT be overridden by front-matter', function(){
+      var page = h.find('override.md')
+
+      assert.ok(page.context.url, '/override.html')
+    })
   })
 
-  describe('.next', function(){
-    it('is the next page in page.dirname')
-  })
+  describe('lambdas/helpers', function(){
+    describe('.next', function(){
+      it('provides the next page.dirname', function(){
+        var current = h.find('linked-pages/second.md')
+          , expected = h.find('linked-pages/third.md')
+          , actual = current.context.next()
 
-  describe('.previous', function(){
-    it('is the previous page in page.dirname')
+        assert.equal(actual, expected)
+      })
+    })
+
+    describe('.previous', function(){
+      it('provides the previous page.dirname')
+    })
   })
 })
 
@@ -84,7 +94,3 @@ xdescribe('', function(){
 
   it('provides helpers for expanding page sections')
 })
-
-function find(name){
-
-}
