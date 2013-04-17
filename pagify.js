@@ -24,6 +24,7 @@ module.exports = function(file, haiku){
   Object.defineProperty(page, 'collection', { get: collection })
   Object.defineProperty(page, 'dirname', { get: dirname })
   Object.defineProperty(page, 'url', { get: url })
+  Object.defineProperty(page, 'context', { value: {} })
 
   Object.defineProperty(page, 'build', { value: build })
   Object.defineProperty(page, 'render', { value: render })
@@ -35,6 +36,8 @@ module.exports = function(file, haiku){
     value: haiku.logger.child({ page: page.name })
   })
 
+
+  contextify(page)
   //   , stats: { value: {}, writable: true }
   //   , data: { value: '', writable: true }
   //   }
@@ -115,14 +118,18 @@ function build(callback){
   })
 }
 
-function render(context, callback){
+function render(extra, callback){
   var page = this
     , haiku = page.haiku
 
   if (typeof context === 'function') {
-    callback = context
-    context = {}
+    callback = extra
+    extra = {}
   }
+
+  for (key in extra) page.context[key] = extra[key]
+
+  // put back the non-overridable values
 
   // This might be pulled into beardo, also an expensive operation
   // think about caching it
@@ -154,4 +161,17 @@ function body(){
 // TODO: throw a meaningful error when page.data is missing
 function meta(){
   return fm(this.data).attributes
+}
+
+function contextify(page){
+  var defaults = { title: page.name
+      , date: page.stats.atime
+      }
+
+  // Build the context with the defaults
+  for (var key in defaults) page.context[key] = defaults[key]
+  // apply overrides
+  for (var key in page.meta) page.context[key] = page.meta[key]
+
+  page.context.body = page.body
 }

@@ -13,6 +13,7 @@ module.exports = function(src, options){
       , build: build
       , add: add
       , opt: opt
+      , find: find
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
       , opts: { value: {}, writable: true, enumerable: false }
@@ -85,6 +86,13 @@ function opt(option, value){
   }
 }
 
+function find(name){
+  var filtered = this.pages.filter(filter)
+
+  return filtered.length ? filtered[0] : null
+
+  function filter(page){ return page.name === name }
+}
 
 function read(callback){
   var haiku = this
@@ -183,11 +191,14 @@ function add(file){
         // NOTE: this should probably be done after instead of
         // everytime a page is added
         parent[key].sort(function(a, b){
-          if (!a.meta || !b.meta && !a.meta.date || !b.meta.date) {
-            return a.name > b.name ? 1 : -1
-          } else {
+          var aHasDate = !!a.meta.date
+            , bHasDate = !!b.meta.date
+
+          if (aHasDate && bHasDate) {
             return a.meta.date.getTime() > b.meta.date.getTime() ? 1 : -1
           }
+
+          return a.name > b.name ? 1 : -1
         })
       }
 

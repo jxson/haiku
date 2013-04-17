@@ -4,22 +4,58 @@ var haiku = require('../')
   , assert = require('assert')
 
 describe('page.context', function(){
-  describe('.title', function(){
-    it('defaults to page.name')
+  var src = path.resolve(__dirname, './fixtures/page-context')
+    , h
 
-    it('can be overridden by front-matter')
+  before(function(done){
+    h = haiku(src).read(done)
+  })
+
+  describe('.title', function(){
+    it('defaults to page.name', function(){
+      var page = h.find('defaults.md')
+
+      assert.equal(page.context.title, page.name)
+    })
+
+    it('can be overridden by front-matter', function(){
+      var page = h.find('override.md')
+
+      assert.equal(page.context.title
+      , 'whatevs, this is the real title.')
+    })
   })
 
   describe('.body', function(){
-    it('is the un-rendered content of the page')
+    it('is the un-rendered content of the page', function(){
+      var page = h.find('defaults.md')
 
-    it('can NOT be overridden by front-matter')
+      assert.equal(page.context.body.trim(), 'No front-matter here')
+    })
+
+    it('can NOT be overridden by front-matter', function(){
+      var page = h.find('override.md')
+
+      assert.equal(page.context.body.trim(), 'You can\'t override me')
+    })
   })
 
   describe('.date', function(){
-    it('defaults to undefined')
+    it('defaults to undefined', function(){
+      var page = h.find('defaults.md')
 
-    it('can be overridden by front-matter')
+      assert.ok(page.context.date instanceof Date
+      , 'Bad page.context.date')
+    })
+
+    it('can be overridden by front-matter', function(){
+      var page = h.find('override.md')
+
+      assert.ok(page.context.date instanceof Date
+      , 'Bad page.context.date')
+      assert.equal(page.context.date.getTime()
+      , page.meta.date.getTime())
+    })
   })
 
   describe('.id', function(){
@@ -41,6 +77,14 @@ describe('page.context', function(){
   describe('.previous', function(){
     it('is the previous page in page.dirname')
   })
-
-  it('allows arbitrary values to be defined via front-matter')
 })
+
+xdescribe('', function(){
+  it('allows  to be defined via front-matter')
+
+  it('provides helpers for expanding page sections')
+})
+
+function find(name){
+
+}
