@@ -11,6 +11,16 @@ describe('page.context', function(){
     h = haiku(src).read(done)
   })
 
+  it('allows arbitrary values via front-matter', function(){
+    var page = h.find('arbitrary.md')
+
+    assert.equal(page.context.foo, 'oh')
+    assert.equal(page.context.bar, 'my')
+    assert.equal(page.context.baz, 'glob')
+  })
+
+  it('provides helpers for expanding page sections')
+
   describe('.title', function(){
     it('defaults to page.name', function(){
       var page = h.find('defaults.md')
@@ -74,7 +84,7 @@ describe('page.context', function(){
 
   describe('lambdas/helpers', function(){
     describe('.next', function(){
-      it('provides the next page.dirname', function(){
+      it('provides the next page in page.dirname', function(){
         var current = h.find('linked-pages/second.md')
           , expected = h.find('linked-pages/third.md')
           , actual = current.context.next()
@@ -84,7 +94,7 @@ describe('page.context', function(){
     })
 
     describe('.previous', function(){
-      it('provides the previous page.dirname', function(){
+      it('provides the previous page in page.dirname', function(){
         var current = h.find('linked-pages/second.md')
           , expected = h.find('linked-pages/first.md')
           , actual = current.context.previous()
@@ -93,10 +103,4 @@ describe('page.context', function(){
       })
     })
   })
-})
-
-xdescribe('', function(){
-  it('allows  to be defined via front-matter')
-
-  it('provides helpers for expanding page sections')
 })
