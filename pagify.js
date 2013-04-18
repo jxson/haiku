@@ -177,7 +177,6 @@ function contextify(page){
   page.context.url = page.url
 
   page.context.next = function(){
-    // console.log('page.haiku.context', page.haiku.context)
     var keys = page.collection.split('.')
       , parent = page.haiku.context
 
@@ -189,7 +188,14 @@ function contextify(page){
   }
 
   page.context.previous = function(){
+    var keys = page.collection.split('.')
+      , parent = page.haiku.context
 
+    keys.forEach(function(key){
+      parent = parent[key]
+    })
+
+    return parent[parent.indexOf(page) - 1]
   }
 
 }

@@ -84,7 +84,13 @@ describe('page.context', function(){
     })
 
     describe('.previous', function(){
-      it('provides the previous page.dirname')
+      it('provides the previous page.dirname', function(){
+        var current = h.find('linked-pages/second.md')
+          , expected = h.find('linked-pages/first.md')
+          , actual = current.context.previous()
+
+        assert.equal(actual, expected)
+      })
     })
   })
 })
