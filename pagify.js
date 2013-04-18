@@ -170,12 +170,29 @@ function contextify(page){
 
   // Build the context with the defaults
   for (var key in defaults) page.context[key] = defaults[key]
-  // apply overrides
-  for (var key in page.meta) page.context[key] = page.meta[key]
 
+  // apply overrides
+  for (var key in page.meta) {
+    var value = page.meta[key]
+      , isString = typeof value === 'string'
+      , matches = isString ? value.match('haiku:content/') : null
+
+    // Deal with keys that expand other pages
+    if (matches) {
+      // removes the "haiku:content/"
+      var name = value.replace(matches[0], '')
+      // NOTE: this should throw in a menaingful way if your trying to
+      // expand a page that doesn't exitst
+      var expanded = page.haiku.find(name)
+      page.context[key] = expanded.context
+    } else page.context[key] = value
+  }
+
+  // Apply the tings we don't want overidden
   page.context.body = page.body
   page.context.url = page.url
 
+  // Helpers / lambdas
   page.context.next = function(){
     var keys = page.collection.split('.')
       , parent = page.haiku.context

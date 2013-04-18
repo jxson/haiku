@@ -19,7 +19,13 @@ describe('page.context', function(){
     assert.equal(page.context.baz, 'glob')
   })
 
-  it('provides helpers for expanding page sections')
+  it('allows the expansion of pages via front-matter', function(){
+    var page = h.find('page-expansion.md')
+
+    assert.equal(page.context.expanded.foo, 'oh')
+    assert.equal(page.context.expanded.bar, 'my')
+    assert.equal(page.context.expanded.baz, 'glob')
+  })
 
   describe('.title', function(){
     it('defaults to page.name', function(){
