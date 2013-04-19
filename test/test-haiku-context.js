@@ -5,26 +5,32 @@ var haiku = require('../')
 
 describe('h.context', function(){
   var h
-    , src = path.resolve(__dirname, './fixtures/blog')
+    , src = path.resolve(__dirname, './fixtures/template-data')
 
   before(function(done){
     h = haiku(src)
-        .read(done)
+        .read(function(err){
+          done(err)
+
+          console.log('read!')
+        })
   })
 
   it('populates after `read`', function(){
-    assert.equal(Object.keys(haiku(src).context).length, 0)
+    var ctx = haiku(src).context
+
+    assert.equal(Object.keys(ctx).length, 0)
     assert.ok(Object.keys(h.context).length > 0)
   })
 
-  it('has properties for every page', function(){
-    assert.ok(h.context['about.md'])
-    assert.ok(h.context['contact.md'])
-    assert.ok(h.context['index.md'])
-    assert.ok(h.context['posts/index.md'])
-    assert.ok(h.context['posts/001.md'])
-    assert.ok(h.context['posts/002.md'])
-    assert.ok(h.context['posts/003.md'])
+  xit('has properties for every page', function(){
+    assert.ok(h.context['haiku:about.md'])
+    assert.ok(h.context['haiku:contact.md'])
+    assert.ok(h.context['haiku:index.md'])
+    assert.ok(h.context['haiku:posts/index.md'])
+    assert.ok(h.context['haiku:posts/001.md'])
+    assert.ok(h.context['haiku:posts/002.md'])
+    assert.ok(h.context['haiku:posts/003.md'])
   })
 
   describe('content collection', function(){
@@ -37,7 +43,7 @@ describe('h.context', function(){
     })
 
     it('does not include index pages', function(){
-      assert.equal(h.context.content.length, 2)
+      assert.equal(h.context.content.length, 4)
 
       h.context.content.forEach(function(page){
         assert.ok(! page.url.match(/^index/))

@@ -15,7 +15,7 @@ WTF
 
 {{/page}}
 
-{{#content/people/jxson.md}}
+{{#haiku:content/people/jxson.md}}
 * {{ name }}
 * {{ github }}
-{{/content/people/jxson.md}}
+{{/haiku:content/people/jxson.md}}

@@ -17,7 +17,8 @@ module.exports = function(src, options){
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
       , opts: { value: {}, writable: true, enumerable: false }
-      , context: { value: {}, writable: true, enumerable: true }
+      , context: { get: context }
+      , _context: { value: {}, writable: true }
       })
 
   // https://gist.github.com/davidaurelio/838778
@@ -154,10 +155,8 @@ function add(file){
     , pagify = require('./pagify')
     , page = pagify(file, haiku)
 
-  contextify(page)
-
   // add keys for each page to support page sections
-  Object.defineProperty(haiku.context, page.name, { value: page })
+  // Object.defineProperty(haiku.context, page.name, { value: page })
 
   // stash the page for later
   haiku.pages.push(page)
@@ -165,20 +164,25 @@ function add(file){
   haiku.logger.debug('Added page')
 
   return page
+}
 
-  // Build up the nessecary context by defining a deep selector
-  // http://addyosmani.com/blog/essential-js-namespacing/
-  function contextify(page){
-    var parent = haiku.context
+// Returns the haiku context for rendering, this could be optimized
+// since this will be called everytime a page is rendered
+function context(){
+  var haiku = this
+    , ctx = {}
+
+  haiku.pages.forEach(function(page){
+    var parent = ctx
       , keys = page.collection.split('.')
-
-    // console.log('keys', keys)
 
     keys.forEach(function(key){
       var isLast = key === keys[keys.length - 1]
         , isNotAnIndexPage = ! path.basename(page.url).match(/^index/)
 
       if (! parent[key]) {
+        // Define a key on the pre-defined array, this is what makes our
+        // magic mustache keys work
         Object.defineProperty(parent, key, { value: []
         , writable: true
         , enumerable: true
@@ -188,8 +192,6 @@ function add(file){
       if (isLast && isNotAnIndexPage) {
         parent[key].push(page.context)
 
-        // NOTE: this should probably be done after instead of
-        // everytime a page is added
         parent[key].sort(function(a, b){
           var aHasDate = !!a.date
             , bHasDate = !!b.date
@@ -200,11 +202,12 @@ function add(file){
 
           return a.name > b.name ? 1 : -1
         })
+
       }
 
       parent = parent[key]
     })
+  })
 
-    return parent
-  }
+  return ctx
 }

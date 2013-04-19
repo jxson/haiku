@@ -196,6 +196,7 @@ function context(){
   // Apply the tings we don't want overidden
   page._context.body = page.body
   page._context.url = page.url
+  page._context.name = page.name
 
   // Helpers / lambdas
   page._context.next = function(){
