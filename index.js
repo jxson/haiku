@@ -186,16 +186,16 @@ function add(file){
       }
 
       if (isLast && isNotAnIndexPage) {
-        parent[key].push(page)
+        parent[key].push(page.context)
 
         // NOTE: this should probably be done after instead of
         // everytime a page is added
         parent[key].sort(function(a, b){
-          var aHasDate = !!a.meta.date
-            , bHasDate = !!b.meta.date
+          var aHasDate = !!a.date
+            , bHasDate = !!b.date
 
           if (aHasDate && bHasDate) {
-            return a.meta.date.getTime() > b.meta.date.getTime() ? 1 : -1
+            return a.date.getTime() > b.date.getTime() ? 1 : -1
           }
 
           return a.name > b.name ? 1 : -1

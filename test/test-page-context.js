@@ -60,8 +60,7 @@ describe('page.context', function(){
     it('defaults to undefined', function(){
       var page = h.find('defaults.md')
 
-      assert.ok(page.context.date instanceof Date
-      , 'Bad page.context.date')
+      assert.equal(page.context.date, undefined)
     })
 
     it('can be overridden by front-matter', function(){
@@ -95,7 +94,7 @@ describe('page.context', function(){
           , expected = h.find('linked-pages/third.md')
           , actual = current.context.next()
 
-        assert.equal(actual, expected)
+        assert.equal(actual.url, expected.url)
       })
     })
 
@@ -105,7 +104,7 @@ describe('page.context', function(){
           , expected = h.find('linked-pages/first.md')
           , actual = current.context.previous()
 
-        assert.equal(actual, expected)
+        assert.equal(actual.url, expected.url)
       })
     })
   })

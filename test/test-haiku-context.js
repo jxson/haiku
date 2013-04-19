@@ -80,16 +80,16 @@ describe('h.context', function(){
       var first = byDate[0]
         , last = byDate[byDate.length - 1]
 
-      assert.equal(first.meta.title, 'First')
-      assert.equal(last.meta.title, 'Third')
+      assert.equal(first.title, 'First')
+      assert.equal(last.title, 'Third')
     })
 
     it('sorts by name', function(){
       var first = byName[0]
         , last = byName[byDate.length - 1]
 
-      assert.equal(first.meta.title, 'First')
-      assert.equal(last.meta.title, 'Third')
+      assert.equal(first.title, 'First')
+      assert.equal(last.title, 'Third')
     })
   })
 })

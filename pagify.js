@@ -24,9 +24,10 @@ module.exports = function(file, haiku){
   Object.defineProperty(page, 'collection', { get: collection })
   Object.defineProperty(page, 'dirname', { get: dirname })
   Object.defineProperty(page, 'url', { get: url })
-  Object.defineProperty(page, 'context', { value: {} })
+  Object.defineProperty(page, 'context', { get: context })
 
   Object.defineProperty(page, 'build', { value: build })
+  Object.defineProperty(page, 'render', { value: render })
   Object.defineProperty(page, 'render', { value: render })
 
   Object.defineProperty(page, 'body', { get: body })
@@ -36,8 +37,6 @@ module.exports = function(file, haiku){
     value: haiku.logger.child({ page: page.name })
   })
 
-
-  contextify(page)
   //   , stats: { value: {}, writable: true }
   //   , data: { value: '', writable: true }
   //   }
@@ -118,24 +117,22 @@ function build(callback){
   })
 }
 
-function render(extra, callback){
+function render(callback){
   var page = this
     , haiku = page.haiku
+    , context = haiku.context
 
-  if (typeof context === 'function') {
-    callback = extra
-    extra = {}
-  }
+  // extra isn't getting passed as an arg anywhere, maybe change the
+  // signature
+  // for (key in extra) page.context[key] = extra[key]
+  context.page = page.context
 
-  for (key in extra) page.context[key] = extra[key]
-
-  // put back the non-overridable values
 
   // This might be pulled into beardo, also an expensive operation
   // think about caching it
   // NOTE: this has to happen after everything has been read
   var compiled = hogan.compile(page.body)
-    , mustached = compiled.render(haiku.context)
+    , mustached = compiled.render(context)
     , MD = marked(mustached)
     , template = beardo.add(page.filename, MD)
 
@@ -144,7 +141,7 @@ function render(extra, callback){
 
   // ???: beardo needs a way to distinguish templates that need reading vs
   // ones that were added manually
-  beardo.render(page.filename, haiku.context, function(err, out){
+  beardo.render(page.filename, context, function(err, out){
     page.logger.info('rendered page')
     page.logger.info(out)
 
@@ -163,13 +160,15 @@ function meta(){
   return fm(this.data).attributes
 }
 
-function contextify(page){
-  var defaults = { title: page.name
-      , date: page.stats ? page.stats.atime : undefined
-      }
+function context(){
+  var page = this
+    , haiku = page.haiku
+    , defaults = { title: page.name }
+
+  page._context = page._context || {}
 
   // Build the context with the defaults
-  for (var key in defaults) page.context[key] = defaults[key]
+  for (var key in defaults) page._context[key] = defaults[key]
 
   // apply overrides
   for (var key in page.meta) {
@@ -181,19 +180,25 @@ function contextify(page){
     if (matches) {
       // removes the "haiku:content/"
       var name = value.replace(matches[0], '')
+        , expanded = haiku.find(name)
+
       // NOTE: this should throw in a menaingful way if your trying to
       // expand a page that doesn't exitst
-      var expanded = page.haiku.find(name)
-      page.context[key] = expanded.context
-    } else page.context[key] = value
+      if (! expanded) {
+        console.error('haiku.pages', haiku.pages)
+        throw new Error( name + ' does not exist')
+      }
+
+      page._context[key] = expanded.context
+    } else page._context[key] = value
   }
 
   // Apply the tings we don't want overidden
-  page.context.body = page.body
-  page.context.url = page.url
+  page._context.body = page.body
+  page._context.url = page.url
 
   // Helpers / lambdas
-  page.context.next = function(){
+  page._context.next = function(){
     var keys = page.collection.split('.')
       , parent = page.haiku.context
 
@@ -201,10 +206,10 @@ function contextify(page){
       parent = parent[key]
     })
 
-    return parent[parent.indexOf(page) + 1]
+    return parent[parent.indexOf(page._context) + 1]
   }
 
-  page.context.previous = function(){
+  page._context.previous = function(){
     var keys = page.collection.split('.')
       , parent = page.haiku.context
 
@@ -212,7 +217,8 @@ function contextify(page){
       parent = parent[key]
     })
 
-    return parent[parent.indexOf(page) - 1]
+    return parent[parent.indexOf(page._context) - 1]
   }
 
+  return page._context
 }
