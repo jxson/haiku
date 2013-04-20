@@ -38,12 +38,38 @@ describe('template data', function(){
       })
     })
 
-    it('does NOT include index pages')
+    it('does NOT include index pages', function(){
+      assert.equal($('li').length, 4)
+      assert.equal($('li:contains(Content directory index)').length, 0)
+    })
 
     describe('sub directories', function(){
-      it('iterates pages')
+      before(function(done){
+        read('/posts-list.html', function(err, html){
+          if (err) return done(err)
+          $ = cheerio.load(html)
+          done()
+        })
+      })
 
-      it('does NOT include index pages')
+      it('iterates pages', function(){
+        var posts = [ 'Post 001'
+        , 'Post 002'
+        , 'Post 003'
+        ]
+
+        posts.forEach(function(title){
+          var selector = 'li:contains(' + title + ')'
+
+          assert.ok($(selector).length
+          , 'Missing page with title: ' + title)
+        })
+      })
+
+      it('does NOT include index pages', function(){
+        assert.equal($('li').length, 3)
+        assert.equal($('li:contains(posts/index.md)').length, 0)
+      })
     })
 
     describe('sorting', function(){
