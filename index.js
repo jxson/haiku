@@ -170,7 +170,7 @@ function add(file){
 // since this will be called everytime a page is rendered
 function context(){
   var haiku = this
-    , ctx = {}
+    , ctx = { pages: haiku.pages }
 
   haiku.pages.forEach(function(page){
     var parent = ctx

@@ -73,9 +73,68 @@ describe('template data', function(){
     })
 
     describe('sorting', function(){
-      it('sorts by date')
+      it('sorts by date', function(done){
+        read('/sort-by-date/index.html', function(err, html){
+          if (err) return done(err)
 
-      it('sorts by name')
+          var $ = cheerio.load(html);
+
+          assert.equal($('li').first().text(), 'First')
+          assert.equal($('li').last().text(), 'Third')
+
+          done()
+        })
+      })
+
+      it('sorts by name', function(done){
+        read('/sort-by-name/index.html', function(err, html){
+          if (err) return done(err)
+
+          var $ = cheerio.load(html);
+
+          assert.equal($('li').first().text(), 'First')
+          assert.equal($('li').last().text(), 'Third')
+
+          done()
+        })
+      })
+    })
+  })
+
+  describe('page sections/helpers', function(){
+    // NOTE: still need to work out a reasnoable scheme for doing this
+    // that plays nice with mustache. Thinking about adding helpers:
+    //
+    //    {{#haiku(people/jxson.md)}}
+    //      * {{ name }}
+    //      * {{ twitter }}
+    //    {{/haiku(people/jxson.md)}}
+    //
+    xit('renders a block for the keyed page', function(done){
+      read('/page-sections.html', function(err, html){
+        if (err) return done(err)
+
+        var $ = cheerio.load(html)
+
+        assert.equal($('li').first().text(), 'Jason Campbell')
+        assert.equal($('li').last().text(), 'jxson')
+
+        done()
+      })
+    })
+  })
+
+  describe('pages', function(){
+    it('lists all pages recursively', function(done){
+      read('/page-list.html', function(err, html){
+        if (err) return done(err)
+
+        var $ = cheerio.load(html)
+
+        assert.equal($('li').length, 18)
+
+        done()
+      })
     })
   })
 })
