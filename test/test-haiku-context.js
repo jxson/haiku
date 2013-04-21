@@ -9,18 +9,14 @@ describe('h.context', function(){
 
   before(function(done){
     h = haiku(src)
-        .read(function(err){
-          done(err)
-
-          console.log('read!')
-        })
+        .read(done)
   })
 
   it('populates after `read`', function(){
     var ctx = haiku(src).context
 
-    assert.equal(Object.keys(ctx).length, 0)
-    assert.ok(Object.keys(h.context).length > 0)
+    assert.equal(Object.keys(ctx).length, 1)
+    assert.ok(Object.keys(h.context.content).length > 0)
   })
 
   xit('has properties for every page', function(){
