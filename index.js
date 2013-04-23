@@ -14,22 +14,73 @@ module.exports = function(src, options){
       , add: add
       , opt: opt
       , find: find
+      , get: get
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
       , opts: { value: {}, writable: true, enumerable: false }
       , context: { get: context }
       , _context: { value: {}, writable: true }
+      , isReading: { value: false, writable: true }
       })
 
   // https://gist.github.com/davidaurelio/838778
   extend(haiku, EE.prototype)
 
-  // if (typeof src === 'object') options = src
+  if (typeof src === 'object') options = src
   if (typeof src === 'string') options.src = src
 
   haiku.configure(options)
 
+  haiku.read()
+
   return haiku
+}
+
+module.exports.handler = function(req, res, opts){
+  var h = module.exports(opts)
+
+  return function(url, ctx, code){
+    var ctx = ctx || {}
+      , code = code || 200
+
+    h.get(url, function(err, page){
+      if (err) throw err
+      if (! page) return notFound()
+
+      page.render(ctx, function(err, output){
+        if (err) throw err
+
+        var buffer = require('buffer').Buffer
+          , data = Buffer(output)
+
+        res.statusCode = 200
+        res.setHeader('content-length', data.length)
+        res.end(data)
+      })
+    })
+  }
+
+  function notFound(){
+    res.setHeader('content-type', 'text/plain')
+    res.statusCode = 404
+    res.write('a blank page stares back\n')
+    res.write('this entity is missing\n')
+    res.write('but there are others\n')
+    res.end()
+  }
+}
+
+function get(name, callback){
+  var haiku = this
+
+  if (haiku.isReading) {
+    haiku.once('error', callback)
+    haiku.once('end', function(){
+      callback(null, haiku.find(name))
+    })
+  } else process.nextTick(function(){
+    callback(null, haiku.find(name))
+  })
 }
 
 function configure(options){
@@ -73,8 +124,8 @@ function opt(option, value){
     case 'templates-dir': return dir('templates', value)
     case 'public-dir'   : return dir('public', value)
     case 'log-level'    :
-      if (value) return haiku.opts[option] = value
-      else return haiku.opts[option] || 'warn'
+      if (value)  return haiku.opts[option] = value
+      else        return haiku.opts[option] || 'warn'
       break;
   }
 
@@ -88,11 +139,16 @@ function opt(option, value){
 }
 
 function find(name){
+  // trailing slash? It's an index
+  name = name.replace(/\/$/, '/index.html')
+
   var filtered = this.pages.filter(filter)
 
   return filtered.length ? filtered[0] : null
 
-  function filter(page){ return page.name === name }
+  function filter(page){
+    return page.name === name || page.url === name
+  }
 }
 
 function read(callback){
@@ -100,9 +156,11 @@ function read(callback){
     , powerwalk = require('powerwalk')
 
   if (callback) {
-    haiku.on('error', callback)
-    haiku.on('end', function(){ callback(null) })
+    haiku.once('error', callback)
+    haiku.once('end', function(){ callback(null) })
   }
+
+  haiku.isReading = true
 
   powerwalk(haiku.opt('content-dir'))
   .on('error', function(err){ haiku.emit('error', err) })
@@ -113,7 +171,7 @@ function read(callback){
 
   function finish(){
     haiku.logger.debug('finished walking')
-
+    haiku.isReading = false
     haiku.emit('end')
   }
 }

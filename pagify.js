@@ -117,22 +117,26 @@ function build(callback){
   })
 }
 
-function render(callback){
+function render(ctx, callback){
   var page = this
     , haiku = page.haiku
-    , context = haiku.context
 
-  // extra isn't getting passed as an arg anywhere, maybe change the
-  // signature
-  // for (key in extra) page.context[key] = extra[key]
-  context.page = page.context
+  if (typeof ctx === 'function') {
+    callback = ctx
+    ctx = {}
+  }
+
+  // adds haiku.ctx to the ctx argument
+  for (var key in haiku.context) ctx[key] = haiku.context[key]
+
+  ctx.page = page.context
 
 
   // This might be pulled into beardo, also an expensive operation
   // think about caching it
   // NOTE: this has to happen after everything has been read
   var compiled = hogan.compile(page.body)
-    , mustached = compiled.render(context)
+    , mustached = compiled.render(ctx)
     , MD = marked(mustached)
     , template = beardo.add(page.filename, MD)
 
@@ -141,7 +145,7 @@ function render(callback){
 
   // ???: beardo needs a way to distinguish templates that need reading vs
   // ones that were added manually
-  beardo.render(page.filename, context, function(err, out){
+  beardo.render(page.filename, ctx, function(err, out){
     page.logger.info('rendered page')
     page.logger.info(out)
 
