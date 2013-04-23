@@ -25,10 +25,33 @@ cli.command('build', function(){
     // TODO: spill a meaningful error message instead of throwing
     throw err
   })
-  // .on('page', function(page){
-  //   page.write()
-  // })
-  .build()
+  .on('end', function(){
+    var h = this
+      , rimraf = require('rimraf')
+      , logger = h.logger
+
+    logger.info('removing --build-dir %s', h.opt('build-dir'))
+
+    rimraf(h.opt('build-dir'), function(err){
+      if (err) return h.emit(err)
+
+      h.pages.forEach(function(page){
+        page.build(function(err, built){
+          if (err) return h.emit('error', err)
+          else return finish()
+        })
+      })
+
+      var counter = 0
+
+      function finish(){
+        counter++
+
+        if (counter === h.pages.length)
+          logger.info('finished building')
+      }
+    })
+  })
 })
 
 // Kick the whole thing off...

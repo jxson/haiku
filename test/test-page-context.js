@@ -8,7 +8,7 @@ describe('page.context', function(){
     , h
 
   before(function(done){
-    h = haiku(src).read(done)
+    h = haiku(src).end(done)
   })
 
   it('allows arbitrary values via front-matter', function(){

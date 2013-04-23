@@ -1,7 +1,6 @@
 
 var extend = require('util')._extend
   , EE = require('events').EventEmitter
-  , rimraf = require('rimraf')
   , assert = require('assert')
   , path = require('path')
   , bunyan = require('bunyan')
@@ -10,11 +9,11 @@ module.exports = function(src, options){
   var options = options || {}
     , haiku = Object.create({ configure: configure
       , read: read
-      , build: build
       , add: add
       , opt: opt
       , find: find
       , get: get
+      , end: end
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
       , opts: { value: {}, writable: true, enumerable: false }
@@ -31,7 +30,12 @@ module.exports = function(src, options){
 
   haiku.configure(options)
 
-  haiku.read()
+  // NOTE: there should be a better way to do this like pooling async
+  // stuff until the read happens
+  haiku.isReading = true
+  process.nextTick(function(){
+    haiku.read()
+  })
 
   return haiku
 }
@@ -151,6 +155,7 @@ function find(name){
   }
 }
 
+// TODO: Make this private maybe
 function read(callback){
   var haiku = this
     , powerwalk = require('powerwalk')
@@ -176,36 +181,13 @@ function read(callback){
   }
 }
 
-function build(){
+function end(callback){
   var haiku = this
 
-  haiku.logger.debug('starting build')
-  haiku.logger.info('removing --build-dir %s', haiku.opt('build-dir'))
+  haiku.once('error', callback)
+  haiku.once('end', callback)
 
-  rimraf(haiku.opt('build-dir'), function(err){
-    if (err) return haiku.emit(err)
-
-    haiku
-    .on('end', function(){
-      haiku.pages.forEach(function(page){
-        page.build(function(err, built){
-          if (err) return haiku.emit('error', err)
-          else return finish()
-        })
-      })
-    })
-    .read()
-  })
-
-  var counter = 0
-
-  function finish(){
-    counter++
-
-    if (counter === haiku.pages.length) {
-      haiku.logger.info('finished building')
-    }
-  }
+  return haiku
 }
 
 function add(file){

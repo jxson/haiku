@@ -8,8 +8,7 @@ describe('h.context', function(){
     , src = path.resolve(__dirname, './fixtures/template-data')
 
   before(function(done){
-    h = haiku(src)
-        .read(done)
+    h = haiku(src).end(done)
   })
 
   it('populates after `read`', function(){
@@ -74,8 +73,7 @@ describe('h.context', function(){
       .on('end', function(){
         byDate = this.context.content['sort-by-date']
         byName = this.context.content['sort-by-name']
-      })
-      .read(done)
+      }).end(done)
     })
 
     it('sorts descending by date', function(){
