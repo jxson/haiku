@@ -5,49 +5,81 @@ var extend = require('util')._extend
   , path = require('path')
   , bunyan = require('bunyan')
 
-module.exports = function(src, options){
-  var options = options || {}
-    , haiku = Object.create({ configure: configure
+// var haiku = require('haiku')
+module.exports = createHaiku
+
+// # Create a haiku instance
+//
+//     var h = haiku(src, [opts])
+//
+// or if you want to decorate your http response object:
+//
+//     res.haiku = haiku(req, res, [opts])
+//
+function createHaiku(src, options){
+  var haiku = Object.create({ configure: configure
       , read: read
       , add: add
       , opt: opt
       , find: find
       , get: get
       , end: end
+      , createResponseHandler: createResponseHandler
       }, { logger: { value: false, writable: true }
       , pages: { value: [], enumerable: true, writable: true }
       , opts: { value: {}, writable: true, enumerable: false }
       , context: { get: context }
       , _context: { value: {}, writable: true }
-      , isReading: { value: false, writable: true }
+      , isReading: { value: true, writable: true }
       })
+
+  var req
+    , res
+    , src
+
+  for (var i = 0; i < arguments.length; i ++){
+    var arg = arguments[i]
+
+    if (arg instanceof require('http').IncomingMessage) req = arg
+    if (arg instanceof require('http').ServerResponse) res = arg
+    if (typeof arg === 'string') src = arg
+  }
+
+  options = getOptions(arguments)
 
   // https://gist.github.com/davidaurelio/838778
   extend(haiku, EE.prototype)
-
-  if (typeof src === 'object') options = src
-  if (typeof src === 'string') options.src = src
 
   haiku.configure(options)
 
   // NOTE: there should be a better way to do this like pooling async
   // stuff until the read happens
-  haiku.isReading = true
   process.nextTick(function(){
     haiku.read()
   })
 
-  return haiku
+  if (req && res) return haiku.createResponseHandler(req, res)
+  else return haiku
+
+  function getOptions(args){
+    var last = args[args.length - 1]
+      , opts = typeof last === 'object'
+        && (last !== req || last !== req) ? last : {}
+
+    if (typeof src === 'string') opts.src = src
+
+    return opts
+  }
 }
 
-module.exports.handler = function(req, res, opts){
-  var h = module.exports(opts)
+function createResponseHandler(req, res){
+  var haiku = this
 
-  return function(url, ctx, code){
+  return function handler(url, ctx, code){
     var ctx = ctx || {}
       , code = code || 200
 
-    h.get(url, function(err, page){
+    haiku.get(url, function(err, page){
       if (err) throw err
       if (! page) return notFound()
 
@@ -117,9 +149,6 @@ function configure(options){
 // getting normalized/ mutated
 function opt(option, value){
   var haiku = this
-
-  //   , 'log-level': 'warn'
-  //   }}
 
   switch (option) {
     case 'src'          : return dir('src', value)

@@ -1,9 +1,21 @@
 var haiku = require('../')
   , assert = require('assert')
-  , server = require('./support/server')
   , request = require('supertest')
 
 describe('http', function(){
+  var server
+
+  before(function(){
+    var path = require('path')
+      , http = require('http')
+      , haikopts = { src: path.resolve(__dirname, './fixtures/blog') }
+
+    server = http.createServer(function(req, res){
+      res.haiku = haiku(req, res, haikopts)
+      res.haiku(req.url)
+    })
+  })
+
   describe('existing html content', function(){
     it('responds 200 ok', function(done){
       request(server)
