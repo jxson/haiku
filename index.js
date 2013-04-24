@@ -5,17 +5,8 @@ var extend = require('util')._extend
   , path = require('path')
   , bunyan = require('bunyan')
 
-// var haiku = require('haiku')
 module.exports = createHaiku
 
-// # Create a haiku instance
-//
-//     var h = haiku(src, [opts])
-//
-// or if you want to decorate your http response object:
-//
-//     res.haiku = haiku(req, res, [opts])
-//
 function createHaiku(src, options){
   var haiku = Object.create({ configure: configure
       , read: read
