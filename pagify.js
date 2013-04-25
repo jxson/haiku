@@ -96,9 +96,10 @@ function url(){
 
 function build(callback){
   var page = this
+    , haiku = page.haiku
 
   page.render(function(err, out){
-    if (err) return haiku.emit(err)
+    if (err) return callback(err)
 
     mkdirp(path.dirname(page.destination), function(err, made){
       if (err) return callback(err)
