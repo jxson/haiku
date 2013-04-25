@@ -1,6 +1,10 @@
 
 # haiku [![Build Status](https://travis-ci.org/jxson/haiku.png?branch=master)](https://travis-ci.org/jxson/haiku)
 
+Simple text files with mustaches go in, websites come out.
+
+Haiku recently underwent a refactor and is still reaching for feature completeness. If you want to contribute hit me up on github or irc.
+
 # Example
 
 # Methods
