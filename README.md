@@ -1,5 +1,5 @@
 
-# haiku [![Build Status](https://travis-ci.org/jxson/haiku.png?branch=master)](https://travis-ci.org/jxson/haiku)
+# haiku [![Build Status](https://travis-ci.org/jxson/haiku.png?branch=master)](https://travis-ci.org/jxson/haiku) [![NPM version](https://badge.fury.io/js/haiku.png)](http://badge.fury.io/js/haiku)
 
 Simple text files with mustaches go in, websites come out.
 
