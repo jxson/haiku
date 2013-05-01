@@ -86,10 +86,15 @@ function url(){
     , haiku = page.haiku
     , uri = page.filename.replace(haiku.opt('content-dir'), '')
 
-  Object.keys(extensions).forEach(function(extension){
-    // TODO: stop looping if an extension matches
-    uri = uri.replace(extension, extensions[extension])
-  })
+  var mime = require('mime')
+    , ct = mime.lookup(page.filename)
+    , ext = path.extname(page.filename)
+    , wants = page.meta['content-type']
+
+  if (ct === 'text/x-markdown') {
+    if (ct === wants) return uri
+    else return uri.replace(ext, '.html')
+  }
 
   return uri
 }
@@ -132,20 +137,26 @@ function render(ctx, callback){
 
   ctx.page = page.context
 
-
   // This might be pulled into beardo, also an expensive operation
   // think about caching it
   // NOTE: this has to happen after everything has been read
   var compiled = hogan.compile(page.body)
     , mustached = compiled.render(ctx)
-    , MD = marked(mustached)
-    , template = beardo.add(page.filename, MD)
+    , mime = require('mime')
+    , wantsMD = mime.lookup(page.filename) === 'text/x-markdown'
+      && ctx.page['content-type'] !== 'text/x-markdown'
+    , MD = wantsMD ? marked(mustached) : mustached
+
+  var template = beardo.add(page.filename, MD)
+
+  // TODO: only apply default layout to html
+  ctx.layout = ctx.page.layout
 
   // tell beardo wheres what
   beardo.directory = path.join(haiku.opt('src'), 'templates')
 
-  // ???: beardo needs a way to distinguish templates that need reading vs
-  // ones that were added manually
+  // ???: beardo needs a way to distinguish templates that need reading
+  // vs ones that were added manually
   beardo.render(page.filename, ctx, function(err, out){
     page.logger.info('rendered page')
     page.logger.info(out)
