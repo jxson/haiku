@@ -36,4 +36,12 @@ describe('content types', function(){
       done()
     })
   })
+
+  it('does not convert html files', function(done){
+    read('special.html', function(err, html){
+      if (err) return done(err)
+      assert.equal(html.trim(), '<p>Just some HTML</p>')
+      done()
+    })
+  })
 })
