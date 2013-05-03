@@ -4,6 +4,7 @@ var assert = require('assert')
 describe('drafts', function(){
   var haiku = require('../')
     , path = require('path')
+    , h
 
   before(function(){
     h = haiku(path.resolve(__dirname, 'fixtures', 'drafts'))
