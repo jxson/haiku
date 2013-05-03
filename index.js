@@ -239,6 +239,7 @@ function context(){
     keys.forEach(function(key){
       var isLast = key === keys[keys.length - 1]
         , isNotAnIndexPage = ! path.basename(page.url).match(/^index/)
+        , isNotADraft = !!page.meta.draft === false
 
       if (! parent[key]) {
         // Define a key on the pre-defined array, this is what makes our
@@ -249,7 +250,7 @@ function context(){
         })
       }
 
-      if (isLast && isNotAnIndexPage) {
+      if (isLast && isNotAnIndexPage && isNotADraft) {
         parent[key].push(page.context)
 
         parent[key].sort(function(a, b){
