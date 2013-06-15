@@ -228,9 +228,12 @@ function add(file){
 
 // Returns the haiku context for rendering, this could be optimized
 // since this will be called everytime a page is rendered
+// THIS ABSOLUTELY NEEDS TO BE CACHED
 function context(){
   var haiku = this
     , ctx = { pages: haiku.pages }
+
+  if (haiku._context) return haiku._context
 
   haiku.pages.forEach(function(page){
     var parent = ctx
@@ -269,6 +272,8 @@ function context(){
       parent = parent[key]
     })
   })
+
+  haiku._context = ctx
 
   return ctx
 }
