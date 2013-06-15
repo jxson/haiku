@@ -37,14 +37,6 @@ module.exports = function(file, haiku){
     value: haiku.logger.child({ page: page.name })
   })
 
-  //   , stats: { value: {}, writable: true }
-  //   , data: { value: '', writable: true }
-  //   }
-  // , page = Object.create({ read: read
-  //   , write: write
-  //   , render: render
-  //   }, props)
-
   return page
 }
 
@@ -99,9 +91,12 @@ function url(){
   return uri
 }
 
+// TODO: Pull this into haiku or a separate build module
 function build(callback){
   var page = this
     , haiku = page.haiku
+
+  page.logger.debug('rendering %s', page.name)
 
   page.render(function(err, out){
     if (err) return callback(err)
@@ -114,7 +109,7 @@ function build(callback){
       fs.writeFile(page.destination, out, function(err){
         if (err) return callback(err)
 
-        page.logger.info('built')
+        page.logger.info('built %s', page.url)
 
         callback()
       })
@@ -159,7 +154,6 @@ function render(ctx, callback){
   // vs ones that were added manually
   beardo.render(page.filename, ctx, function(err, out){
     page.logger.info('rendered page')
-    page.logger.info(out)
 
     if (err) return callback(err)
     else return callback(null, out)

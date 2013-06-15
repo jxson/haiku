@@ -35,6 +35,10 @@ cli.command('build', function(){
     rimraf(h.opt('build-dir'), function(err){
       if (err) return h.emit(err)
 
+      logger.debug('zapped --build-dir %s', h.opt('build-dir'))
+
+      logger.debug('looping over %d pages', h.pages.length)
+
       h.pages.forEach(function(page){
         page.build(function(err, built){
           if (err) return h.emit('error', err)
