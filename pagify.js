@@ -173,7 +173,24 @@ function body(){
 
 // TODO: throw a meaningful error when page.data is missing
 function meta(){
-  return fm(this.data).attributes
+  try {
+    var _meta = fm(this.data).attributes
+  } catch(e) {
+    var error = new Error('Bad front-matter - '
+    + e.problem
+    + ' - '
+    + this.filename
+    + ':'
+    + e.problem_mark.line)
+
+    this.haiku.emit('error', error)
+
+    // throw error
+  }
+
+
+
+  return _meta
 }
 
 function context(){
