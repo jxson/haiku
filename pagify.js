@@ -6,6 +6,7 @@ var path = require('path')
   , beardo = require('beardo')
   , mkdirp = require('mkdirp')
   , fs = require('graceful-fs')
+  // use mime for this
   , extensions = { '.md': '.html'
     , '.markdown': '.html'
     , '.mdown': ".html"

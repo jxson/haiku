@@ -46,7 +46,8 @@
     "beardo": "0.0.10",
     "mkdirp": "0.3.5",
     "supertest": "0.6.0",
-    "mime": "~1.2.9"
+    "mime": "~1.2.9",
+    "ncp": "~0.4.2"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
