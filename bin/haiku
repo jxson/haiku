@@ -51,8 +51,23 @@ cli.command('build', function(){
       function finish(){
         counter++
 
-        if (counter === h.pages.length)
-          logger.info('finished building')
+        if (counter === h.pages.length) {
+          fs.exists(h.opt('public-dir'), function(err, exists){
+            if (err) return h.emit('error', err)
+            if (! exists) return logger.info('finished building')
+
+            // Copy public
+            var ncp = require('ncp').ncp // ?
+
+            ncp(h.opt('public-dir'), h.opt('build-dir'), function(err){
+              if (err) return h.emit('error', err)
+
+              logger.info('finished building')
+            })
+
+          })
+        }
+
       }
     })
   })
