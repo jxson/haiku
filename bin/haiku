@@ -52,8 +52,7 @@ cli.command('build', function(){
         counter++
 
         if (counter === h.pages.length) {
-          fs.exists(h.opt('public-dir'), function(err, exists){
-            if (err) return h.emit('error', err)
+          fs.exists(h.opt('public-dir'), function(exists){
             if (! exists) return logger.info('finished building')
 
             // Copy public
