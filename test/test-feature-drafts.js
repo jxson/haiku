@@ -11,7 +11,7 @@ describe('drafts', function(){
   })
 
   it('is findable', function(done){
-    h.get('draft.md', function(err, page){
+    h.find('draft.md', function(err, page){
       if (err) return done(err)
       assert.ok(page)
       done()
@@ -19,7 +19,7 @@ describe('drafts', function(){
   })
 
   it('is not included in the collections', function(done){
-    h.get('draft.md', function(err, page){
+    h.find('draft.md', function(err, page){
       if (err) return done()
       assert.ok(done)
       assert.equal(h.context.content.length, 1)
