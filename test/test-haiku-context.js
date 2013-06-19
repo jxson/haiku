@@ -72,10 +72,12 @@ describe('h.context', function(){
 
     before(function(done){
       haiku(path.resolve(__dirname, './fixtures/sortable'))
+      .on('error', done)
       .on('end', function(){
         byDate = this.context.content['sort-by-date']
         byName = this.context.content['sort-by-name']
-      }).end(done)
+        done()
+      })
     })
 
     it('sorts descending by date', function(){
