@@ -8,13 +8,15 @@ describe('h.context', function(){
     , src = path.resolve(__dirname, './fixtures/template-data')
 
   before(function(done){
-    h = haiku(src).end(done)
+    h = haiku(src)
+    .on('error', done)
+    .on('end', done)
   })
 
   it('populates after `read`', function(){
-    var ctx = haiku(src).context
+    // var ctx = haiku(src).context
 
-    assert.equal(Object.keys(ctx).length, 1)
+    // assert.equal(Object.keys(ctx).length, 1)
     assert.ok(Object.keys(h.context.content).length > 0)
   })
 

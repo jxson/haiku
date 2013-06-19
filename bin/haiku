@@ -28,16 +28,9 @@ cli.command('build', function(){
   .on('end', function(){
     var h = this
       , rimraf = require('rimraf')
-      , logger = h.logger
-
-    logger.info('removing --build-dir %s', h.opt('build-dir'))
 
     rimraf(h.opt('build-dir'), function(err){
       if (err) return h.emit(err)
-
-      logger.debug('zapped --build-dir %s', h.opt('build-dir'))
-
-      logger.debug('looping over %d pages', h.pages.length)
 
       h.pages.forEach(function(page){
         page.build(function(err, built){
@@ -60,8 +53,6 @@ cli.command('build', function(){
 
             ncp(h.opt('public-dir'), h.opt('build-dir'), function(err){
               if (err) return h.emit('error', err)
-
-              logger.info('finished building')
             })
 
           })
