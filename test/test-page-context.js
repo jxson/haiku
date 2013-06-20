@@ -118,30 +118,42 @@ describe('page.context', function(){
 
   describe('lambdas/helpers', function(){
     describe('.next', function(){
-      it('provides the next page in page.dirname', function(){
-        h.find(['linked-pages/second.md', 'linked-pages/third.md'], function(err, pages){
-          if (err) return done(err)
-          console.log('pages', pages)
+      it('provides the next page in page.dirname', function(done){
+        var names = [ 'linked-pages/second.md'
+            , 'linked-pages/third.md'
+            ]
 
-          // assert.ok(page.context.url, '/override.html')
+        h.find(names, function(err, pages){
+          if (err) return done(err)
+
+          var current = pages['linked-pages/second.md']
+            , expected = pages['linked-pages/third.md']
+            , actual = current.context.next()
+
+          assert.equal(actual.url, expected.url)
+
           done()
         })
-
-        // var current = h.find('linked-pages/second.md')
-        //   , expected = h.find('linked-pages/third.md')
-        //   , actual = current.context.next()
-
-        // assert.equal(actual.url, expected.url)
       })
     })
 
     describe('.previous', function(){
-      it('provides the previous page in page.dirname', function(){
-        var current = h.find('linked-pages/second.md')
-          , expected = h.find('linked-pages/first.md')
-          , actual = current.context.previous()
+      it('provides the previous page in page.dirname', function(done){
+        var names = [ 'linked-pages/second.md'
+            , 'linked-pages/first.md'
+            ]
 
-        assert.equal(actual.url, expected.url)
+        h.find(names, function(err, pages){
+          if (err) return done(err)
+
+          var current = pages['linked-pages/second.md']
+            , expected = pages['linked-pages/first.md']
+            , actual = current.context.previous()
+
+          assert.equal(actual.url, expected.url)
+
+          done()
+        })
       })
     })
   })
