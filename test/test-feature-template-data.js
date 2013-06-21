@@ -124,7 +124,8 @@ describe('template data', function(){
     })
   })
 
-  describe('pages', function(){
+  // NOTE: I am not convinced this is a needed feature
+  xdescribe('pages', function(){
     it('lists all pages recursively', function(done){
       read('/page-list.html', function(err, html){
         if (err) return done(err)
