@@ -33,9 +33,26 @@ cli.command('build', function(){
       if (err) return h.emit(err)
 
       h.pages.forEach(function(page){
-        page.build(function(err, built){
+        // page.build(function(err, built){
+        //   if (err) return h.emit('error', err)
+        //   else return finish()
+        // })
+
+        page.render(function(err, out){
           if (err) return h.emit('error', err)
-          else return finish()
+
+          var fs = require('graceful-fs')
+            , mkdirp = require('mkdirp')
+            , dirname = path.dirname(page.destination)
+
+          mkdirp(dirname, function(err, made){
+            if (err) return h.emit('error', err)
+
+            fs.writeFile(page.destination, out, function(err){
+              if (err) return h.emit('error', err)
+              finish()
+            })
+          })
         })
       })
 
@@ -46,7 +63,7 @@ cli.command('build', function(){
 
         if (counter === h.pages.length) {
           fs.exists(h.opt('public-dir'), function(exists){
-            if (! exists) return logger.info('finished building')
+            if (! exists) return
 
             // Copy public
             var ncp = require('ncp').ncp // ?

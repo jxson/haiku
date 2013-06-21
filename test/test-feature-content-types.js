@@ -11,6 +11,7 @@ describe('content types', function(){
     run(haiku, [ 'build' ], { cwd: root })
     .on('error', done)
     .on('end', done)
+    .pipe(process.stdout)
   })
 
   it('converts vanilla markdown to html', function(done){
