@@ -1,4 +1,4 @@
 release
-	npm version build
+	npm version patch
 	git push && git push --tags
 	npm publish
