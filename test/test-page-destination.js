@@ -5,17 +5,20 @@ var haiku = require('../')
   , assert = require('assert')
 
 describe('page.destination', function(){
-  var page
-    , src = path.resolve(__dirname, '../fixtures/template-data')
-    , filename = path.join(src, 'content/posts/001.md')
+  var post
+    , src = path.resolve(__dirname, './fixtures/template-data')
 
-  before(function(){
-    page = pagify(filename, haiku(src))
+  before(function(done){
+    haiku(src)
+    .find('posts/001.md', function(err, page){
+      post = page
+      done(err)
+    })
   })
 
   it('returns the absolute destination/ buildpath', function(){
     var expected = path.join(src, 'build', 'posts', '001.html')
 
-    assert.equal(page.destination, expected)
+    assert.equal(post.destination, expected)
   })
 })

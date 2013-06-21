@@ -40,12 +40,16 @@
     "front-matter": "~0.1.3",
     "command-router": "0.0.5",
     "rimraf": "~2.1.4",
-    "mime": "~1.2.9"
+    "mime": "~1.2.9",
+    "beardo": "0.0.10",
+    "hogan.js": "~2.0.0",
+    "mkdirp": "~0.3.5",
+    "marked": "~0.2.9"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
     "supertest": "~0.5.1",
-    "cheerio": "~0.10.7",
+    "cheerio": "~0.12.0",
     "comandante": "~0.0.1"
   }
 }
