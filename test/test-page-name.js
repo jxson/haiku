@@ -1,17 +1,18 @@
 
 var haiku = require('../')
-  , pagify = require('../pagify')
   , path = require('path')
   , assert = require('assert')
 
 describe('page.name', function(){
-  var page
+  var src = path.resolve(__dirname, './fixtures/template-data')
+    , page
 
-  before(function(){
-    var src = path.resolve(__dirname, '../fixtures/template-data')
-      , filename = path.join(src, 'content/posts/001.md')
-
-    page = pagify(filename, haiku(src))
+  before(function(done){
+    haiku(src)
+    .find('posts/001.md', function(err, _page){
+      page = _page
+      done(err)
+    })
   })
 
   it('returns the filename relative to the --content-dir', function(){
