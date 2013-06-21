@@ -44,7 +44,8 @@
     "beardo": "0.0.10",
     "hogan.js": "~2.0.0",
     "mkdirp": "~0.3.5",
-    "marked": "~0.2.9"
+    "marked": "~0.2.9",
+    "ncp": "~0.4.2"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
