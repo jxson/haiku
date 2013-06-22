@@ -1,6 +1,5 @@
 
 var haiku = require('../')
-  , pagify = require('../pagify')
   , path = require('path')
   , assert = require('assert')
 
