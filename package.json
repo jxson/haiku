@@ -20,7 +20,7 @@
     "Dan Yoder <danielyoder@gmail.com> (http://rocket.ly)",
     "Nikhil Ratan"
   ],
-  "preferGlobal": true,
+  "preferGlobal": false,
   "bin": "./bin/haiku",
   "main": "./lib/index.js",
   "directories": {
