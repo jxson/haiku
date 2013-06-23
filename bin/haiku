@@ -10,6 +10,16 @@ cli.option({ name: 'src'
 , type: path
 })
 
+cli.option({ name: 'port'
+, default: 8080
+, type: Number
+})
+
+cli.option({ name: 'host'
+, default: 'localhost'
+, type: String
+})
+
 cli.option({ name: 'log-level'
 , default: 'warn'
 , type: String
@@ -79,6 +89,24 @@ cli.command('build', function(){
     })
   })
 })
+
+cli.command('server', function(params, options){
+  var http = require('http')
+    , st = require('st')
+    , mount = st({ path: options.src + '/public'
+      , url: '/'
+      , passthrough: true
+      , index: false
+      })
+
+  http.createServer(function(req, res){
+    mount(req, res, function(){
+      res.haiku = haiku(req, res, { src: options.src })
+      res.haiku(req.url)
+    })
+  }).listen(options.port, options.host)
+})
+
 
 // Kick the whole thing off...
 cli.parse(process.argv)
