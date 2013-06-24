@@ -73,7 +73,7 @@ describe('template data', function(){
     })
 
     describe('sorting', function(){
-      it('sorts by date', function(done){
+      it('sorts by date descending (most recent first)', function(done){
         read('/sort-by-date/index.html', function(err, html){
           if (err) return done(err)
 
