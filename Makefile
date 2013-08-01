@@ -1,4 +1,7 @@
+
+VERSION=patch
+
 release:
-	npm version patch
+	npm version $(VERSION)
 	git push && git push --tags
 	npm publish
