@@ -13,7 +13,7 @@ describe('page.context', function(){
   })
 
   it('allows arbitrary values via front-matter', function(done){
-    h.find('arbitrary.md', function(err, page){
+    h.find('nested/arbitrary.md', function(err, page){
       if (err) return done(err)
       assert.equal(page.context.foo, 'oh')
       assert.equal(page.context.bar, 'my')
@@ -23,12 +23,10 @@ describe('page.context', function(){
   })
 
   it('allows the expansion of pages via front-matter', function(done){
-    h.find('page-expansion.md', function(err, page){
+    h.find('001-page-expansion.md', function(err, page){
       if (err) return done(err)
 
-      assert.equal(typeof page.context.expanded, 'function')
-
-      var expanded = page.context.expanded()
+      var expanded = page.context.expanded
 
       assert.equal(expanded.foo, 'oh')
       assert.equal(expanded.bar, 'my')
