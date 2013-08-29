@@ -107,6 +107,56 @@ cli.command('server', function(params, options){
   }).listen(options.port, options.host)
 })
 
+cli.command('init ?:src?', function(params, options){
+  // case 'src'          : return dir('src', value)
+  // case 'content-dir'  : return dir('content', value)
+  // case 'build-dir'    : return dir('build', value)
+  // case 'templates-dir': return dir('templates', value)
+  // case 'public-dir'   : return dir('public', value)
+
+  var through = require('through2')
+    , copier = through(write)
+    , path = require('path')
+    , boilerplate = path.resolve(__dirname, '../lib/boilerplate')
+    , powerwalk = require('powerwalk')
+
+  var src = path.resolve(params.src || '')
+
+  var dircopy = require('mkdirp-stream')
+
+  powerwalk(boilerplate)
+  .pipe(dircopy(boilerplate, src))
+  .pipe(copier)
+  .on('data', function(data){
+    log('created', data.toString())
+  })
+  .on('finish', function(){
+    log('run `haiku server` to get started.')
+  })
+
+  var colors = require('colors')
+
+  function write(chunk, enc, callback){
+    var filename = chunk.toString()
+      , destination = filename.replace(boilerplate, src)
+      , fs = require('graceful-fs')
+      , read = fs.createReadStream(filename)
+      , write = fs.createWriteStream(destination)
+
+    read
+    .pipe(write)
+    .on('finish', function(){
+      copier.push(chunk)
+      callback()
+    })
+  }
+
+  function log(string, wahtevs){
+    var colors = require('colors')
+
+    console.log(('> haiku init: ' + string).magenta, wahtevs)
+  }
+})
 
 // Kick the whole thing off...
 cli.parse(process.argv)
