@@ -114,10 +114,12 @@ cli.command('init ?:src?', function(params, options){
   // case 'templates-dir': return dir('templates', value)
   // case 'public-dir'   : return dir('public', value)
 
+  console.log('params', params)
+
   var through = require('through2')
     , copier = through(write)
     , path = require('path')
-    , boilerplate = path.resolve(__dirname, '../lib/boilerplate')
+    , boilerplate = path.resolve(__dirname, '../lib/init-templates')
     , powerwalk = require('powerwalk')
 
   var src = path.resolve(params.src || '')
