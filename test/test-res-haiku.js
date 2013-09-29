@@ -4,15 +4,14 @@ var assert = require('assert')
   , server = require('./server')
 
 describe('res.haiku(url)', function(){
-  describe('static serving', function(){
-    it('200s existing files', function(done){
-      request(server)
-      .get('/')
-      .expect(200)
-      .end(done)
+  it('404s non-existing content', function(done){
+    request(server)
+    .get('/non-existing')
+    .expect(404, function(err, res){
+      if (err) return done(err)
+      assert.ok(res.text.length)
+      done()
     })
-
-    it('404s non-existing content')
   })
 
 /*
