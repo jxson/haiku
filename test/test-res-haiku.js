@@ -17,7 +17,7 @@ describe('res.haiku(url)', function(){
 
   it('renders markdown as html', function(done){
     request(server)
-    .get('/')
+    .get('/markdown-to-html.html')
     .expect('content-type', 'text/html')
     .expect('etag', '')
     .expect('last-modified', '')
