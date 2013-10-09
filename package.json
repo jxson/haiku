@@ -11,7 +11,8 @@
     "inherits": "~2.0.1",
     "graceful-fs": "~2.0.1",
     "powerwalk": "~0.1.5",
-    "through2": "~0.2.3"
+    "through2": "~0.2.3",
+    "bunyan": "~0.21.4"
   },
   "devDependencies": {
     "supertest": "~0.8.0"
