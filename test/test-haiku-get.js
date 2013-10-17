@@ -1,19 +1,20 @@
 
 const haiku = require('../')
-    , path = require('path')
-    , src = path.resolve(__dirname, './source')
     , assert = require('assert')
+    , resolve = require('./resolve')
 
 describe('haiku.get(url, callback)', function(){
   it('finds by url', function(done){
-    haiku({ src: src, 'log-level': 'info' })
-    .get('/basic-page.html', function(err, entity){
+    haiku({ src: resolve.src })
+    .get('/basic-page.html', function(err, page){
       if (err) return done(err)
-      assert.ok(entity)
+      assert.ok(page)
+      assert.equal(page.url(), '/basic-page.html')
       done()
     })
   })
 
   it('finds index.html with directory urls')
+
   it('finds by name')
 })
