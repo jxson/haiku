@@ -14,7 +14,23 @@ describe('haiku.get(url, callback)', function(){
     })
   })
 
-  it('finds index.html with directory urls')
+  it('finds index.html within directories', function(done){
+    haiku({ src: resolve.src })
+    .get('/', function(err, page){
+      if (err) return done(err)
+      assert.ok(page)
+      assert.equal(page.url(), '/index.html')
+      done()
+    })
+  })
 
-  it('finds by name')
+  it('finds by name', function(done){
+    haiku({ src: resolve.src })
+    .get('/basic-page.md', function(err, page){
+      if (err) return done(err)
+      assert.ok(page)
+      assert.equal(page.url(), '/basic-page.html')
+      done()
+    })
+  })
 })
