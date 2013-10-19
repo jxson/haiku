@@ -19,12 +19,11 @@ describe('res.haiku(url)', function(){
     request(server)
     .get('/markdown-to-html.html')
     .expect('content-type', 'text/html')
-    .expect('etag', '')
-    .expect('last-modified', '')
+    // .expect('etag', '')
+    // .expect('last-modified', '')
     .expect(200, function(err, res){
       if (err) return done(err)
       assert.ok(res.text)
-      console.log('res.text', res.text)
       done()
     })
 
