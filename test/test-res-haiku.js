@@ -1,8 +1,8 @@
 
-var assert = require('assert')
-  , request = require('supertest')
-  , server = require('./server')
-  , cheerio = require('cheerio')
+const assert = require('assert')
+    , request = require('supertest')
+    , server = require('./server')
+    , cheerio = require('cheerio')
 
 describe('res.haiku(url)', function(){
   it('404s non-existing content', function(done){
@@ -23,19 +23,16 @@ describe('res.haiku(url)', function(){
     // .expect('last-modified', '')
     .expect(200, function(err, res){
       if (err) return done(err)
-      assert.ok(res.text)
+
+      var $ = cheerio.load(res.text)
+
+      assert.equal($('title').text(), 'Markdown to HTML // haiku')
+      assert.equal($('h1').text(), 'Just some markdown')
+      assert.equal($('p:first-of-type').text()
+      , 'This will be rendered as HTML.')
+
       done()
     })
-
-    //     , $ = cheerio.load(res.text)
-
-    //   assert.equal($('title').text().trim()
-    //   , 'Just a blog for testing. | Test Blog'
-    //   , 'Page has a bad title')
-
-    //   assert.equal($('a:first-of-type').attr('href')
-    //   , '/posts/001.html'
-    //   , 'Page is missing a link to the first article')
   })
 
 /*
