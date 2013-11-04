@@ -11,7 +11,32 @@ describe('page.render(context, callback)', function(){
     h = haiku(resolve.src)
   })
 
-  it('renders content with `page` template variable', function(done){
+  it('renders `page.content`', function(done){
+    h.get('/basic-page.html', function(err, page){
+      if (err) return done(err)
+
+      page.render(function(err, rendered){
+        if (err) return done(err)
+
+        assert.ok(rendered.match('Just a page.'))
+
+        done()
+      })
+    })
+  })
+
+  it('applies the default layout to html', function(done){
+    h.render('/basic-page.html', function(err, rendered){
+      if (err) return done(err)
+      assert.ok(rendered.match('data-layout="default"'), 'Missing layout')
+      assert.ok(rendered.match('Just a page.'))
+      done()
+    })
+  })
+
+  it('does not apply the default layout to non-html')
+
+  xit('renders content with `page` template variable', function(done){
     h.get('/basic-page.html', function(err, page){
       if (err) return done(err)
 
@@ -29,20 +54,4 @@ describe('page.render(context, callback)', function(){
       })
     })
   })
-
-  it('applies the default layout to html')
-  it('does not apply the default layout to non-html')
 })
-
-//   before(function(done){
-//     haiku = new Haiku({ src: resolve.src })
-//     page = new Page(resolve('content/basic-page.md'), haiku)
-//     page.read(done)
-//   })
-
-//   it('adds `meta` and `body` properties', function(){
-//     assert.ok(page.meta)
-//     assert.ok(page.content)
-//   })
-// })
-

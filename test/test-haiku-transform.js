@@ -23,7 +23,8 @@ describe('haiku.transform(transform)', function(){
     .get('/index.html', function(err, page){
       page.render(function(err, rendered){
         if (err) return done(err)
-        assert.equal(rendered, '<p>JUST AN INDEX.</p>')
+
+        assert.ok(rendered.match('<p>JUST AN INDEX.</p>'))
         done()
       })
     })
