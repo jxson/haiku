@@ -7,7 +7,7 @@ Mustached text files in, websites out.
 
 [![NPM](https://nodei.co/npm/haiku.png)](https://nodei.co/npm/haiku/)
 
-Haiku is currently a WIP project and is still reaching for feature completeness. If you want to contribute hit me up on github or irc.
+Haiku is a WIP static site generator that is still reaching for feature completeness. If you want to contribute hit me up on github or irc.
 
 # Install
 
