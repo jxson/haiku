@@ -1,17 +1,13 @@
 
-# haiku [![Build Status](https://travis-ci.org/jxson/haiku.png?branch=master)](https://travis-ci.org/jxson/haiku) [![NPM version](https://badge.fury.io/js/haiku.png)](http://badge.fury.io/js/haiku)
+# haiku
 
 Mustached text files in, websites out.
 
-Haiku recently underwent a refactor and is still reaching for feature completeness. If you want to contribute hit me up on github or irc.
+[![Build Status](https://travis-ci.org/jxson/haiku.png?branch=master)](https://travis-ci.org/jxson/haiku) [![Dependency Status](https://david-dm.org/jxson/haiku.png)](https://david-dm.org/jxson/haiku)
 
-# Example
+[![NPM](https://nodei.co/npm/haiku.png)](https://nodei.co/npm/haiku/)
 
-# Methods
-
-    var haiku = require('haiku')
-
-## haiku(src)
+Haiku is currently a WIP project and is still reaching for feature completeness. If you want to contribute hit me up on github or irc.
 
 # Install
 
@@ -28,3 +24,5 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+[npm]: https://npmjs.org
