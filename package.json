@@ -30,5 +30,7 @@
     "hogan.js": "~2.0.0",
     "errno": "~0.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "~1.15.1"
+  }
 }
