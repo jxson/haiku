@@ -22,13 +22,17 @@
   ],
   "preferGlobal": false,
   "bin": "./bin/haiku",
+  "main": "lib/index",
   "scripts": {
     "test": "mocha test/test-*.js"
   },
   "dependencies": {
     "command-router": "0.0.6",
     "hogan.js": "~2.0.0",
-    "errno": "~0.1.0"
+    "errno": "~0.1.0",
+    "ini": "~1.1.0",
+    "graceful-fs": "~2.0.1",
+    "prr": "0.0.0"
   },
   "devDependencies": {
     "mocha": "~1.15.1"

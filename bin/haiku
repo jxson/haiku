@@ -7,12 +7,17 @@ const cli = require('command-router')
     , hogan = require('hogan.js')
     , pkg = require('../package.json')
     , errno = require('errno')
+    , config = require('../lib/config')
 
 cli
 .option('help', { alias: 'h', type: Boolean })
 .on('notfound', function(){
   help('index', function(){ process.exit(1) })
 })
+.command('config :action :key :value', configure)
+.command('config :action :key', configure)
+.command('config :action', configure)
+.command('config', configure)
 .command('server', server)
 .command('help ?:topic?', function(params){
   help(params.topic)
@@ -34,7 +39,6 @@ function help(topic, callback){
   if (topic === 'index') return mustache(file, callback)
 
   console.log()
-
 
   fs.createReadStream(file, { encoding: 'utf8' })
   .on('data', console.log)
@@ -64,4 +68,33 @@ function mustache(file, callback){
 
 function server(params, options){
   if (options.help) return help('server')
+}
+
+// writes to the .haikuconfig file
+function configure(params, options){
+  if (options.help || !params.action) return help('config')
+
+  var allowed = [ 'set', 'get', 'delete', 'rm', 'edit', 'list', 'ls' ]
+  var notAllowed = allowed.indexOf(params.action) === -1
+
+  if (notAllowed) return bad('config', params.action)
+
+  if (params.action === 'rm') params.action = 'delete'
+  if (params.action === 'ls') params.action = 'list'
+
+  config(params, options, function(err, res){
+    if (err) throw err
+    else process.exit(0)
+  })
+}
+
+function bad(subcommand, value){
+  var message = [ 'No haiku'
+      , subcommand
+      , '<subcommand> named'
+      , '"' + value + '"'
+      ].join(' ')
+
+  console.error(message)
+  process.exit(1)
 }
