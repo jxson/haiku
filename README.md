@@ -32,6 +32,15 @@ Create an instance of haiku using the `src` path or an `options` object, if the 
 * `templates-dir`: layouts and additional templates go here, Defaults to the cwd + '/templates'
 * `public-dir`: static content that does not need to be compiled can be saved, will get merged into the build directory at compile time. Defaults to the cwd + '/public'
 
+## h.opt(option[, value])
+
+Sets or gets individual haiku `options` for this instance. For getting the value of an `option`:
+
+    h.opt('src') //=> /path/to/yoursite.com
+
+For setting values pass in the option name and the value you want it set to:
+
+    h.opt('src', '/var/www')
 
 # Contributing
 
