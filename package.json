@@ -31,7 +31,11 @@
     "hogan.js": "~2.0.0",
     "errno": "~0.1.0",
     "graceful-fs": "~2.0.1",
-    "prr": "0.0.0"
+    "prr": "0.0.0",
+    "through2": "~0.3.0",
+    "powerwalk": "~0.1.5",
+    "mime": "~1.2.11",
+    "front-matter": "~0.1.5"
   },
   "devDependencies": {
     "mocha": "~1.15.1"
