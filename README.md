@@ -42,6 +42,22 @@ For setting values pass in the option name and the value you want it set to:
 
     h.opt('src', '/var/www')
 
+## h.get([url || name], callback)
+
+Gets the page with the corresponding url or name. Callsback with `error` and `page` arguments.
+
+    h.get('/index.html', function(error, page){
+      if (err) throw err
+      console.log(page)
+    })
+
+It is also possible to ask for pages by name:
+
+    h.get('/my-page.md', function(error, page){
+      if (err) throw err
+      console.log(page)
+    })
+
 # Contributing
 
 Haiku is an OPEN Source Project so please help out by [reporting bugs](http://github.com/jxson/haiku/issues) or [forking and opening pull](https://github.com/jxson/haiku) requests when possible.
