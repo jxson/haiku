@@ -3,6 +3,7 @@ const haiku = require('../')
     , assert = require('assert')
     , resolve = require('./resolve')
     , src = resolve('src')
+    , cheerio = require('cheerio')
 
 describe('h.render(key, context, callback)', function(){
   it('binds `this` to page instance')
@@ -12,7 +13,16 @@ describe('h.render(key, context, callback)', function(){
     .render('/basic-page.html', function(err, output){
       if (err) return done(err)
 
-      assert(output.match('<p>Just a page.</p>'))
+      console.log('this.options', this.options)
+
+      console.log('====> output', output)
+
+      var $ = cheerio.load(output)
+        , text = $('p:first-of-type').text()
+
+      console.log('text', text)
+
+      assert.equal(text, 'Just a page.')
 
       done()
     })
