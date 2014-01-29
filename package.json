@@ -32,10 +32,10 @@
     "errno": "~0.1.0",
     "graceful-fs": "~2.0.1",
     "prr": "0.0.0",
-    "through2": "~0.3.0",
     "powerwalk": "~0.1.5",
     "mime": "~1.2.11",
-    "front-matter": "~0.1.5"
+    "front-matter": "~0.1.5",
+    "through2": "~0.4.1"
   },
   "devDependencies": {
     "mocha": "~1.15.1"
