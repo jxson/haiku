@@ -6,7 +6,7 @@ const haiku = require('../')
     , cheerio = require('cheerio')
 
 describe('h.render(key, context, callback)', function(){
-  it('binds `this` to page instance')
+  it('binds callback to page instance')
 
   it('renders the page.content template', function(done){
     haiku(src)
@@ -17,6 +17,7 @@ describe('h.render(key, context, callback)', function(){
         , text = $('p:first-of-type').text()
         , layout = $('body').attr('data-layout')
 
+      assert.ok(output)
       assert.equal(text, 'Just a page.')
       assert.equal(layout, 'default')
 

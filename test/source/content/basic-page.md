@@ -16,3 +16,4 @@ Original content:
 {{ page.content }}
 </pre></code>
 
+{{>shared/comments}}
