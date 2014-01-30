@@ -13,16 +13,12 @@ describe('h.render(key, context, callback)', function(){
     .render('/basic-page.html', function(err, output){
       if (err) return done(err)
 
-      console.log('this.options', this.options)
-
-      console.log('====> output', output)
-
       var $ = cheerio.load(output)
         , text = $('p:first-of-type').text()
-
-      console.log('text', text)
+        , layout = $('body').attr('data-layout')
 
       assert.equal(text, 'Just a page.')
+      assert.equal(layout, 'default')
 
       done()
     })
