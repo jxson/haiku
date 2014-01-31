@@ -40,5 +40,6 @@ describe('h.render(key, context, callback)', function(){
   it('does not squash haiku context')
   it('applies the default layout to html')
   it('does not apply the default layout to non-html')
+  it('allows layout override')
   it('renders with arbitrary templates/partials')
 })
