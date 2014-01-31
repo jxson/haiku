@@ -1,17 +1,16 @@
 
-const page = require('../lib/page')
+const read = require('../lib/page')
     , assert = require('assert')
     , resolve = require('./resolve')
 
 describe('page.url', function(){
   it('converts .md to .html', function(done){
-    var options = { src: resolve('content/basic-page.md')
-        , 'content-dir': resolve('content')
-        }
+    var src = resolve('content/basic-page.md')
+      , basedir = resolve('content')
 
-    page(options, function(err, entity){
+    read(src, basedir, function(err, page){
       if (err) return done(err)
-      assert.equal(entity.url, '/basic-page.html')
+      assert.equal(page.url, '/basic-page.html')
       done()
     })
   })
