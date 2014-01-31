@@ -6,7 +6,16 @@ const haiku = require('../')
     , cheerio = require('cheerio')
 
 describe('h.render(key, context, callback)', function(){
-  it('binds callback to page instance')
+  it('binds callback to page instance', function(done){
+    var Page = require('../lib/page').ctor
+
+    haiku(src)
+    .render('/basic-page.html', function(err, output){
+      if (err) return done(err)
+      assert.ok(this instanceof Page)
+      done()
+    })
+  })
 
   it('renders the page.content template', function(done){
     haiku(src)
