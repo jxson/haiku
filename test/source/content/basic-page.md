@@ -13,10 +13,4 @@ Here are the page's available template variables:
 * page.draft: <span class="draft">{{ page.draft }}</span>
 * page.foo: <span class="foo">{{ page.foo }}</span>
 
-Original content:
-
-<code><pre>
-{{ page.content }}
-</pre></code>
-
 {{>shared/comments}}

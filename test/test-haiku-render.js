@@ -34,7 +34,30 @@ describe('h.render(key, context, callback)', function(){
     })
   })
 
-  it('renders with page context')
+  it('renders with page context', function(done){
+    haiku(src)
+    .render('/basic-page.html', function(err, output){
+      if (err) return done(err)
+
+      var page = this
+        , $ = cheerio.load(output)
+        , url = $('.url').text()
+        , mime = $('.content-type').text()
+        , title = $('title').text()
+        , draft = $('.draft').text()
+        , foo = $('.foo').text()
+        , content = $('pre').text()
+
+      assert.equal(url, page.url)
+      assert.equal(mime, page.mime)
+      assert.equal(title, page.title + ' // haiku')
+      assert.equal(draft, page.draft.toString())
+      assert.equal(foo, page.meta.foo)
+
+      done()
+    })
+  })
+
   it('renders with haiku context')
   it('passes context into the template')
   it('does not squash haiku context')
