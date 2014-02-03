@@ -41,24 +41,31 @@ describe('h.render(key, context, callback)', function(){
 
       var page = this
         , $ = cheerio.load(output)
-        , url = $('.url').text()
-        , mime = $('.content-type').text()
-        , title = $('title').text()
-        , draft = $('.draft').text()
-        , foo = $('.foo').text()
-        , content = $('pre').text()
 
-      assert.equal(url, page.url)
-      assert.equal(mime, page.mime)
-      assert.equal(title, page.title + ' // haiku')
-      assert.equal(draft, page.draft.toString())
-      assert.equal(foo, page.meta.foo)
+      assert.equal($('.url').text(), page.url)
+      assert.equal($('.content-type').text(), page.mime)
+      assert.equal($('title').text(), page.title + ' // haiku')
+      assert.equal($('.draft').text(), page.draft.toString())
+      assert.equal($('.foo').text(), page.meta.foo)
 
       done()
     })
   })
 
-  it('renders with haiku context')
+  it('renders with haiku context', function(done){
+    haiku(src)
+    .render('/content-lists.html', function(err, output){
+      if (err) return done(err)
+
+      var $ = cheerio.load(output)
+
+      assert.equal($('.content-list li').length, 2)
+      assert.equal($('.posts-list li').length, 5)
+
+      done()
+    })
+  })
+
   it('passes context into the template')
   it('does not squash haiku context')
   it('applies the default layout to html')
