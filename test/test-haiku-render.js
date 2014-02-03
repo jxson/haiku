@@ -59,15 +59,41 @@ describe('h.render(key, context, callback)', function(){
 
       var $ = cheerio.load(output)
 
-      assert.equal($('.content-list li').length, 2)
+      assert.equal($('.content-list li').length, 3)
       assert.equal($('.posts-list li').length, 5)
 
       done()
     })
   })
 
-  it('passes context into the template')
-  it('does not squash haiku context')
+  it('passes context into the template', function(done){
+    var context = { foo: 'sentence'
+        , bar: 'non-standard'
+        , page: {}
+        , content: []
+        }
+
+    haiku(src)
+    .render('/manual-context.html', context, function(err, output){
+      if (err) return done(err)
+
+      var page = this
+        , $ = cheerio.load(output)
+        , pageCount = $('.content-list li').length
+        , title = $('.page-title').text()
+
+      // random vars
+      assert.equal($('.foo').text(), context.foo)
+      assert.equal($('.bar').text(), context.bar)
+
+      // don't squash haiku's template variable API
+      assert.equal(title, page.title, 'Bad template variable: page.title')
+      assert.ok(pageCount > 0, 'Bad template variable: content')
+
+      done()
+    })
+  })
+
   it('applies the default layout to html')
   it('does not apply the default layout to non-html')
   it('allows layout override')
