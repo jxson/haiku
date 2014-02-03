@@ -1,5 +1,5 @@
 = yaml =
-title: Via h.render(ctx, callback)
+title: Via h.render(key, ctx, callback)
 = yaml =
 
 <h1 class="page-title">{{ page.title }}</h1>
@@ -12,4 +12,4 @@ Rendering should allow `context` to be passed into the templates as custom templ
   {{/content}}
 </ul>
 
-This <span class="foo">{{ foo }}</span> should have <span class="bar">{{ bar }}</span> variables passed into the `h.render(ctx, callback)` method.
+This <span class="foo">{{ foo }}</span> should have <span class="bar">{{ bar }}</span> variables passed into the `h.render(key, ctx, callback)` method.
