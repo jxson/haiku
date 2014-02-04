@@ -94,8 +94,39 @@ describe('h.render(key, context, callback)', function(){
     })
   })
 
-  it('applies the default layout to html')
-  it('does not apply the default layout to non-html')
-  it('allows layout override')
+  it('applies the default layout to html', function(done){
+    haiku(src)
+    .render('/basic-page.html', function(err, output){
+      if (err) return done(err)
+
+      var $ = cheerio.load(output)
+        , text = $('p:first-of-type').text()
+        , layout = $('body').attr('data-layout')
+
+      assert.ok(output)
+      assert.equal(text, 'Just a page.')
+      assert.equal(layout, 'default')
+
+      done()
+    })
+  })
+
+  it('does not apply the default layout to non-html', function(done){
+    haiku(src)
+    .render('/atom.xml', function(err, output){
+      if (err) return done(err)
+
+      var message = 'Default layout applied to non-html'
+
+      assert.ok(! output.match('<!DOCTYPE html>'), message)
+      assert.ok(! output.match('<body data-layout="default">'), message)
+
+      done()
+    })
+  })
+
+  it('allows layout override via context')
+  it('allows layout override via front matter')
   it('renders with arbitrary templates/partials')
+  it('does not compile raw markdown')
 })
