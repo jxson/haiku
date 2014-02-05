@@ -2,11 +2,11 @@
 const read = require('../lib/page')
     , assert = require('assert')
     , resolve = require('./resolve')
+    , basedir = resolve('content')
 
 describe('page.url', function(){
   it('converts .md to .html', function(done){
     var src = resolve('content/basic-page.md')
-      , basedir = resolve('content')
 
     read(src, basedir, function(err, page){
       if (err) return done(err)
@@ -16,6 +16,15 @@ describe('page.url', function(){
   })
 
   it('does NOT convert pages lacking transforms')
-  it('allows content-type to override')
+
+  it('allows content-type to override', function(done){
+    var src = resolve('content/raw-markdown.md')
+
+    read(src, basedir, function(err, page){
+      if (err) return done(err)
+      assert.equal(page.url, '/raw-markdown.md')
+      done()
+    })
+  })
 })
 

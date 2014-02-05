@@ -1,5 +1,6 @@
 = yaml =
 content-type: text/x-markdown
+title: Just some markdown
 = yaml =
 
 # {{ page.title }}
