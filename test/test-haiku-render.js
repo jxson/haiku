@@ -59,7 +59,7 @@ describe('h.render(key, context, callback)', function(){
 
       var $ = cheerio.load(output)
 
-      assert.equal($('.content-list li').length, 3)
+      assert.equal($('.content-list li').length, 4)
       assert.equal($('.posts-list li').length, 5)
 
       done()
@@ -125,8 +125,40 @@ describe('h.render(key, context, callback)', function(){
     })
   })
 
-  it('allows layout override via context')
-  it('allows layout override via front matter')
+  it('allows layout override via front matter', function(done){
+    haiku(src)
+    .render('/layout-override.html', function(err, output){
+      if (err) return done(err)
+
+      var page = this
+        , $ = cheerio.load(output)
+        , layout = $('body').attr('data-layout')
+        , expected = page.meta.layout
+
+      assert.equal(layout, expected)
+
+      done()
+    })
+  })
+
+
+  it('allows layout override via context', function(done){
+    var context = { layout: 'custom' }
+
+    haiku(src)
+    .render('/layout-override.html', context,  function(err, output){
+      if (err) return done(err)
+
+      var page = this
+        , $ = cheerio.load(output)
+        , layout = $('body').attr('data-layout')
+
+      assert.equal(layout, 'custom')
+
+      done()
+    })
+  })
+
   it('renders with arbitrary templates/partials')
   it('does not compile raw markdown')
 })
