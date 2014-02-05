@@ -159,6 +159,18 @@ describe('h.render(key, context, callback)', function(){
     })
   })
 
-  it('renders with arbitrary templates/partials')
+  it('renders with arbitrary templates/partials', function(done){
+    haiku(src)
+    .render('/page-with-partials.html',  function(err, output){
+      if (err) return done(err)
+
+      var $ = cheerio.load(output)
+
+      assert.ok($('.comments').length, 'Missing partial: shared/comments')
+
+      done()
+    })
+  })
+
   it('does not compile raw markdown')
 })

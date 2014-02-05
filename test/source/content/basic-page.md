@@ -12,5 +12,3 @@ Here are the page's available template variables:
 * page.title: <span class="title">{{ page.title }}</span>
 * page.draft: <span class="draft">{{ page.draft }}</span>
 * page.foo: <span class="foo">{{ page.foo }}</span>
-
-{{>shared/comments}}
