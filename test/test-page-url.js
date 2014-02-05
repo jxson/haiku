@@ -15,7 +15,15 @@ describe('page.url', function(){
     })
   })
 
-  it('does NOT convert pages lacking transforms')
+  it('does NOT convert pages lacking transforms', function(done){
+    var src = resolve('content/atom.xml')
+
+    read(src, basedir, function(err, page){
+      if (err) return done(err)
+      assert.equal(page.url, '/atom.xml')
+      done()
+    })
+  })
 
   it('allows content-type to override', function(done){
     var src = resolve('content/raw-markdown.md')
