@@ -59,7 +59,7 @@ describe('h.render(key, context, callback)', function(){
 
       var $ = cheerio.load(output)
 
-      assert.equal($('.content-list li').length, 4)
+      assert.equal($('.content-list li').length, 6)
       assert.equal($('.posts-list li').length, 5)
 
       done()
@@ -172,5 +172,17 @@ describe('h.render(key, context, callback)', function(){
     })
   })
 
-  it('does not compile raw markdown')
+  it('does not compile raw markdown', function(done){
+    haiku(src)
+    .render('/raw-markdown.md', function(err, output){
+      if (err) return done(err)
+
+      var page = this
+
+      assert.ok(output.match(page.title), 'Missing page.title')
+      assert.equal(output.match('<p>'), null)
+
+      done()
+    })
+  })
 })
