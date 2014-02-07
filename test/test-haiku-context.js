@@ -4,7 +4,7 @@ const haiku = require('../')
     , resolve = require('./resolve')
     , src = resolve('src')
 
-describe('h.context (template variables)', function(){
+describe('content template variable', function(){
   var context
 
   before(function(done){
