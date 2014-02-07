@@ -4,13 +4,39 @@ const haiku = require('../')
     , assert = require('assert')
     , resolve = require('./resolve')
     , src = resolve('src')
+    , cheerio = require('cheerio')
 
 // NOTE: since the `page` template variable is only assigned right before
-// redering (inside the h.render() method) the best way to test it is to assign
-// it manually after retrieving a page via h.get()
+// redering (inside the h.render() method) the best way to test it is rendering
+// and verifying proper output.
 describe('page template variable', function(){
-  it('allows arbitrary values via front-matter')
-  it('allows the expansion of pages via front-matter')
+  it('allows arbitrary values via front-matter', function(done){
+    haiku(src)
+    .render('/lumpy-space-princess.html', function(err, output){
+      if (err) return done(err)
+
+      var $ = cheerio.load(output)
+
+      assert.equal($('h1').text(), 'Hey girl!')
+      assert.equal($('p').text(), 'Oh my glob.')
+
+      done()
+    })
+  })
+
+  it('allows the expansion of pages via front-matter', function(done){
+    haiku(src)
+    .render('/page-expansion.html', function(err, output){
+      if (err) return done(err)
+
+      var $ = cheerio.load(output)
+
+      assert.equal($('.expanded h2').text(), 'Hey girl!')
+      assert.equal($('.expanded p').text(), 'Oh my glob.')
+
+      done()
+    })
+  })
 
   describe('page.title', function(){
     it('has a sane default')
