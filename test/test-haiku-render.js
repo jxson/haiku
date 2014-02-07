@@ -59,7 +59,9 @@ describe('h.render(key, context, callback)', function(){
 
       var $ = cheerio.load(output)
 
-      assert.equal($('.content-list li').length, 7)
+      console.error('TODO: this does not test anything meaningful')
+
+      assert.equal($('.content-list li').length, 9)
       assert.equal($('.posts-list li').length, 5)
 
       done()
