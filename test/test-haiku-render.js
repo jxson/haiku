@@ -59,7 +59,7 @@ describe('h.render(key, context, callback)', function(){
 
       var $ = cheerio.load(output)
 
-      assert.equal($('.content-list li').length, 6)
+      assert.equal($('.content-list li').length, 7)
       assert.equal($('.posts-list li').length, 5)
 
       done()
