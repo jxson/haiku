@@ -73,6 +73,9 @@ describe('content template variable', function(){
     var first = context.content[0]
       , last = context.content[context.content.length - 1]
 
+    console.log('====> first', first)
+    console.log('====> last', last)
+
     assert.equal(first.title, 'Basic page')
     assert.equal(last.title, 'Just some markdown')
   })
