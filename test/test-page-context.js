@@ -39,8 +39,32 @@ describe('page template variable', function(){
   })
 
   describe('page.title', function(){
-    it('has a sane default')
-    it('can be set via front matter')
+    it('Defaults to the filename sans extension', function(done){
+      haiku(src)
+      .render('/defaults.html', function(err, output){
+        if (err) return done(err)
+
+        var $ = cheerio.load(output)
+
+        assert.equal($('h1').text(), 'Defaults')
+
+        done()
+      })
+    })
+
+    it('can be set via front matter', function(done){
+      haiku(src)
+      .render('/overrides.html', function(err, output){
+        if (err) return done(err)
+
+        var $ = cheerio.load(output)
+          , page = this
+
+        assert.equal($('h1').text(), page.meta.title)
+
+        done()
+      })
+    })
   })
 
   describe('page.date', function(){

@@ -2,6 +2,8 @@
 foo: bar
 = yaml =
 
+# {{ page.title }}
+
 Just a page.
 
 Here are the page's available template variables:
