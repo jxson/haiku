@@ -7,6 +7,7 @@ node_modules: package.json
 	@npm install
 
 clean:
+	@$(RM) -fr test/source/build
 	@$(RM) -fr node_modules $(STANDALONE).js
 	@$(RM) -fr npm-debug.log
 
