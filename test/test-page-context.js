@@ -99,8 +99,34 @@ describe('page template variable', function(){
   })
 
   describe('page.url', function(){
-    it('is pre-set via the Page instance')
-    it('can NOT be overriden')
+    it('is pre-set via the Page instance', function(done){
+      haiku(src)
+      .render('/basic-page.html', function(err, output){
+        if (err) return done(err)
+
+        var $ = cheerio.load(output)
+          , page = this
+
+        assert.equal($('.url').text(), page.url)
+
+        done()
+      })
+    })
+
+    it('can NOT be overriden', function(done){
+      haiku(src)
+      .render('/overrides.html', function(err, output){
+        if (err) return done(err)
+
+        var $ = cheerio.load(output)
+          , page = this
+
+        assert.equal($('.url').text(), page.url)
+
+        done()
+      })
+    })
+
   })
 
   describe('page.next', function(){
