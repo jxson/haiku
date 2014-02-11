@@ -68,8 +68,34 @@ describe('page template variable', function(){
   })
 
   describe('page.date', function(){
-    it('defaults to undefined')
-    it('can be set via front-matter')
+    it('defaults to undefined', function(done){
+      haiku(src)
+      .render('/basic-page.html', function(err, output){
+        if (err) return done(err)
+
+        var $ = cheerio.load(output)
+
+        assert.equal($('.date').text(), '')
+
+        done()
+      })
+    })
+
+    it('can be set via front-matter', function(done){
+      haiku(src)
+      .render('/posts/one.html', function(err, output){
+        if (err) return done(err)
+
+        var page = this
+          , $ = cheerio.load(output)
+          , date = $(".date") ? new Date($(".date").text()) : null
+
+        assert.ok(date, 'Missing page.date')
+        assert.equal(date.getTime(), page.meta.date.getTime())
+
+        done()
+      })
+    })
   })
 
   describe('page.url', function(){
