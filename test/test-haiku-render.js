@@ -3,6 +3,7 @@ const haiku = require('../')
     , assert = require('assert')
     , resolve = require('./resolve')
     , src = resolve('src')
+    , fs = require('graceful-fs')
     , cheerio = require('cheerio')
 
 describe('h.render(key, context, callback)', function(){
@@ -53,19 +54,33 @@ describe('h.render(key, context, callback)', function(){
   })
 
   it('renders with haiku context', function(done){
-    haiku(src)
+    var h = haiku(src)
     .render('/content-lists.html', function(err, output){
       if (err) return done(err)
 
       var $ = cheerio.load(output)
+        , contents = h.context.content.map(map)
+        , posts = h.context.content.posts.map(map)
 
-      console.error('TODO: this does not test anything meaningful')
+      $('.content-list li').each(function(index, element){
+        var title = $(this).text().trim()
 
-      assert.equal($('.content-list li').length, 9)
-      assert.equal($('.posts-list li').length, 5)
+        assert.ok(contents.indexOf(title) >= 0, 'Missing page "' + title + '"')
+      })
+
+
+      $('.posts-list li').each(function(index, element){
+        var title = $(this).text().trim()
+
+        assert.ok(posts.indexOf(title) >= 0, 'Missing page "' + title + '"')
+      })
 
       done()
     })
+
+    function map(page){
+      return page.title
+    }
   })
 
   it('passes context into the template', function(done){
