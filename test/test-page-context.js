@@ -128,12 +128,4 @@ describe('page template variable', function(){
     })
 
   })
-
-  describe('page.next', function(){
-    it('provides the next page in the collection')
-  })
-
-  describe('page.previous', function(){
-    it('provides the previous page in the collection')
-  })
 })
