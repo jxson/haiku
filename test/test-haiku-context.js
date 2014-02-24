@@ -49,6 +49,8 @@ describe('content template variable', function(){
     })
   })
 
+  it('does not include dot files')
+
   it('has accessors for sub-directories', function(){
     var message = 'object in context.content is probably not a page :('
 
