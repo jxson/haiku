@@ -39,7 +39,8 @@
     "marked": "~0.3.0",
     "string-humanize": "~1.0.0",
     "string-capitalize": "~1.0.1",
-    "xtend": "~2.1.2"
+    "xtend": "~2.1.2",
+    "st": "~0.3.1"
   },
   "devDependencies": {
     "mocha": "~1.15.1",

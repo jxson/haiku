@@ -1,6 +1,6 @@
 = yaml =
 title: This is a draft
-draft: false
+draft: true
 = yaml =
 
 # {{ title }}

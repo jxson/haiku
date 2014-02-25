@@ -7,10 +7,14 @@ const cli = require('command-router')
     , hogan = require('hogan.js')
     , pkg = require('../package.json')
     , errno = require('errno')
-    , config = require('../lib/config')
+    , http = require('http')
+    , st = require('st')
 
 cli
 .option('help', { alias: 'h', type: Boolean })
+.option('src', { default: process.cwd(), type: path })
+.option('host', { default: 'localhost', type: String })
+.option('port', { default: 8080, type: Number })
 .on('notfound', function(){
   help('index', function(){ process.exit(1) })
 })
@@ -64,6 +68,26 @@ function mustache(file, callback){
 
 function server(params, options){
   if (options.help) return help('server')
+
+  var resHaiku = require('../lib/res-haiku')
+    , mount = st({ path: options.src + '/public'
+      , url: '/'
+      , passthrough: true
+      , index: false
+      })
+
+  // NOTE: It would be nice to see some log output
+
+  http
+  .createServer(listener)
+  .listen(options.port, options.host)
+
+  function listener(req, res){
+    mount(req, res, function(){
+      res.haiku = resHaiku(req, res, options.src)
+      res.haiku(req.url)
+    })
+  }
 }
 
 function bad(subcommand, value){
