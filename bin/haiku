@@ -9,6 +9,9 @@ const cli = require('command-router')
     , errno = require('errno')
     , http = require('http')
     , st = require('st')
+    , through2 = require('through2')
+    , rimraf = require('rimraf')
+    , buildstream = require('../lib/build-stream')
 
 cli
 .option('help', { alias: 'h', type: Boolean })
@@ -19,6 +22,7 @@ cli
   help('index', function(){ process.exit(1) })
 })
 .command('server', server)
+.command('build', build)
 .command('help ?:topic?', function(params){
   help(params.topic)
 })
@@ -84,10 +88,25 @@ function server(params, options){
 
   function listener(req, res){
     mount(req, res, function(){
-      res.haiku = resHaiku(req, res, options.src)
+      res.haiku = resHaiku(req, res, options)
       res.haiku(req.url)
     })
   }
+}
+
+function build(params, options){
+  var h = haiku(options)
+
+  rimraf(h.opt('build-dir'), function(err){
+    if (err) return onerror(err)
+
+    // TODO: error handling
+    h
+    .read()
+    .on('error', function(err){ throw err })
+    .pipe(buildstream(h))
+    .on('error', function(err){ throw err })
+  })
 }
 
 function bad(subcommand, value){
