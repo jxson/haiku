@@ -12,6 +12,7 @@ const cli = require('command-router')
     , through2 = require('through2')
     , rimraf = require('rimraf')
     , buildstream = require('../lib/build-stream')
+    , ncp = require('ncp').ncp // ?
 
 cli
 .option('help', { alias: 'h', type: Boolean })
@@ -103,10 +104,21 @@ function build(params, options){
     // TODO: error handling
     h
     .read()
-    .on('error', function(err){ throw err })
     .pipe(buildstream(h))
-    .on('error', function(err){ throw err })
+    .on('finish', afterBuild)
   })
+
+  function afterBuild(){
+    fs.exists(h.opt('public-dir'), function(exists){
+      // if (! exists) return
+
+      // NOTE: ncp might not be the best for this. It would be nice to warn on
+      // clobber
+      ncp(h.opt('public-dir'), h.opt('build-dir'), function(err){
+        if (err) throw err
+      })
+    })
+  }
 }
 
 function bad(subcommand, value){
