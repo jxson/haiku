@@ -2,11 +2,24 @@
 var haiku = require('../')
   , assert = require('assert')
   , path = require('path')
+  , url = require('url')
 
 describe('h.opt(option, [value])', function(){
   var h
 
   beforeEach(function(){ h = haiku() })
+
+  describe('base-url', function() {
+    it('defaults to "/"', function() {
+      assert.equal(h.opt('base-url'), '/')
+    })
+
+    it('can be set', function() {
+      h.opt('base-url', 'http://domain.tld')
+
+      assert.equal(h.opt('base-url'), 'http://domain.tld')
+    })
+  })
 
   describe('src', function(){
     it('defaults to `process.cwd()`', function(){
