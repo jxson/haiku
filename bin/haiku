@@ -20,6 +20,10 @@ cli.option({ name: 'host'
 , type: String
 })
 
+cli.option({ name: 'base-url'
+, type: String
+})
+
 cli.option({ name: 'log-level'
 , default: 'warn'
 , type: String
@@ -101,7 +105,7 @@ cli.command('server', function(params, options){
 
   http.createServer(function(req, res){
     mount(req, res, function(){
-      res.haiku = haiku(req, res, { src: options.src })
+      res.haiku = haiku(req, res, cli.options)
       res.haiku(req.url)
     })
   }).listen(options.port, options.host)

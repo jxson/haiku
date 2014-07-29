@@ -112,6 +112,22 @@ describe('page.context', function(){
         done()
       })
     })
+
+    it('uses the --base-url', function(done){
+      var src = path.resolve(__dirname, './fixtures/base-url')
+      var h = haiku({ src: src, 'base-url': '/foo' })
+
+      h.on('error', done)
+      .on('end', test)
+
+      function test() {
+        h.find('defaults.md', function(err, page) {
+          if (err) return done(err)
+          assert.equal(page.context.url, '/foo/defaults.html')
+          done()
+        })
+      }
+    })
   })
 
   describe('lambdas/helpers', function(){
