@@ -15,9 +15,9 @@ describe('h.opt(option, [value])', function(){
     })
 
     it('can be set', function() {
-      h.opt('base-url', 'http://domain.tld')
+      h.opt('base-url', 'random-sub-directory')
 
-      assert.equal(h.opt('base-url'), 'http://domain.tld')
+      assert.equal(h.opt('base-url'), '/random-sub-directory')
     })
   })
 
