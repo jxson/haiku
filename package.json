@@ -31,7 +31,9 @@
     "test": "make test"
   },
   "dependencies": {
-    "inherits": "^2.0.1"
+    "graceful-fs": "^3.0.2",
+    "inherits": "^2.0.1",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
     "prova": "^1.14.0"
