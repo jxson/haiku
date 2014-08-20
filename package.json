@@ -31,8 +31,12 @@
     "test": "make test"
   },
   "dependencies": {
+    "debug": "^1.0.4",
+    "filter-stack": "0.0.0",
     "graceful-fs": "^3.0.2",
     "inherits": "^2.0.1",
+    "powerwalk": "^1.0.0",
+    "through2": "^0.6.1",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
