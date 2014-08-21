@@ -12,7 +12,7 @@ test('h.read(callback)', function(assert) {
 
   h.read(function(err) {
     assert.ifError(err)
-    assert.ok(h.is('read'))
+    assert.ok(h.is('ready'))
   })
 })
 
