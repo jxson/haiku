@@ -24,6 +24,11 @@ cli.option({ name: 'base-url'
 , type: String
 })
 
+cli.option({ name: 'build-dir'
+, default: path.resolve('build')
+, type: path
+})
+
 cli.option({ name: 'log-level'
 , default: 'warn'
 , type: String
