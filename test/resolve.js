@@ -7,5 +7,5 @@ module.exports = resolve
 
 function resolve(pathname) {
   if (pathname === 'source') return source
-  else return path.join(src, pathname)
+  else return path.join(source, pathname)
 }
