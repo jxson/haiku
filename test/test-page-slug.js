@@ -14,3 +14,13 @@ test('page.slug', function(assert) {
     assert.end()
   })
 })
+
+test('page.slug - nested', function(assert) {
+  var filename = resolve('content/posts/001.md')
+
+  read(filename, basedir, function(err, page) {
+    assert.error(err)
+    assert.equal(page.slug, 'posts/001')
+    assert.end()
+  })
+})
