@@ -21,15 +21,15 @@ test('h.get(name, callback)', function(assert) {
   })
 })
 
-// test('h.get(slug, callback)', function(assert) {
-//   haiku(source)
-//   .get('basic-page.html', function(err, page) {
-//     assert.ifError(err)
-//     assert.equal(page.name, 'basic-page.md')
-//     assert.end()
-//   })
-// })
-//
+test('h.get(slug, callback)', function(assert) {
+  haiku(source)
+  .get('basic-page', function(err, page) {
+    assert.ifError(err)
+    assert.equal(page.name, 'basic-page.md')
+    assert.end()
+  })
+})
+
 // test('h.get(index, callback)', function(assert) {
 //   haiku(source)
 //   .get('/', function(err, page) {
