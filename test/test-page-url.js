@@ -15,7 +15,7 @@ test('page.url - converts .md to .html', function(assert) {
   })
 })
 
-test('page.url - does NOT convert non-markdown', function(assert) {
+test('page.url - only converts markdown', function(assert) {
   var filename = resolve('content/atom.xml')
 
   read(filename, basedir, function(err, page) {
@@ -31,6 +31,16 @@ test('page.url - content-type can override', function(assert) {
   read(filename, basedir, function(err, page) {
     assert.error(err)
     assert.equal(page.url, '/raw-markdown.md')
+    assert.end()
+  })
+})
+
+test('page.url - can NOT be overridden', function(assert) {
+  var filename = resolve('content/overrides.md')
+
+  read(filename, basedir, function(err, page) {
+    assert.error(err)
+    assert.equal(page.url, '/overrides.html')
     assert.end()
   })
 })
