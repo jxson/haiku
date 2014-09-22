@@ -11,7 +11,7 @@ test('page.lastmodified', function(assert) {
 
   read(filename, basedir, function(err, page) {
     assert.error(err)
-    assert.equal(page.lastmodified, rfc822(page.stats.mtime))
+    assert.equal(page['last-modified'], rfc822(page.stats.mtime))
     assert.end()
   })
 })
