@@ -11,7 +11,7 @@ test('h.read(callback)', function(assert) {
   assert.ok(h.is('new'))
 
   h.read(function(err) {
-    assert.ifError(err)
+    assert.error(err)
     assert.ok(h.is('ready'))
   })
 })
