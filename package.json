@@ -51,6 +51,8 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.2",
     "prova": "^1.14.0"
   },
   "directories": {
