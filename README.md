@@ -2,6 +2,7 @@
 # haiku
 
 [![NPM](https://nodei.co/npm/haiku.png)](https://nodei.co/npm/haiku/)
+[![Coverage Status](https://coveralls.io/repos/jxson/haiku/badge.png?branch=v1.0)](https://coveralls.io/r/jxson/haiku?branch=v1.0)
 
 ## Another static site generator.
 
