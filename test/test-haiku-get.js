@@ -56,3 +56,12 @@ test('h.get(nested-index, callback) - trailing slash', function(assert) {
     assert.end()
   })
 })
+
+test('h.get(nested-index, callback) - not found error', function(assert) {
+  haiku(source)
+  .get('/does-not-exist', function(err, page) {
+    assert.ok(err instanceof Error)
+    assert.ok(err.message.match('page "/does-not-exist" not found'))
+    assert.end()
+  })
+})
