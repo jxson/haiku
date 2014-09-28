@@ -23,3 +23,13 @@ test('read(filename, basedir) - read file error', function(assert) {
     assert.end()
   })
 })
+
+test('read(filename, basedir) - front-matter parse error', function(assert) {
+  var filename = resolve('bad-things/bad-front-matter.md')
+
+  read(filename, basedir, function(err, page) {
+    assert.ok(err instanceof Error)
+    assert.equal(err.problem, 'mapping values are not allowed here')
+    assert.end()
+  })
+})
