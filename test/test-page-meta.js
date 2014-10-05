@@ -8,7 +8,10 @@ const Page = require('../lib/page')
 
 test('page.meta', function(assert) {
   var filename = resolve('content/basic-page.md')
-  var p = Page(filename, basedir)
+  var p = Page({
+    filename: filename,
+    basedir: basedir
+  })
 
   assert.ok(p.meta, {}, 'page.meta should be pre-initialized.')
   assert.end()
