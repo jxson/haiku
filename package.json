@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "bytewise": "^0.7.1",
+    "date-now": "^1.0.1",
     "debug": "^1.0.4",
     "filter-stack": "0.0.0",
     "front-matter": "^0.2.0",
