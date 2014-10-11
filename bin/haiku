@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var cli = require('command-router')
+var cli = require('command-router')()
   , fs = require('graceful-fs')
   , path = require('path')
   , haiku = require('../')
