@@ -10,17 +10,17 @@ test('h.render(key, callback)', function(assert) {
   .render('/basic-page.html', function(err, output) {
     assert.error(err)
     assert.ok(this instanceof Page, 'callback should be bound to page')
+    assert.ok(output, 'should have output')
+
+    var $ = cheerio.load(output)
+    var layout = $('body').attr('data-layout')
 
     console.log('output', output)
 
-    assert.ok(output, 'should have output')
+    assert.equal(layout, 'default')
+
 
     /*
-
-    renders page body as a template
-
-    * html
-    * has default template
 
     renders with page template variables
 
