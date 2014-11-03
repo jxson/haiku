@@ -12,47 +12,20 @@ test('h.render(key, callback)', function(assert) {
     assert.ok(this instanceof Page, 'callback should be bound to page')
     assert.ok(output, 'should have output')
 
+    var page = this
     var $ = cheerio.load(output)
     var layout = $('body').attr('data-layout')
 
-    console.log('output', output)
-
     assert.equal(layout, 'default')
-
-
-    /*
-
-    renders with page template variables
-
-    * url
-    * content-type
-    * title
-    * draft
-    * enumerable
-    * meta
-
-        = yaml =
-        foo: bar
-        = yaml =
-
-        # {{ page.title }}
-
-        Just a page.
-
-        Here are the page's available template variables:
-
-        * page.url: <span class="url">{{ page.url }}</span>
-        * page.content-type: <span class="content-type">{{ page.content-type }}</span>
-        * page.date: <span class="date">{{ page.date }}</span>
-        * page.title: <span class="title">{{ page.title }}</span>
-        * page.draft: <span class="draft">{{ page.draft }}</span>
-        * page.foo: <span class="foo">{{ page.foo }}</span>
-
-    renders with haiku template variables
-
-    * content
-
-    */
+    assert.equal($('title').text(), page.title)
+    assert.equal($('.title').text(), page.title)
+    assert.equal($('.url').text(), page.url)
+    assert.equal($('.content-type').text(), page['content-type'])
+    assert.equal($('.last-modified').text(), page['last-modified'])
+    assert.equal($('.etag').text(), page.etag)
+    assert.equal($('.draft').text(), 'false')
+    assert.equal($('.enumerable').text(), 'true')
+    assert.equal($('.foo').text(), page.meta.foo)
 
     assert.end()
   })
@@ -89,5 +62,7 @@ layouts:
 partials:
 
 * renders with arbitrary templates/partials
+* partials from templates
+* partials from pages
 
 */
