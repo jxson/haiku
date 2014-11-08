@@ -1,5 +1,5 @@
 
-const test = require('prova')
+const test = require('tape')
 const page = require('../lib/page')
 const resolve = require('./resolve')
 const filename = resolve('content/basic-page.md')

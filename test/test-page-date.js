@@ -1,5 +1,5 @@
 
-const test = require('prova')
+const test = require('tape')
 const read = require('../lib/read')
 const assert = require('assert')
 const resolve = require('./resolve')

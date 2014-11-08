@@ -1,5 +1,5 @@
 
-const test = require('prova')
+const test = require('tape')
 const haiku = require('../')
 const source = require('./resolve')('source')
 

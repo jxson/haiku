@@ -1,5 +1,5 @@
 
-const test = require('prova')
+const test = require('tape')
 const page = require('../lib/page')
 
 test('creating instances', function(assert) {

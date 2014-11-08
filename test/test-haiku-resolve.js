@@ -1,6 +1,6 @@
 
 const haiku = require('../')
-const test = require('prova')
+const test = require('tape')
 const path = require('path')
 
 test('h.resolve()', function(assert) {

@@ -23,7 +23,7 @@ clean:
 	@$(RM) -fr coverage
 
 test: node_modules
-	@prova test/test-*.js
+	tape test/test-*.js
 
 travis: test coveralls
 
