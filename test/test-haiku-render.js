@@ -5,57 +5,90 @@ const source = require('./resolve')('source')
 const Page = require('../lib/page')
 const cheerio = require('cheerio')
 
-test('h.render(key, callback)', function(assert) {
+test('h.render(key, callback)', function(t) {
   haiku(source)
   .render('/basic-page.html', function(err, output) {
-    assert.error(err)
-    assert.ok(this instanceof Page, 'callback should be bound to page')
-    assert.ok(output, 'should have output')
+    t.error(err, 'should not error')
+    t.ok(this instanceof Page, 'callback should be bound to page')
+    t.ok(output, 'should have output')
 
     var page = this
     var $ = cheerio.load(output)
     var layout = $('body').attr('data-layout')
 
-    assert.equal(layout, 'default')
-    assert.equal($('title').text(), page.title)
-    assert.equal($('.title').text(), page.title)
-    assert.equal($('.url').text(), page.url)
-    assert.equal($('.content-type').text(), page['content-type'])
-    assert.equal($('.last-modified').text(), page['last-modified'])
-    assert.equal($('.etag').text(), page.etag)
-    assert.equal($('.draft').text(), 'false')
-    assert.equal($('.enumerable').text(), 'true')
-    assert.equal($('.foo').text(), page.meta.foo)
+    t.equal(layout, 'default')
+    t.equal($('title').text(), page.title)
+    t.equal($('.title').text(), page.title)
+    t.equal($('.url').text(), page.url)
+    t.equal($('.content-type').text(), page['content-type'])
+    t.equal($('.last-modified').text(), page['last-modified'])
+    t.equal($('.etag').text(), page.etag)
+    t.equal($('.draft').text(), 'false')
+    t.equal($('.enumerable').text(), 'true')
+    t.equal($('.foo').text(), page.meta.foo)
 
-    assert.end()
+    t.end()
   })
 })
 
-/*
+test('h.render(key, callback) - content-type override', function(t) {
+  haiku(source)
+  .render('/raw-markdown.md', function(err, output) {
+    t.error(err, 'should not error')
 
-content-type:
+    var page = this
+    var $ = cheerio.load(output)
 
-* does not compile raw markdown
+    t.equal(page['content-type'], 'text/x-markdown')
+    t.notOk($('p').length, 'should not compile MD')
+    t.end()
+  })
+})
 
-*/
+test('h.render(key, context, callback)', function(t) {
+  var context = { baz: 'qux' }
 
-/*
+  haiku(source)
+  .render('/basic-page.html', context, function(err, output) {
+    t.error(err, 'should not error')
 
-allows extra context
+    var page = this
+    var $ = cheerio.load(output)
 
-* doesn't squash other vars though
+    t.equal($('.baz').text(), context.baz)
+    t.end()
+  })
+})
 
-*/
+test('h.render(key, context, callback) - layout: via context', function(t) {
+  var context = { layout: 'custom' }
 
-/*
+  haiku(source)
+  .render('/basic-page.html', context, function(err, output) {
+    t.error(err, 'should not error')
 
-layouts:
+    var page = this
+    var $ = cheerio.load(output)
+    var layout = $('body').attr('data-layout')
 
-* applies default layout to html
-* does not apply the default layout to non-html
-* allows override via front-matter
+    t.equal(layout, 'custom')
+    t.end()
+  })
+})
 
-*/
+test('h.render(key, callback) - layout: via front-matter', function(t) {
+  haiku(source)
+  .render('/overrides.html', function(err, output) {
+    t.error(err, 'should not error')
+
+    var page = this
+    var $ = cheerio.load(output)
+    var layout = $('body').attr('data-layout')
+
+    t.equal(layout, 'custom')
+    t.end()
+  })
+})
 
 /*
 

@@ -17,3 +17,4 @@ Here are the page's available template variables:
 * page.last-modified: <span class="last-modified">{{ page.last-modified }}</span>
 * page.etag: <span class="etag">{{ page.etag }}</span>
 * page.foo: <span class="foo">{{ page.foo }}</span>
+* context.baz: <span class="baz">{{ baz }}</span>
