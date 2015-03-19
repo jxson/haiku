@@ -3,6 +3,10 @@
   <title>{{ page.title }}</title>
 </head>
 <body data-layout="{{ page.layout }}">
+  {{> header }}
+
   {{{ layout-content }}}
+
+  {{> footer }}
 </body>
 </html>
